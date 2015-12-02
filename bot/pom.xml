@@ -11,5 +11,13 @@
 
     <artifactId>bot</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>to2.game</groupId>
+            <artifactId>server</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
