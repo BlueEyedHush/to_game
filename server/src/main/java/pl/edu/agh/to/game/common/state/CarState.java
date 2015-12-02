@@ -8,4 +8,12 @@ public class CarState {
     public CarState changeVelocity(Vector vector) {
         return null;
     }
+
+    public Vector getVelocity(){
+        return null;
+    }
+
+    public Vector getPosition(){
+        return null
+    }
 }
