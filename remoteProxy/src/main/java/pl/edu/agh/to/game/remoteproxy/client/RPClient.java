@@ -14,6 +14,7 @@ public class RPClient {
 	private ClientRemoteObject client;
 	private ClientActionHandler handler;
 	private ClientType type;
+	private ServerService server;
 	
 	public RPClient(ClientActionHandler handler, ClientType type) {
 		String url = "rmi://localhost/" + RemoteConfig.RMI_ID;
@@ -32,10 +33,10 @@ public class RPClient {
 	}
 	
 	public Map<Integer, CarState> getInitialStates() {
-		return null;
+		return server.getInitialCarStates();
 	}
 	
 	public Board getBoard() {
-		return null;
+		return server.getBoard();
 	}
 }

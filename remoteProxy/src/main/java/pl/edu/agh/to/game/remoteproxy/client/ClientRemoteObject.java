@@ -18,47 +18,46 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	private ClientType type;
 	private ServerService server;
 
-	public ClientRemoteObject(ClientActionHandler handler, ClientType clientType) throws RemoteException {
+	public ClientRemoteObject(ClientActionHandler handler, ClientType clientType, ServerService server) throws RemoteException {
 		super();
 		this.handler = handler;
-		this.type = type;
-		// TODO Auto-generated constructor stub
+		this.type = clientType;
+		this.server = server;
+		this.server.handleConnect(this);
 	}
 
 	@Override
 	public Vector handleNextMove(Set<Vector> availableMoves) {
-		// TODO Auto-generated method stub
-		return null;
+		return handler.handleNextMove(availableMoves);
+		
 	}
 
 	@Override
 	public void handleMovePerformed(CarState change) {
-		// TODO Auto-generated method stub
+		handler.handleMovePerformed(change);
 
 	}
 
 	@Override
 	public void handleGameStarted() {
-		// TODO Auto-generated method stub
+		handler.handleGameStarted();
 
 	}
 
 	@Override
 	public void handleCarLost(int carId) {
-		// TODO Auto-generated method stub
+		handler.handleCarLost(carId);
 
 	}
 
 	@Override
 	public void handleGameOver(int winnerId) {
-		// TODO Auto-generated method stub
-
+		handler.handleGameOver(winnerId);
 	}
 
 	@Override
 	public ClientType getClientType() {
-		// TODO Auto-generated method stub
-		return null;
+		return type;
 	}
 
 }
