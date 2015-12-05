@@ -7,16 +7,17 @@ import java.util.Map;
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.remoteproxy.client.ClientService;
 
-public class ServerRemoteObject extends UnicastRemoteObject implements ServerService{
-	
+public class ServerRemoteObject extends UnicastRemoteObject implements ServerService {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private GameBuilder builder;
-	
+
 	public ServerRemoteObject(GameBuilder builder) throws RemoteException {
 		super();
 		this.builder = builder;
@@ -24,9 +25,9 @@ public class ServerRemoteObject extends UnicastRemoteObject implements ServerSer
 	}
 
 	@Override
-	public void handleConnect() {
+	public void handleConnect(ClientService service) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -40,7 +41,5 @@ public class ServerRemoteObject extends UnicastRemoteObject implements ServerSer
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 }

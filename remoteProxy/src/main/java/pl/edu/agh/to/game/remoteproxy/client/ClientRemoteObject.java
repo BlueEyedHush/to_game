@@ -2,7 +2,9 @@ package pl.edu.agh.to.game.remoteproxy.client;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Set;
 
+import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.server.ServerService;
 
@@ -15,7 +17,7 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	private ClientActionHandler handler;
 	private ClientType type;
 	private ServerService server;
-	
+
 	public ClientRemoteObject(ClientActionHandler handler, ClientType clientType) throws RemoteException {
 		super();
 		this.handler = handler;
@@ -24,13 +26,13 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public Vector handleNextMove() {
+	public Vector handleNextMove(Set<Vector> availableMoves) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void handleMovePerformed() {
+	public void handleMovePerformed(CarState change) {
 		// TODO Auto-generated method stub
 
 	}
@@ -42,7 +44,7 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public void handleCarLost() {
+	public void handleCarLost(int carId) {
 		// TODO Auto-generated method stub
 
 	}
