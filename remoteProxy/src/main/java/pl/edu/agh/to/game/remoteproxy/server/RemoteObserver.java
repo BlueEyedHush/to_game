@@ -1,5 +1,7 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
+import java.rmi.RemoteException;
+
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
@@ -16,23 +18,43 @@ public class RemoteObserver implements Observer {
 
 	@Override
 	public void gameStarted(GameState initial) {
-		service.handleGameStarted();
+		try {
+			service.handleGameStarted();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void move(int carId, CarState newState) {
-		service.handleMovePerformed(newState);
+		try {
+			service.handleMovePerformed(newState);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void carLost(int carId) {
-		service.handleCarLost(carId);
+		try {
+			service.handleCarLost(carId);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void gameOver(int winner) {
-		service.handleGameOver(winner);
+		try {
+			service.handleGameOver(winner);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

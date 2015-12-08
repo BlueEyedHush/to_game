@@ -1,5 +1,6 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
+import java.rmi.RemoteException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -20,7 +21,14 @@ public class RemoteController implements Controller {
 	@Override
 	public int makeMove(GameState gameState, int currentCarId, List<Vector> allowedPositions) { //TODO: czy zwracamy index z listy?
 		HashSet<Vector> positionSet = new HashSet<Vector>(allowedPositions); //TODO: moze zmienic interfejs?
-		Vector chosen = service.handleNextMove(positionSet);
+		Vector chosen;
+		try {
+			chosen = service.handleNextMove(positionSet);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1; //TODO: lepiej rzucic dalej ten wyjatek
+		}
 		int chosenIndex = -1;
 		for(int i = 0; i < allowedPositions.size(); i++) {
 			if(allowedPositions.get(i).getX() == chosen.getX() && allowedPositions.get(i).getY() == chosen.getY()) { //TODO: lepiej vector.equals

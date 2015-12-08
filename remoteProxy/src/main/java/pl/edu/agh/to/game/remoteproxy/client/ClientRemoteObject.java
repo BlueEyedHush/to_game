@@ -16,14 +16,11 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 
 	private ClientActionHandler handler;
 	private ClientType type;
-	private ServerService server;
 
-	public ClientRemoteObject(ClientActionHandler handler, ClientType clientType, ServerService server) throws RemoteException {
+	public ClientRemoteObject(ClientActionHandler handler, ClientType clientType) throws RemoteException {
 		super();
 		this.handler = handler;
 		this.type = clientType;
-		this.server = server;
-		this.server.handleConnect(this);
 	}
 
 	@Override
