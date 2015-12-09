@@ -1,7 +1,12 @@
 package pl.edu.agh.to.game.common.state;
 
-public class Board {
-    public boolean get(int x, int y) {
+import java.io.Serializable;
+
+public class Board implements Serializable {
+
+	private static final long serialVersionUID = -5623266062780105068L;
+
+	public boolean get(int x, int y) {
         return true;
     }
 
