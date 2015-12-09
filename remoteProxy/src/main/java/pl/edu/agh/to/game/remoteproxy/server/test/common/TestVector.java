@@ -9,7 +9,10 @@ public class TestVector extends Vector {
 	private int x;
 	private int y;
 
-	
+	public TestVector() {
+		super();
+	}
+
 	public TestVector(int x, int y) {
 		super();
 		this.x = x;
@@ -38,7 +41,5 @@ public class TestVector extends Vector {
 	public String toString() {
 		return "TestVector [x=" + x + ", y=" + y + "]";
 	}
-	
-	
 
 }

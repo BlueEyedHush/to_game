@@ -11,6 +11,10 @@ public class TestCarState extends CarState {
 
 	private Vector position;
 
+	public TestCarState() {
+		super();
+	}
+
 	public TestCarState(Vector velocity, Vector position) {
 		super();
 		this.velocity = velocity;

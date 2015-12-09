@@ -17,6 +17,10 @@ public class TestGameState extends GameState {
 
 	private Map<Integer, CarState> carStates = new HashMap<Integer, CarState>();
 
+	public TestGameState() {
+		super();
+	}
+
 	public TestGameState(Board board, int currentCarId, Map<Integer, CarState> carStates) {
 		super();
 		this.board = board;
