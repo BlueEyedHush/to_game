@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 
@@ -45,7 +46,7 @@ public class TestHandler implements ClientActionHandler{
 	}
 
 	@Override
-	public synchronized void handleGameStarted() {
+	public synchronized void handleGameStarted(GameState initialState) {
 		System.out.println("Game started");		
 	}
 

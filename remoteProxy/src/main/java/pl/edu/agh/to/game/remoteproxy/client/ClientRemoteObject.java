@@ -5,6 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Set;
 
 import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
 public class ClientRemoteObject extends UnicastRemoteObject implements ClientService {
@@ -35,8 +36,8 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public void handleGameStarted() {
-		handler.handleGameStarted();
+	public void handleGameStarted(GameState initialState) {
+		handler.handleGameStarted(initialState);
 
 	}
 

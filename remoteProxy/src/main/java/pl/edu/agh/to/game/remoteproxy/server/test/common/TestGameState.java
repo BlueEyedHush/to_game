@@ -45,7 +45,8 @@ public class TestGameState extends GameState {
 	public void setCurrentCarId(int currentCarId) {
 		this.currentCarId = currentCarId;
 	}
-
+	
+	@Override
 	public Map<Integer, CarState> getCarStates() {
 		return carStates;
 	}

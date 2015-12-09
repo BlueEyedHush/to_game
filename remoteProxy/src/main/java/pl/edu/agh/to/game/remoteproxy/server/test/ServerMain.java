@@ -20,9 +20,6 @@ public class ServerMain {
 	
 	
 	public static void main(String[] args) throws IOException {
-		
-
-
 		//.....................................
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		final String ERROR= "Invalid input, shutting down";
@@ -86,10 +83,9 @@ public class ServerMain {
 		}
 		
 	}
-
 	public static List<Vector> getStandardVectors() {
 		List<Vector> vectors = new ArrayList<>();			
-			Vector v = new TestVector(0,0);
+		TestVector v = new TestVector(0,0);
 			vectors.add(v);
 			v = new TestVector(0,1);
 			vectors.add(v);
