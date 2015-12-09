@@ -47,7 +47,7 @@ public class TestHandler implements ClientActionHandler{
 
 	@Override
 	public synchronized void handleGameStarted(GameState initialState) {
-		System.out.println("Game started");		
+		System.out.println("Game started!\n"+initialState);		
 	}
 
 	@Override
