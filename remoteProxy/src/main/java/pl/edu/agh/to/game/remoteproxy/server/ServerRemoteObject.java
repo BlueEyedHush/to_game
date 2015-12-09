@@ -63,11 +63,11 @@ public class ServerRemoteObject extends UnicastRemoteObject implements ServerSer
 		return null;
 	}
 
-	public int getObserversCount() {
+	public synchronized int getObserversCount() {
 		return observersCount;
 	}
 
-	public int getControllersCount() {
+	public synchronized int getControllersCount() {
 		return controllersCount;
 	}
 	

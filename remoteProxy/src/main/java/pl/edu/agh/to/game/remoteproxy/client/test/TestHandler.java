@@ -15,7 +15,7 @@ import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 public class TestHandler implements ClientActionHandler{
 
 	@Override
-	public synchronized Vector handleNextMove(Set<Vector> availableMoves) {
+	public Vector handleNextMove(Set<Vector> availableMoves) {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		List<Vector> moves = new ArrayList<Vector>(availableMoves);
 		System.out.println("Choose move:");
@@ -40,24 +40,24 @@ public class TestHandler implements ClientActionHandler{
 	}
 
 	@Override
-	public synchronized void handleMovePerformed(CarState change) {
+	public void handleMovePerformed(CarState change) {
 		System.out.println("Move performed");
 		System.out.println(change);
 	}
 
 	@Override
-	public synchronized void handleGameStarted(GameState initialState) {
+	public void handleGameStarted(GameState initialState) {
 		System.out.println("Game started!\n"+initialState);		
 	}
 
 	@Override
-	public synchronized void handleCarLost(int carId) {
+	public void handleCarLost(int carId) {
 		System.out.println("Lost car:  " + carId);
 		
 	}
 
 	@Override
-	public synchronized void handleGameOver(int winnerId) {
+	public void handleGameOver(int winnerId) {
 		System.out.println("Game over, winner: " + winnerId);		
 	}
 
