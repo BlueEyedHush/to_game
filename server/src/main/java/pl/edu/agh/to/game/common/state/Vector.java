@@ -1,19 +1,36 @@
 package pl.edu.agh.to.game.common.state;
 
-public class Vector {
-    public int getX() {
-        return 0;
+import java.io.Serializable;
+
+public class Vector implements Serializable {
+    private static final long serialVersionUID = 6192370920369386661L;
+
+    private int x;
+    private int y;
+
+    public Vector(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public int getY() {
-        return 0;
+    public int getX() {
+        return x;
     }
 
     public Vector setX(int x) {
-        return null;
+        return new Vector(x, this.y);
+    }
+
+    public int getY() {
+        return y;
     }
 
     public Vector setY(int y) {
-        return null;
+        return new Vector(this.x, y);
     }
+
+    public Vector add(Vector augend) {
+        return new Vector(x + augend.getX(), y + augend.getY());
+    }
+
 }
