@@ -1,10 +1,10 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class RPServer {
 	

@@ -1,15 +1,14 @@
 package pl.edu.agh.to.game.server;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Game {
     private Map<Integer, Controller> controllers;

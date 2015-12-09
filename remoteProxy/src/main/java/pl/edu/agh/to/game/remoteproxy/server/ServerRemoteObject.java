@@ -1,13 +1,13 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Map;
-
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.remoteproxy.client.ClientService;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Map;
 
 public class ServerRemoteObject extends UnicastRemoteObject implements ServerService {
 

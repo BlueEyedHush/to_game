@@ -1,13 +1,13 @@
 package pl.edu.agh.to.game.remoteproxy.client;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.Map;
-
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
 import pl.edu.agh.to.game.remoteproxy.server.ServerService;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Map;
 
 public class RPClient {
 	
