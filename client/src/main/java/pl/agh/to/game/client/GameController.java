@@ -6,6 +6,8 @@ import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 public class GameController implements ClientActionHandler {
 
 
+
+
     @Override
     public Vector handleNextMove() {
         return null;
