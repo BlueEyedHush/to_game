@@ -34,7 +34,7 @@ public class ServerRemoteObject extends UnicastRemoteObject implements ServerSer
 	}
 
 	@Override
-	public void handleConnect(ClientService service) throws RemoteException {
+	public synchronized void handleConnect(ClientService service) throws RemoteException {
 		if(ClientType.CONTROLLER.equals(service.getClientType())) {
 			Controller controller = new RemoteController(service);
 			builder.registerController(controller);
