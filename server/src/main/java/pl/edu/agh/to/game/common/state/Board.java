@@ -9,34 +9,27 @@ public class Board implements Serializable {
     private int maxY;
     private Vector finish;
 
-    Board(int maxX, int maxY, Vector finish) {
-        this.board = new boolean[maxX][maxY];
-        this.maxX = maxX;
-        this.maxY = maxY;
-        this.finish = finish;
-    }
-
 	public boolean get(int x, int y) {
-        return isXValid(x) && isYValid(y) && board[x][y];
+        return true;
     }
 
     private boolean isXValid(int x) {
-        return x < maxX && x >= 0;
+        return true;
     }
 
     private boolean isYValid(int y) {
-        return y < maxY && y >= 0;
+        return true;
     }
 
     public int getMaxX() {
-        return maxX;
+        return 0;
     }
 
     public int getMaxY() {
-        return maxY;
+        return 0;
     }
 
     public Vector getFinish(){
-        return finish;
+        return null;
     }
 }
