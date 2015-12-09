@@ -38,6 +38,6 @@
                 <Insets left="30.0" right="30.0"/>
             </GridPane.margin>
         </TextField>
-        <Canvas id="gameCanvas" fx:id="canvas" height="413.0" width="545.0" GridPane.rowSpan="3"/>
+        <Canvas  id="gameCanvas" fx:id="canvas" height="413.0" width="545.0" GridPane.rowSpan="3"/>
     </children>
 </GridPane>
