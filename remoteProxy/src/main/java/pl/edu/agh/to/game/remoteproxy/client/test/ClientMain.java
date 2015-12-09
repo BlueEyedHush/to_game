@@ -10,7 +10,6 @@ import pl.edu.agh.to.game.remoteproxy.client.RPClient;
 public class ClientMain {
 	public static void main(String[] args) throws IOException {
 		TestHandler handler = new TestHandler();
-		RPClient rp = new RPClient(handler, ClientType.CONTROLLER);
 
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -29,6 +28,8 @@ public class ClientMain {
 			System.out.println("Bad client type, closing program");
 			return;
 		}
+
+		RPClient rp = new RPClient(handler, type);
 		
 		while(true) {
 			System.out.println("\nClientConsole [? for help] > : ");

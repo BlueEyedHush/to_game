@@ -1,6 +1,5 @@
 package pl.edu.agh.to.game.remoteproxy.client.test;
 
-import java.rmi.RemoteException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,28 +40,29 @@ public class TestHandler implements ClientActionHandler{
 
 	@Override
 	public synchronized void handleMovePerformed(CarState change) {
-		System.out.println("handleMovePerformed");
+		System.out.println("Move performed");
+		System.out.println(change);
 	}
 
 	@Override
 	public synchronized void handleGameStarted() {
-		System.out.println("handleGameStarted");		
+		System.out.println("Game started");		
 	}
 
 	@Override
 	public synchronized void handleCarLost(int carId) {
-		System.out.println("handleCarLost " + carId);
+		System.out.println("Lost car:  " + carId);
 		
 	}
 
 	@Override
 	public synchronized void handleGameOver(int winnerId) {
-		System.out.println("handleGameOver " + winnerId);		
+		System.out.println("Game over, winner: " + winnerId);		
 	}
 
 	@Override
 	public void receiveCarId(int carId) {
-		// TODO Auto-generated method stub
+		System.out.println("Your car id: " + carId);
 		
 	}
 
