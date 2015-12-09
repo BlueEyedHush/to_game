@@ -12,4 +12,8 @@ public class Board {
     public int getMaxY() {
         return 0;
     }
+
+    public Vector getFinish(){
+        return null;
+    }
 }
