@@ -38,24 +38,4 @@ public class RPClient {
 			e.printStackTrace();
 		}
 	}
-
-	public Map<Integer, CarState> getInitialStates() {
-		try {
-			return server.getInitialCarStates();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public Board getBoard() {
-		try {
-			return server.getBoard();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 }

@@ -19,7 +19,7 @@ public class RemoteObserver implements Observer {
 	@Override
 	public void gameStarted(GameState initial) {
 		try {
-			service.handleGameStarted();
+			service.handleGameStarted(initial);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

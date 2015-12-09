@@ -11,10 +11,9 @@ import java.util.Random;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
-import pl.edu.agh.to.game.common.Vector;
-import pl.edu.agh.to.game.common.state.GameState;
-import pl.edu.agh.to.game.remoteproxy.client.ClientType;
+import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
+import pl.edu.agh.to.game.remoteproxy.server.test.common.TestVector;
 
 public class ServerMain {
 	private static Map<Integer, Controller> controllers;
@@ -22,9 +21,6 @@ public class ServerMain {
 	
 	
 	public static void main(String[] args) throws IOException {
-		
-
-
 		//.....................................
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		final String ERROR= "Invalid input, shutting down";
@@ -89,25 +85,25 @@ public class ServerMain {
 		
 	}
 
-	public static List<Vector> getStandardVectors() {
-		List<Vector> vectors = new ArrayList<>();			
-			Vector v = new Vector(0,0);
+	public static List<TestVector> getStandardVectors() {
+		List<TestVector> vectors = new ArrayList<>();			
+		TestVector v = new TestVector(0,0);
 			vectors.add(v);
-			v = new Vector(0,1);
+			v = new TestVector(0,1);
 			vectors.add(v);
-			v = new Vector(1,1);
+			v = new TestVector(1,1);
 			vectors.add(v);
-			v = new Vector(1,0);
+			v = new TestVector(1,0);
 			vectors.add(v);
-			v = new Vector(1,-1);
+			v = new TestVector(1,-1);
 			vectors.add(v);
-			v = new Vector(0,-1);
+			v = new TestVector(0,-1);
 			vectors.add(v);
-			v = new Vector(-1,-1);
+			v = new TestVector(-1,-1);
 			vectors.add(v);
-			v = new Vector(-1,0);
+			v = new TestVector(-1,0);
 			vectors.add(v);
-			v = new Vector(-1,1);
+			v = new TestVector(-1,1);
 			vectors.add(v);			
 		return vectors;
 	}
