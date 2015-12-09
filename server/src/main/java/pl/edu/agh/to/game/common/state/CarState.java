@@ -17,6 +17,10 @@ public class CarState {
         return new CarState(this.position, velocity);
     }
 
+    public CarState moveCar(Vector vector) {
+        return new CarState(position.add(vector), vector);
+    }
+
     public Vector getVelocity(){
         return velocity;
     }
