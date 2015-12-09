@@ -37,8 +37,8 @@ public class ClientMain {
 			if(cmd.startsWith("?")) {
 				System.out.println("'?'           - print this help");
 				System.out.println("'q'           - close program");
-			} else if(true) {
-				
+			} else if(cmd.startsWith("q")) {
+				break;
 			}
 		}
 		
