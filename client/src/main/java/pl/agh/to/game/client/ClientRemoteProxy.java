@@ -20,6 +20,10 @@ public class ClientRemoteProxy {
         this.IP = IP;
     }
 
+    public void tellClientToMove(){};
+    public void tellClientSomeoneMoved() {};
+    public void tellClientGameOver() {};
+
     public Board getBoard() {
         return board;
     }

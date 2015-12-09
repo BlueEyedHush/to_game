@@ -60,7 +60,9 @@ public class StartScreen extends Application {
             Mockito.when(temporaryBoard.getMaxY()).thenReturn(10);
             GameState gameState = Mockito.mock(GameState.class);
             Mockito.when(gameState.getBoard()).thenReturn(temporaryBoard);
-            drawMap(gameCanvas, gameState);
+            GameController gc = new GameController(gameCanvas, gameState);
+            gc.init();
+            //drawMap(gameCanvas, gameState);
         });
 
 
@@ -88,34 +90,7 @@ public class StartScreen extends Application {
     }
 
 
-    private void drawMap(Canvas gameCanvas, GameState gameState) {
-        //drawing only background with possible no go positions
 
-        Board board = gameState.getBoard();
-//        int mapSizeX = board.getMaxX();
-//        int mapSizeY = board.getMaxY();
-        //// FIXME: 09.12.2015
-        int mapSizeX = board.getMaxX();
-        int mapSizeY = board.getMaxY();
-        gameCanvas.setWidth(mapSizeX * pointSize);
-        gameCanvas.setHeight(mapSizeY * pointSize);
-//        gameCanvas = new Canvas(mapSizeX*pointSize,mapSizeY*pointSize);
-
-        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-        gc.fillRect(0, 0, mapSizeX, mapSizeY);
-
-        for (int i = 0; i < mapSizeX; i++) {
-            for (int j = 0; j < mapSizeY; j++) {
-                //boolean possible = j % 2 == 0;
-                if (board.get(i,j)) {
-                    gc.setFill(Color.BISQUE);
-                } else {
-                    gc.setFill(Color.RED);
-                }
-                gc.fillRect(i * pointSize, j * pointSize, pointSize/2, pointSize/2);
-            }
-        }
-    }
 
     public void run() {
 //        Thread thread = new Thread(Application::launch);
