@@ -1,13 +1,17 @@
 package pl.edu.agh.to.game.remoteproxy.client.test;
 
+import java.rmi.RemoteException;
 import java.util.Set;
 
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 
+
 public class TestHandler implements ClientActionHandler{
 
+	private int carId;
+	
 	@Override
 	public Vector handleNextMove(Set<Vector> availableMoves) {
 		System.out.println("handleNextMove:");
@@ -38,6 +42,11 @@ public class TestHandler implements ClientActionHandler{
 	@Override
 	public void handleGameOver(int winnerId) {
 		System.out.println("handleGameOver " + winnerId);		
+	}
+
+	@Override
+	public void ReceiveCarId(int carId) throws RemoteException {
+		this.carId=carId;
 	}
 
 }

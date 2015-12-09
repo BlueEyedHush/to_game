@@ -57,4 +57,9 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 		return type;
 	}
 
+	@Override
+	public void ReceiveCarId(int carId) throws RemoteException {
+		handler.ReceiveCarId(carId);
+	}
+
 }

@@ -37,8 +37,11 @@ public class ServerRemoteObject extends UnicastRemoteObject implements ServerSer
 	public void handleConnect(ClientService service) throws RemoteException {
 		if(ClientType.CONTROLLER.equals(service.getClientType())) {
 			Controller controller = new RemoteController(service);
-			builder.registerController(controller);
+			Observer observer = new RemoteObserver(service);
+			builder.registerObserver(observer);
+			int carId = builder.registerController(controller);
 			controllersCount++;
+			service.ReceiveCarId(carId);
 		} else if(ClientType.OBSERVER.equals(service.getClientType())) {
 			Observer observer = new RemoteObserver(service);
 			builder.registerObserver(observer);

@@ -1,8 +1,8 @@
 package pl.edu.agh.to.game.common;
 
 public class GameBuilder {
-    public void registerController(Controller controller) {
-
+    public int registerController(Controller controller) {
+    	return 0;
     }
 
     public void registerObserver(Observer observer) {
