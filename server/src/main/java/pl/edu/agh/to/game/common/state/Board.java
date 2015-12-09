@@ -20,6 +20,12 @@ public class Board implements Serializable {
         return isXValid(x) && isYValid(y) && board[x][y];
     }
 
+    public boolean get(Vector position) {
+        int x = position.getX();
+        int y = position.getY();
+        return isXValid(x) && isYValid(y) && board[x][y];
+    }
+
     private boolean isXValid(int x) {
         return x < maxX && x >= 0;
     }

@@ -33,4 +33,22 @@ public class Vector implements Serializable {
         return new Vector(x + augend.getX(), y + augend.getY());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vector)) return false;
+
+        Vector vector = (Vector) o;
+
+        if (x != vector.x) return false;
+        return y == vector.y;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
 }
