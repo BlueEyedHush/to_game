@@ -14,12 +14,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.mockito.Mockito;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.GameState;
 
 public class StartScreen extends Application {
 
-    int pointSize = 10;
+    int pointSize = 20;
 
     private Canvas gameCanvas;
 
@@ -53,7 +54,13 @@ public class StartScreen extends Application {
 
 
         startGameButton.setOnMouseClicked(event -> {
-            drawMap(gameCanvas, new GameState());
+            Board temporaryBoard = Mockito.mock(Board.class);
+            Mockito.when(temporaryBoard.get(Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
+            Mockito.when(temporaryBoard.getMaxX()).thenReturn(10);
+            Mockito.when(temporaryBoard.getMaxY()).thenReturn(10);
+            GameState gameState = Mockito.mock(GameState.class);
+            Mockito.when(gameState.getBoard()).thenReturn(temporaryBoard);
+            drawMap(gameCanvas, gameState);
         });
 
 
@@ -88,8 +95,8 @@ public class StartScreen extends Application {
 //        int mapSizeX = board.getMaxX();
 //        int mapSizeY = board.getMaxY();
         //// FIXME: 09.12.2015
-        int mapSizeX = 100;
-        int mapSizeY = 100;
+        int mapSizeX = board.getMaxX();
+        int mapSizeY = board.getMaxY();
         gameCanvas.setWidth(mapSizeX * pointSize);
         gameCanvas.setHeight(mapSizeY * pointSize);
 //        gameCanvas = new Canvas(mapSizeX*pointSize,mapSizeY*pointSize);
@@ -99,13 +106,13 @@ public class StartScreen extends Application {
 
         for (int i = 0; i < mapSizeX; i++) {
             for (int j = 0; j < mapSizeY; j++) {
-                boolean possible = j % 2 == 0;
-                if (possible) {
+                //boolean possible = j % 2 == 0;
+                if (board.get(i,j)) {
                     gc.setFill(Color.BISQUE);
                 } else {
                     gc.setFill(Color.RED);
                 }
-                gc.fillRect(i * pointSize, j * pointSize, pointSize, pointSize);
+                gc.fillRect(i * pointSize, j * pointSize, pointSize/2, pointSize/2);
             }
         }
     }
