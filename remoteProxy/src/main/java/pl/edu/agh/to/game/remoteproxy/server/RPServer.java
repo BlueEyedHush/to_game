@@ -30,7 +30,7 @@ public class RPServer {
 				if (server.getObserversCount() == builder.requiredObservers() && server.getControllersCount() == builder.requiredControllers()) {
 					break;
 				}
-				System.out.println("Waiting for players: " + server.getObserversCount() + "[" + builder.requiredObservers() + "] " + server.getControllersCount() + " [" + builder.requiredControllers() + "]");
+				System.out.println("Waiting for players: " + server.getControllersCount() + " [" + builder.requiredControllers() + "]" + " and spectators: " +server.getObserversCount() + "[" + builder.requiredObservers() + "] ");
 				Thread.sleep(2000);
 			}
 		} catch (InterruptedException e) {

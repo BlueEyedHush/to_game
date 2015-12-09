@@ -1,21 +1,23 @@
 package pl.edu.agh.to.game.remoteproxy.server.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
 
 public class TestGameBuilder extends GameBuilder {
-	private List<Controller> controllers;
+	private Map<Integer, Controller> controllers;
 	private List<Observer> observers;
 	private int requiredControllers;
 	private int requiredObservers;
 	private int carId;
 
 	public TestGameBuilder(int requiredControllers, int requiredObservers) {
-		this.controllers = new ArrayList<>();
+		this.controllers = new HashMap<Integer, Controller>();
 		this.observers = new ArrayList<>();
 		this.requiredControllers = requiredControllers;
 		this.requiredObservers = requiredObservers;
@@ -23,9 +25,9 @@ public class TestGameBuilder extends GameBuilder {
 	}
 	
 	public int registerController(Controller controller) {
-		controllers.add(controller);
-		System.out.println("Controller registered");
 		carId++;
+		controllers.put(carId,controller);
+		System.out.println("Controller registered");
 		return carId;
 	}
 	
@@ -42,7 +44,7 @@ public class TestGameBuilder extends GameBuilder {
 		return requiredObservers;
 	}
 
-	public List<Controller> getControllers() {
+	public Map<Integer, Controller> getControllers() {
 		return controllers;
 	}
 
