@@ -1,19 +1,42 @@
 package pl.edu.agh.to.game.common.state;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
+    private static final long serialVersionUID = -5623266062780105068L;
+    private boolean board[][];
+    private int maxX;
+    private int maxY;
+    private Vector finish;
+
+    Board(int maxX, int maxY, Vector finish) {
+        this.board = new boolean[maxX][maxY];
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.finish = finish;
+    }
+
     public boolean get(int x, int y) {
-        return true;
+        return isXValid(x) && isYValid(y) && board[x][y];
+    }
+
+    private boolean isXValid(int x) {
+        return x < maxX && x >= 0;
+    }
+
+    private boolean isYValid(int y) {
+        return y < maxY && y >= 0;
     }
 
     public int getMaxX() {
-        return 0;
+        return maxX;
     }
 
     public int getMaxY() {
-        return 0;
+        return maxY;
     }
 
     public Vector getFinish(){
-        return null;
+        return finish;
     }
 }
