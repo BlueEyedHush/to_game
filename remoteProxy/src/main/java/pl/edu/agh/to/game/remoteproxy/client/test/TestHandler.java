@@ -21,7 +21,7 @@ public class TestHandler implements ClientActionHandler{
 		
 		int i = 0;
 		for(Vector vector : moves) {
-			System.out.println(vector);
+			System.out.println(i + ") " + vector);
 			i++;
 		}
 		

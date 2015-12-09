@@ -19,16 +19,10 @@ public class RPClient {
 	private ServerService server;
 
 	public RPClient(ClientActionHandler handler, ClientType type) {
-		String url = "rmi://localhost/" + RemoteConfig.RMI_ID;
 		try {
-			// ServerRemoteProxy server = (ServerRemoteProxy)
-			// Naming.lookup(url);
-			// new Thread(new ClientRemoteProxyImpl(server)).start();
-			Registry registry = LocateRegistry.getRegistry("localhost", RemoteConfig.PORT);
+			Registry registry = LocateRegistry.getRegistry(RemoteConfig.SERVER_HOST, RemoteConfig.PORT);
 			Remote lookup = registry.lookup(RemoteConfig.RMI_ID);
 			server = (ServerService) lookup;
-			// new Thread(new ClientRemoteObject(server)).start();
-			// client = new ClientRemoteObject(handler, clientType);
 			this.handler = handler;
 			this.type = type;
 			this.client = new ClientRemoteObject(handler, type);
