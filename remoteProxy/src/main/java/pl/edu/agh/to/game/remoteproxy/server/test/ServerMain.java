@@ -27,6 +27,7 @@ public class ServerMain {
 	private static BufferedReader bufferedReader = new BufferedReader(
 			new InputStreamReader(System.in));
 	private static Random random = new Random();
+	private static Map<Integer, CarState> states;
 
 	public static void main(String[] args) throws IOException {
 		// .....................................
@@ -68,6 +69,8 @@ public class ServerMain {
 				seePlayers();
 			} else if (cmd.startsWith("start")) {
 				startGame();
+			} else if (cmd.startsWith("move")) {
+				move();
 			} else if (cmd.startsWith("q")) {
 				break;
 			}
@@ -79,7 +82,34 @@ public class ServerMain {
 		System.out.println("'?'                - print this help");
 		System.out.println("'players'          - display player list");
 		System.out.println("'start'            - setup game and signal start");
+		System.out.println("'move'             - request move from controller");
 		System.out.println("'q'                - close program");
+
+	}
+
+	private static void move() throws NumberFormatException, IOException {
+		System.out.println("choose Controller:");
+		seePlayers();
+		System.out.println();
+		Integer cont = Integer.parseInt(bufferedReader.readLine());
+		List<Vector> allMoves = getStandardVectors();
+		System.out.println("requesting move...");
+		TestVector response = (TestVector) allMoves.get(controllers.get(cont)
+				.makeMove(null, -1, allMoves));
+		System.out.println("controller " + cont + " made move: " + response);
+
+		int newX = response.getX();
+		int newY = response.getY();
+		TestCarState state = (TestCarState) states.get(cont);
+		state.setVelocity(new TestVector(state.getVelocity().getX() + newX,
+				state.getVelocity().getY() + newY));
+		state.setPosition(new TestVector(state.getPosition().getX()
+				+ state.getVelocity().getX(), state.getPosition().getY()
+				+ state.getVelocity().getY()));
+		System.out.println("new state of controller " + cont + ": " + state);
+		for (Observer o : observers) {
+			o.move(cont, state);
+		}
 
 	}
 
@@ -89,25 +119,27 @@ public class ServerMain {
 		System.out.println("set map height");
 		Integer y = Integer.parseInt(bufferedReader.readLine());
 		boolean[][] map = new boolean[y][x];
-		for(int i=0;i<y;i++)
-			for(int j=0;j<x;j++)
-				map[i][j]=random.nextBoolean();
-		
-		int xf=random.nextInt(x);
-		int yf=random.nextInt(y);
-		Board board = new Board(map, new TestVector(xf,yf));
-		Map<Integer, CarState> initStates = new Hashtable<Integer, CarState> ();
-		
-		for (int id : controllers.keySet()){
-			int xs=random.nextInt(x);
-			int ys=random.nextInt(y);
-			CarState state = new TestCarState(new TestVector(0,0), new TestVector(xs,ys));
+		for (int i = 0; i < y; i++)
+			for (int j = 0; j < x; j++)
+				map[i][j] = random.nextBoolean();
+
+		int xf = random.nextInt(x);
+		int yf = random.nextInt(y);
+		Board board = new Board(map, new TestVector(xf, yf));
+		Map<Integer, CarState> initStates = new Hashtable<Integer, CarState>();
+
+		for (int id : controllers.keySet()) {
+			int xs = random.nextInt(x);
+			int ys = random.nextInt(y);
+			CarState state = new TestCarState(new TestVector(0, 0),
+					new TestVector(xs, ys));
 			initStates.put(id, state);
 		}
-		
+		states = initStates;
+
 		GameState initialState = new TestGameState(board, -1, initStates);
 		System.out.println("generated initial game state: \n" + initialState);
-		
+
 		for (Observer o : observers)
 			o.gameStarted(initialState);
 		System.out.println("Game Started!");
@@ -125,6 +157,7 @@ public class ServerMain {
 	}
 
 	public static List<Vector> getStandardVectors() {
+		System.out.println("allowing all moves");
 		List<Vector> vectors = new ArrayList<>();
 		TestVector v = new TestVector(0, 0);
 		vectors.add(v);
