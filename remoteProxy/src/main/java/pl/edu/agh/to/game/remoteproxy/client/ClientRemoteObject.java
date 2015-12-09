@@ -30,8 +30,8 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public void handleMovePerformed(CarState change) {
-		handler.handleMovePerformed(change);
+	public void handleMovePerformed(int carId, CarState change) {
+		handler.handleMovePerformed(carId, change);
 
 	}
 

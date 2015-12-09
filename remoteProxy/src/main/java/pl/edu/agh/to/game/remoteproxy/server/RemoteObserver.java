@@ -29,7 +29,7 @@ public class RemoteObserver implements Observer {
 	@Override
 	public void move(int carId, CarState newState) {
 		try {
-			service.handleMovePerformed(newState);
+			service.handleMovePerformed(carId, newState);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

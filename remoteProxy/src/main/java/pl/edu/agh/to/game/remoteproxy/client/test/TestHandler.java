@@ -40,8 +40,8 @@ public class TestHandler implements ClientActionHandler{
 	}
 
 	@Override
-	public synchronized void handleMovePerformed(CarState change) {
-		System.out.println("Move performed");
+	public synchronized void handleMovePerformed(int carId, CarState change) {
+		System.out.println("Move performed by car "+ carId);
 		System.out.println(change);
 	}
 
