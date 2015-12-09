@@ -1,5 +1,7 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -10,22 +12,14 @@ public class RPServer {
 
 	private ServerRemoteObject server;
 
-	private GameBuilder builder;
-
-	public RPServer(GameBuilder builder) {
-		try {
-			// Naming.rebind(RemoteConfig.RMI_ID, new ServerRemoteProxyImpl());
-			server = new ServerRemoteObject(builder);
-			Registry registry = LocateRegistry.createRegistry(RemoteConfig.PORT);
-			registry.bind(RemoteConfig.RMI_ID, server);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void initialize(GameBuilder builder) {
 
 		try {
+			System.setProperty("java.rmi.server.hostname", RemoteConfig.SERVER_HOST);
+			server = new ServerRemoteObject(builder);
+			Registry registry = LocateRegistry.createRegistry(RemoteConfig.PORT);
+			registry.bind(RemoteConfig.RMI_ID, server);
+			
 			while (true) {
 				if (server.getObserversCount() == builder.requiredObservers() && server.getControllersCount() == builder.requiredControllers()) {
 					break;
@@ -34,6 +28,10 @@ public class RPServer {
 				Thread.sleep(2000);
 			}
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
 			e.printStackTrace();
 		}
 
