@@ -19,8 +19,7 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void handleGameStarted() {
-        MainWindowController mainWindowController = new MainWindowController();
-        mainWindowController.drawMap();
+
 
     }
 
