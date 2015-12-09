@@ -1,6 +1,5 @@
 package pl.edu.agh.to.game.remoteproxy.client;
 
-import java.rmi.RemoteException;
 import java.util.Set;
 
 import pl.edu.agh.to.game.common.state.CarState;
@@ -12,5 +11,5 @@ public interface ClientActionHandler {
 	void handleGameStarted();
 	void handleCarLost(int carId);
 	void handleGameOver(int winnerId);
-	void receiveCarId(int carId) throws RemoteException;
+	void receiveCarId(int carId);
 }

@@ -14,5 +14,5 @@ public interface ClientService extends Remote{
 	void handleCarLost(int carId) throws RemoteException;
 	void handleGameOver(int winnerId) throws RemoteException;
 	ClientType getClientType() throws RemoteException;
-	void ReceiveCarId(int carId) throws RemoteException;
+	void receiveCarId(int carId) throws RemoteException;
 }

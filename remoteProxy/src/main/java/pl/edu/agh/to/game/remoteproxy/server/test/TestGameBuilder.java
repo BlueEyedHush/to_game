@@ -12,17 +12,21 @@ public class TestGameBuilder extends GameBuilder {
 	private List<Observer> observers;
 	private int requiredControllers;
 	private int requiredObservers;
+	private int carId;
 
 	public TestGameBuilder(int requiredControllers, int requiredObservers) {
 		this.controllers = new ArrayList<>();
 		this.observers = new ArrayList<>();
 		this.requiredControllers = requiredControllers;
 		this.requiredObservers = requiredObservers;
+		this.carId = 0;
 	}
 	
-	public void registerController(Controller controller) {
+	public int registerController(Controller controller) {
 		controllers.add(controller);
 		System.out.println("Controller registered");
+		carId++;
+		return carId;
 	}
 	
 	public void registerObserver(Observer observer) {

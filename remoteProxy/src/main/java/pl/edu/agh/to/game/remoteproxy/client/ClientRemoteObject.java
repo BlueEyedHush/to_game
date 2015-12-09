@@ -6,7 +6,6 @@ import java.util.Set;
 
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.Vector;
-import pl.edu.agh.to.game.remoteproxy.server.ServerService;
 
 public class ClientRemoteObject extends UnicastRemoteObject implements ClientService {
 	/**
@@ -58,8 +57,8 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public void ReceiveCarId(int carId) throws RemoteException {
-		handler.ReceiveCarId(carId);
+	public void receiveCarId(int carId) throws RemoteException {
+		handler.receiveCarId(carId);
 	}
 
 }

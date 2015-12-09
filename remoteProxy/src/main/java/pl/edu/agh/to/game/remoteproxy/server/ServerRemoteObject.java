@@ -41,7 +41,7 @@ public class ServerRemoteObject extends UnicastRemoteObject implements ServerSer
 			builder.registerObserver(observer);
 			int carId = builder.registerController(controller);
 			controllersCount++;
-			service.ReceiveCarId(carId);
+			service.receiveCarId(carId);
 		} else if(ClientType.OBSERVER.equals(service.getClientType())) {
 			Observer observer = new RemoteObserver(service);
 			builder.registerObserver(observer);

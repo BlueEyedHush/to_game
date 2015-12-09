@@ -61,7 +61,7 @@ public class TestHandler implements ClientActionHandler{
 	}
 
 	@Override
-	public void receiveCarId(int carId) throws RemoteException {
+	public void receiveCarId(int carId) {
 		// TODO Auto-generated method stub
 		
 	}
