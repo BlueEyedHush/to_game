@@ -1,6 +1,7 @@
 package pl.agh.to.game.client;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -30,6 +31,7 @@ public class MainApp extends Application {
         primaryStage.setTitle("Gra w gre");
         primaryStage.setHeight(520);
         primaryStage.setWidth(535);
+        primaryStage.setResizable(false);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -50,7 +52,10 @@ public class MainApp extends Application {
         hButtons.setPadding(new Insets(20,20,10,20));
 
         Button button = new Button("Start game!");
+
         Button buttonExit = new Button("Exit");
+        buttonExit.setOnMouseClicked(event -> Platform.exit());
+
         Button buttonSettings = new Button("Settings");
 
         hButtons.getChildren().addAll(button,buttonExit,buttonSettings);
