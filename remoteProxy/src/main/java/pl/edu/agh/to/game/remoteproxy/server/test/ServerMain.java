@@ -50,7 +50,7 @@ public class ServerMain {
 
 		System.out.println("initializing...");
 
-		RPServer server = new RPServer(builder);
+		RPServer server = new RPServer();
 		server.initialize(builder);
 
 		TestGameBuilder testBuilder = (TestGameBuilder) builder;
