@@ -32,13 +32,11 @@ public class GameTest {
     public void prepare() {
         MockitoAnnotations.initMocks(this);
         gameState = getExampleGameState();
-        game = new Game(gameState);
 
         Map<Integer, Controller> controllers = new Hashtable<>();
         controllers.put(1, controller);
         controllers.put(0, controller);
-        game.setControllers(controllers);
-        game.setObserver(observer);
+        game = new Game(gameState, controllers, observer);
     }
 
     @Test

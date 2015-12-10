@@ -26,8 +26,10 @@ public class Game {
     private GameState gameState;
     private boolean isFinished;
 
-    public Game(GameState gameState) {
+    public Game(GameState gameState, Map<Integer, Controller> controllers, Observer observer) {
         this.gameState = gameState;
+        this.controllers = controllers;
+        this.observer = observer;
     }
 
     public void startGame() {
@@ -36,14 +38,6 @@ public class Game {
         while (!isFinished) {
             makeTurn();
         }
-    }
-
-    public void setControllers(Map<Integer, Controller> controllers) {
-        this.controllers = controllers;
-    }
-
-    public void setObserver(Observer observer) {
-        this.observer = observer;
     }
 
     private void makeTurn() {
