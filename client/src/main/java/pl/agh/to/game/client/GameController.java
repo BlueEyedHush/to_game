@@ -3,9 +3,6 @@ package pl.agh.to.game.client;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
@@ -33,7 +30,7 @@ public class GameController implements ClientActionHandler {
         // mock
         //clientProxy = Mockito.mock(ClientRemoteProxy.class);
         //Mockito.when(clientProxy.tellClientToMove()).
-        gameModel = new GameModel(gameState);
+        gameModel = new GameModel(gameState.getBoard());
         drawMap(gameCanvas, gameModel);
         Set<Vector> vectors = new HashSet<Vector>();
         Vector v = new Vector();
@@ -64,12 +61,12 @@ public class GameController implements ClientActionHandler {
                 //boolean possible = j % 2 == 0;
                 if (gameModel.map[i][j] == 1) {
                     gc.setFill(Color.BISQUE);
-                } else if (gameModel.map[i][j] == 0){
+                } else if (gameModel.map[i][j] == 0) {
                     gc.setFill(Color.RED);
                 } else {
                     gc.setFill(Color.YELLOW);
                 }
-                gc.fillRect(i * pointSize, j * pointSize, pointSize/2, pointSize/2);
+                gc.fillRect(i * pointSize, j * pointSize, pointSize / 2, pointSize / 2);
             }
         }
     }
@@ -78,11 +75,11 @@ public class GameController implements ClientActionHandler {
     @Override
     public Vector handleNextMove(Set<Vector> availableMoves) {
         Iterator<Vector> availableMovesIter = availableMoves.iterator();
-        while (availableMovesIter.hasNext())  {
+        while (availableMovesIter.hasNext()) {
             Vector availableVector = availableMovesIter.next();
             gameModel.map[availableVector.getX()][availableVector.getY()] = 2;
         }
-        drawMap(gameCanvas,gameModel);
+        drawMap(gameCanvas, gameModel);
 
         return null;
 
@@ -95,7 +92,8 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void handleGameStarted(GameState initialState) {
-
+        gameModel = new GameModel(initialState.getBoard());
+        this.drawMap(gameCanvas,gameModel);
     }
 
     @Override
