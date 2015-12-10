@@ -1,12 +1,10 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
-import java.util.Map;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-import pl.edu.agh.to.game.common.state.Board;
-import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.remoteproxy.client.ClientService;
 
-public interface ServerService {
-	void handleConnect();
-	Board getBoard();
-	Map<Integer, CarState> getInitialCarStates();
+public interface ServerService extends Remote {
+	void handleConnect(ClientService service) throws RemoteException;
 }

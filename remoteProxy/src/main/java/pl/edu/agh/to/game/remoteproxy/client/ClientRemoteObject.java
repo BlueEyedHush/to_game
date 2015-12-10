@@ -2,9 +2,11 @@ package pl.edu.agh.to.game.remoteproxy.client;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Set;
 
+import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
-import pl.edu.agh.to.game.remoteproxy.server.ServerService;
 
 public class ClientRemoteObject extends UnicastRemoteObject implements ClientService {
 	/**
@@ -14,49 +16,50 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 
 	private ClientActionHandler handler;
 	private ClientType type;
-	private ServerService server;
-	
+
 	public ClientRemoteObject(ClientActionHandler handler, ClientType clientType) throws RemoteException {
 		super();
 		this.handler = handler;
-		this.type = type;
-		// TODO Auto-generated constructor stub
+		this.type = clientType;
 	}
 
 	@Override
-	public Vector handleNextMove() {
-		// TODO Auto-generated method stub
-		return null;
+	public synchronized Vector handleNextMove(Set<Vector> availableMoves) {
+		return handler.handleNextMove(availableMoves);
+		
 	}
 
 	@Override
-	public void handleMovePerformed() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleGameStarted() {
-		// TODO Auto-generated method stub
+	public synchronized void handleMovePerformed(int carId, CarState change) {
+		handler.handleMovePerformed(carId, change);
 
 	}
 
 	@Override
-	public void handleCarLost() {
-		// TODO Auto-generated method stub
+	public synchronized void handleGameStarted(GameState initialState) {
+		handler.handleGameStarted(initialState);
 
 	}
 
 	@Override
-	public void handleGameOver(int winnerId) {
-		// TODO Auto-generated method stub
+	public synchronized void handleCarLost(int carId) {
+		handler.handleCarLost(carId);
 
 	}
 
 	@Override
-	public ClientType getClientType() {
-		// TODO Auto-generated method stub
-		return null;
+	public synchronized void handleGameOver(int winnerId) {
+		handler.handleGameOver(winnerId);
+	}
+
+	@Override
+	public synchronized ClientType getClientType() {
+		return type;
+	}
+
+	@Override
+	public synchronized void receiveCarId(int carId) {
+		handler.receiveCarId(carId);
 	}
 
 }

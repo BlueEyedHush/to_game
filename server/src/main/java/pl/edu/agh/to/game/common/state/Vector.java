@@ -1,7 +1,12 @@
 package pl.edu.agh.to.game.common.state;
 
-public class Vector {
-    public int getX() {
+import java.io.Serializable;
+
+public class Vector implements Serializable {
+	
+	private static final long serialVersionUID = 6192370920369386661L;
+
+	public int getX() {
         return 0;
     }
 
