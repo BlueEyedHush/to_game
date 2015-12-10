@@ -51,8 +51,8 @@ public class ServerMain {
 
 		System.out.println("initializing...");
 
-		RPServer server = new RPServer(builder);
-		server.initialize();
+		RPServer server = new RPServer();
+		server.initialize(builder);
 
 		TestGameBuilder testBuilder = (TestGameBuilder) builder;
 		controllers = testBuilder.getControllers();

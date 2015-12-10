@@ -22,10 +22,9 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 	private int observersCount;
 
 	private int controllersCount;
-
-	public ServerRemoteObject(GameBuilder builder) throws RemoteException {
+	
+	public ServerRemoteObject() throws RemoteException {
 		super();
-		this.builder = builder;
 		this.observersCount = 0;
 		this.controllersCount = 0;
 		// TODO Auto-generated constructor stub
@@ -53,6 +52,8 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 	}
 
 	public boolean acceptsConnections(ClientType type) {
+		if(builder==null)
+			return false;
 		if (ClientType.CONTROLLER.equals(type)) {
 			return (controllersCount < builder.requiredControllers());
 		} else if (ClientType.OBSERVER.equals(type)) {
@@ -67,5 +68,9 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 
 	public int getControllersCount() {
 		return controllersCount;
+	}
+	
+	public void setBuilder(GameBuilder builder){
+		this.builder=builder;
 	}
 }
