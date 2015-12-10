@@ -6,28 +6,30 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Created by blueeyedhush on 11/26/15.
  */
 public class MapCreator {
-    private static final String OUTTPUT_NAME = "map.txt";
+    private static final String OUTTPUT_EXT = ".map";
     private char[][] array2D = null;
 
     public static void main(String[] args) throws IOException {
-        if(args.length < 1) {
-            System.out.println(".bmp file reuiqred as argument");
+        if(args.length < 2) {
+            System.out.println("2 arguments required: .bmp file to process and output .map file name");
             return;
         }
 
         MapCreator creator = new MapCreator();
         creator.loadBmpFile(args[0]);
-        creator.printMapToFile();
+        creator.printMapToFile(args[1]);
     }
 
     public void loadBmpFile(String BMPFileName) throws IOException {
-        BufferedImage image = ImageIO.read(Paths.get(BMPFileName).toUri().toURL());
+        Path bmpPath = Paths.get(BMPFileName);
+        BufferedImage image = ImageIO.read(bmpPath.toUri().toURL());
 
         array2D = new char[image.getHeight()][image.getWidth()]; //*
 
@@ -45,8 +47,8 @@ public class MapCreator {
         }
     }
 
-    public void printMapToFile() throws IOException {
-        BufferedWriter out = new BufferedWriter(new FileWriter(MapCreator.OUTTPUT_NAME));
+    public void printMapToFile(String filename) throws IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(filename));
         for(int x = 0; x < array2D.length; x++)
         {
             for (int y = 0; y < array2D[x].length; y++)
