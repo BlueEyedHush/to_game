@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.test;
+package pl.edu.agh.to.game.remoteproxy;
 
 import pl.edu.agh.to.game.remoteproxy.client.ClientType;
 import pl.edu.agh.to.game.remoteproxy.client.RPClient;

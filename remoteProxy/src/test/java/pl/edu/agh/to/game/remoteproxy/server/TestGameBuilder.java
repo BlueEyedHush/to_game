@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.server.test;
+package pl.edu.agh.to.game.remoteproxy.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;

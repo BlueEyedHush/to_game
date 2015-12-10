@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.server.test.common;
+package pl.edu.agh.to.game.remoteproxy.server.common;
 
 import pl.edu.agh.to.game.common.state.Vector;
 

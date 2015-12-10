@@ -1,11 +1,11 @@
-package pl.edu.agh.to.game.remoteproxy.test;
+package pl.edu.agh.to.game.remoteproxy;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import pl.edu.agh.to.game.remoteproxy.client.ClientType;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
-import pl.edu.agh.to.game.remoteproxy.server.test.TestGameBuilder;
+import pl.edu.agh.to.game.remoteproxy.server.TestGameBuilder;
 
 public class Tester {
 

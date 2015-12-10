@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.test;
+package pl.edu.agh.to.game.remoteproxy;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
@@ -9,7 +9,7 @@ import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
-import pl.edu.agh.to.game.remoteproxy.server.test.TestGameBuilder;
+import pl.edu.agh.to.game.remoteproxy.server.TestGameBuilder;
 
 public class ServerThread implements Runnable {
 

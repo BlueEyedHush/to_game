@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.server.test;
+package pl.edu.agh.to.game.remoteproxy.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,9 +18,9 @@ import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
-import pl.edu.agh.to.game.remoteproxy.server.test.common.TestCarState;
-import pl.edu.agh.to.game.remoteproxy.server.test.common.TestGameState;
-import pl.edu.agh.to.game.remoteproxy.server.test.common.TestVector;
+import pl.edu.agh.to.game.remoteproxy.server.common.TestCarState;
+import pl.edu.agh.to.game.remoteproxy.server.common.TestGameState;
+import pl.edu.agh.to.game.remoteproxy.server.common.TestVector;
 
 public class ServerMain {
 	private static Map<Integer, Controller> controllers;

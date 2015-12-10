@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.client.test;
+package pl.edu.agh.to.game.remoteproxy.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;

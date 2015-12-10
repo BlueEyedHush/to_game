@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.test;
+package pl.edu.agh.to.game.remoteproxy;
 
 import java.util.LinkedList;
 import java.util.List;
