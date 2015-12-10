@@ -14,6 +14,8 @@ import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 
 public class TestHandler implements ClientActionHandler{
 
+	private Integer id;
+	
 	@Override
 	public Vector handleNextMove(Set<Vector> availableMoves) {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
@@ -53,17 +55,21 @@ public class TestHandler implements ClientActionHandler{
 	@Override
 	public void handleCarLost(int carId) {
 		System.out.println("Lost car:  " + carId);
-		
+		if(id!=null && id.equals(carId))
+			System.out.println("you died.");
 	}
 
 	@Override
 	public void handleGameOver(int winnerId) {
-		System.out.println("Game over, winner: " + winnerId);		
+		System.out.println("Game over, winner: " + winnerId);	
+		if(id!=null && id.equals(winnerId))
+			System.out.println("you won!");
 	}
 
 	@Override
 	public void receiveCarId(int carId) {
 		System.out.println("Your car id: " + carId);
+		this.id=carId;
 		
 	}
 
