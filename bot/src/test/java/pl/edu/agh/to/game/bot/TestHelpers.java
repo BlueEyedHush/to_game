@@ -22,6 +22,10 @@ public class TestHelpers {
     Vector position, velocity;
 
     public static class SimpleEmptySquareBoard extends Board {
+        public SimpleEmptySquareBoard(Vector finish, boolean[][] board) {
+            super(finish, board);
+        }
+
         @Override
         public boolean get(int x, int y) {
             return x >=0 && x < 100 && y >=0 && y<100;
@@ -35,6 +39,10 @@ public class TestHelpers {
 
     public static class StringParsingBoard extends Board {
 
+        public StringParsingBoard(Vector finish, boolean[][] board) {
+            super(finish, board);
+        }
+
         @Override
         public boolean get(int x, int y) {
             return super.get(x, y);
@@ -45,7 +53,7 @@ public class TestHelpers {
         id = 0;
         gameState = mock(GameState.class);
         carState = mock(CarState.class);
-        when(gameState.getBoard()).thenReturn(new SimpleEmptySquareBoard());
+//        when(gameState.getBoard()).thenReturn(new SimpleEmptySquareBoard());
         when(gameState.getCarById(id)).thenReturn(carState);
         when(carState.getPosition()).thenReturn(position);
         when(carState.getVelocity()).thenReturn(velocity);
