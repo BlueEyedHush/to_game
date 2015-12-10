@@ -2,6 +2,8 @@ package pl.edu.agh.to.game.server;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.CarState;
@@ -18,28 +20,25 @@ import static org.mockito.Mockito.*;
 import static pl.edu.agh.to.game.common.state.StateGenerator.getExampleGameState;
 
 public class GameTest {
-    Game game;
-    GameState gameState;
-    Observer observer;
-    Controller controller;
+    private Game game;
+    @Mock
+    private GameState gameState;
+    @Mock
+    private Observer observer;
+    @Mock
+    private Controller controller;
 
     @Before
     public void prepare() {
+        MockitoAnnotations.initMocks(this);
         gameState = getExampleGameState();
         game = new Game(gameState);
 
         Map<Integer, Controller> controllers = new Hashtable<>();
-        controller = mock(Controller.class);
         controllers.put(1, controller);
         controllers.put(0, controller);
         game.setControllers(controllers);
-
-        //Mock observer
-        observer = mock(Observer.class);
-
-
         game.setObserver(observer);
-
     }
 
     @Test
