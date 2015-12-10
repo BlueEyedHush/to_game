@@ -6,47 +6,50 @@ import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.*;
+import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.server.helpers.*;
 import pl.edu.agh.to.game.bot.factory;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameServer {
-    private static Logger LOGGER = LoggerFactory.getLogger(GameServer.class);
+    public static Logger LOGGER = LoggerFactory.getLogger(GameServer.class);
 
     private static String MAP_FILE_EXT = ".map";
     private static String METADATA_FILE_EXT = ".meta";
 
     private GameState state = null;
-    private Map<Integer, Controller> controllers = null;
-    private List<Observer> observers = null;
+    private Map<Integer, Controller> controllers = new HashMap<>();
+    private List<Observer> observers = new ArrayList<>();
 
-    public static void main(String[] args) throws Exception {
-        if(args.length < 1) {
-            LOGGER.error("Map name is required");
-            return;
-        }
-
-        Path mapPath = Paths.get(args[0], MAP_FILE_EXT);
-        Path metaPath = Paths.get(args[0], METADATA_FILE_EXT);
+    public void run(String mapName) throws Exception {
+        Path mapPath = Paths.get(mapName, MAP_FILE_EXT);
+        Path metaPath = Paths.get(mapName, METADATA_FILE_EXT);
 
         boolean[][] rawBoard = MapReader.getBoard(mapPath);
         Pair<Vector, List<Metadata>> metadatas = MetaReader.readMetadataFrom(metaPath);
-        Board board = new Board(rawBoard.length, rawBoard[0].length, metadatas.first(), rawBoard);
+        Board board = buildAndVerifiyBoard(rawBoard, metadatas.first(), metadatas.second());
 
-        GameServer server = new GameServer();
-        server.buildInitialGamestate(board, metadatas.second());
-        GameBuilder gameBuilder = new GameBuilder(server.state, server.controllers, server.observers);
+        buildInitialGamestate(board, metadatas.second());
+        GameBuilder gameBuilder = new GameBuilder(state, controllers, observers);
         RPServer remoteProxy = new RPServer(gameBuilder);
         remoteProxy.initialize();
         Game game = gameBuilder.build();
         game.startGame();
+    }
+
+    private Board buildAndVerifiyBoard(boolean[][] rawBoard, Vector finish, List<Metadata> carInfo) {
+        Board board = new Board(rawBoard.length, rawBoard[0].length, finish, rawBoard);
+        for(Metadata m: carInfo) {
+            if(board.get(m.getInitialPosition())) {
+                throw new RuntimeException("Car placed on inactive position");
+            }
+        }
+
+        return board;
     }
 
     private void buildInitialGamestate(Board board, List<Metadata> metadatas) {
