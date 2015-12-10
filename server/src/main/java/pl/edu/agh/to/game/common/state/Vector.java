@@ -4,13 +4,13 @@ public class Vector {
     int x;
     int y;
 
+    public Vector() {
+        this.x = this.y = 0;
+    }
+
     public Vector(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public Vector() {
-        this.x = this.y = 0;
     }
 
     public int getX() {
@@ -22,11 +22,13 @@ public class Vector {
     }
 
     public Vector setX(int x) {
-        return null;
+        this.x = x;
+        return this;
     }
 
     public Vector setY(int y) {
-        return null;
+        this.y = y;
+        return this;
     }
 
     public Vector add(Vector augend) {
