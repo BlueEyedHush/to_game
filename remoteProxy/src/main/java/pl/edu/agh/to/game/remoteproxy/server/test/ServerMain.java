@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
@@ -29,7 +30,7 @@ public class ServerMain {
 	private static Random random = new Random();
 	private static Map<Integer, CarState> states;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, TimeoutException {
 		// .....................................
 
 		final String ERROR = "Invalid input, shutting down";
@@ -50,8 +51,8 @@ public class ServerMain {
 
 		System.out.println("initializing...");
 
-		RPServer server = new RPServer();
-		server.initialize(builder);
+		RPServer server = new RPServer(builder);
+		server.initialize();
 
 		TestGameBuilder testBuilder = (TestGameBuilder) builder;
 		controllers = testBuilder.getControllers();
@@ -71,6 +72,10 @@ public class ServerMain {
 				startGame();
 			} else if (cmd.startsWith("move")) {
 				move();
+			} else if (cmd.startsWith("die")) {
+				die();
+			} else if (cmd.startsWith("die")) {
+				win();
 			} else if (cmd.startsWith("q")) {
 				break;
 			}
@@ -78,11 +83,14 @@ public class ServerMain {
 		return;
 	}
 
+
 	private static void printHelp() {
 		System.out.println("'?'                - print this help");
 		System.out.println("'players'          - display player list");
 		System.out.println("'start'            - setup game and signal start");
 		System.out.println("'move'             - request move from controller");
+		System.out.println("'die'              - signal player elimination");
+		System.out.println("'win'              - signal player victory");
 		System.out.println("'q'                - close program");
 
 	}
@@ -153,7 +161,30 @@ public class ServerMain {
 		for (int i = 1; i <= observers.size() - controllers.size(); i++) {
 			System.out.println("observer " + i);
 		}
+	}
+	
 
+	private static void die() throws NumberFormatException, IOException {
+		System.out.println("choose Controller:");
+		seePlayers();
+		System.out.println();
+		Integer cont = Integer.parseInt(bufferedReader.readLine());
+		
+		System.out.println("eliminatine player "+cont);
+		for(Observer o:observers)
+			o.carLost(cont);
+	}
+	
+	private static void win() throws NumberFormatException, IOException {
+		System.out.println("choose Controller:");
+		seePlayers();
+		System.out.println();
+		Integer cont = Integer.parseInt(bufferedReader.readLine());
+		
+		System.out.println("player won "+cont);
+		for(Observer o:observers)
+			o.gameOver(cont);
+		
 	}
 
 	public static List<Vector> getStandardVectors() {
