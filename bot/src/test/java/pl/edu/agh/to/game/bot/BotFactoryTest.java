@@ -1,6 +1,7 @@
-package pl.edu.agh.to.game.bot.factory;
+package pl.edu.agh.to.game.bot;
 
 import org.junit.Test;
+import pl.edu.agh.to.game.bot.factory.BotFactory;
 import pl.edu.agh.to.game.common.Controller;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
