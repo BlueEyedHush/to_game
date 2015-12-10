@@ -2,6 +2,8 @@ package pl.edu.agh.to.game.remoteproxy;
 
 import static org.junit.Assert.assertTrue;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,7 +18,7 @@ import pl.edu.agh.to.game.remoteproxy.server.TestGameBuilder;
 public class Tester {
 
 	@Test
-	public void clientShouldHandleActions() throws InterruptedException {
+	public void clientShouldHandleActions() throws InterruptedException, RemoteException, AlreadyBoundException {
 
 		RPServer server = new RPServer();
 		TestGameBuilder builder = new TestGameBuilder(1, 1);

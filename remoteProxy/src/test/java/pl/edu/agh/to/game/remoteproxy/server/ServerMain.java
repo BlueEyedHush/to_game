@@ -3,6 +3,7 @@ package pl.edu.agh.to.game.remoteproxy.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.rmi.AlreadyBoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ServerMain {
 	private static Random random = new Random();
 	private static Map<Integer, CarState> states;
 
-	public static void main(String[] args) throws IOException, TimeoutException {
+	public static void main(String[] args) throws IOException, TimeoutException, AlreadyBoundException {
 		// .....................................
 
 		final String ERROR = "Invalid input, shutting down";
