@@ -2,7 +2,7 @@ package pl.edu.agh.to.game.common.state;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BoardTest {
 

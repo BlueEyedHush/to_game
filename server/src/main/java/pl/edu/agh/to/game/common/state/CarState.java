@@ -26,11 +26,11 @@ public class CarState {
         return new CarState(position.add(vector), vector);
     }
 
-    public Vector getVelocity(){
+    public Vector getVelocity() {
         return velocity;
     }
 
-    public Vector getPosition(){
+    public Vector getPosition() {
         return position;
     }
 }

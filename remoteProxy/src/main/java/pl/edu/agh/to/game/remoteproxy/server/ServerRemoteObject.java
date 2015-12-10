@@ -11,35 +11,35 @@ import java.util.Map;
 
 public class ServerRemoteObject extends UnicastRemoteObject implements ServerService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private GameBuilder builder;
+    private GameBuilder builder;
 
-	public ServerRemoteObject(GameBuilder builder) throws RemoteException {
-		super();
-		this.builder = builder;
-		// TODO Auto-generated constructor stub
-	}
+    public ServerRemoteObject(GameBuilder builder) throws RemoteException {
+        super();
+        this.builder = builder;
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public void handleConnect(ClientService service) {
-		// TODO Auto-generated method stub
+    @Override
+    public void handleConnect(ClientService service) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public Board getBoard() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Board getBoard() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Map<Integer, CarState> getInitialCarStates() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Map<Integer, CarState> getInitialCarStates() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

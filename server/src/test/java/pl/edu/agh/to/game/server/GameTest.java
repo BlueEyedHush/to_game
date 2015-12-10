@@ -1,23 +1,21 @@
 package pl.edu.agh.to.game.server;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
-import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.*;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static pl.edu.agh.to.game.common.state.StateGenerator.*;
+import static pl.edu.agh.to.game.common.state.StateGenerator.getExampleGameState;
 
 public class GameTest {
     Game game;

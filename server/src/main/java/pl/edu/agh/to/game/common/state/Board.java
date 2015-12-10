@@ -42,7 +42,7 @@ public class Board implements Serializable {
         return maxY;
     }
 
-    public Vector getFinish(){
+    public Vector getFinish() {
         return finish;
     }
 }

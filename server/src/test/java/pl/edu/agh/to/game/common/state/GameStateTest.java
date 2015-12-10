@@ -3,7 +3,6 @@ package pl.edu.agh.to.game.common.state;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Hashtable;
 import java.util.Map;
 
 import static org.junit.Assert.*;
