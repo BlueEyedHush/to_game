@@ -14,6 +14,6 @@ public class CarState {
     }
 
     public Vector getPosition(){
-        return null
+        return null;
     }
 }
