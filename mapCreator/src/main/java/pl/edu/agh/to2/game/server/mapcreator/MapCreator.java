@@ -48,7 +48,7 @@ public class MapCreator {
     }
 
     public void printMapToFile(String filename) throws IOException {
-        BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+        BufferedWriter out = new BufferedWriter(new FileWriter(filename + OUTTPUT_EXT));
         for(int x = 0; x < array2D.length; x++)
         {
             for (int y = 0; y < array2D[x].length; y++)

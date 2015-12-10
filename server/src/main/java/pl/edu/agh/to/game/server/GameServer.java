@@ -7,7 +7,9 @@ import pl.edu.agh.to.game.bot.factory.BotFactory;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
-import pl.edu.agh.to.game.common.state.*;
+import pl.edu.agh.to.game.common.state.Board;
+import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
 import pl.edu.agh.to.game.server.helpers.*;
@@ -15,7 +17,6 @@ import pl.edu.agh.to.game.server.helpers.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GameServer {
     public static final Logger LOGGER = LoggerFactory.getLogger(GameServer.class);
@@ -32,8 +33,8 @@ public class GameServer {
     private final List<Observer> observers = new ArrayList<>();
 
     public void run(String mapName) throws Exception {
-        Path mapPath = Paths.get(mapName, MAP_FILE_EXT);
-        Path metaPath = Paths.get(mapName, METADATA_FILE_EXT);
+        Path mapPath = Paths.get(mapName + MAP_FILE_EXT);
+        Path metaPath = Paths.get(mapName + METADATA_FILE_EXT);
 
         boolean[][] rawBoard = MapReader.getBoard(mapPath);
         Pair<Vector, List<Metadata>> metadatas = MetaReader.readMetadataFrom(metaPath);
