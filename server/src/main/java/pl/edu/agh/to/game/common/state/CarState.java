@@ -9,6 +9,11 @@ public class CarState {
         this.velocity = velocity;
     }
 
+    CarState(Vector position) {
+        this.position = position;
+        this.velocity = new Vector(0, 0);
+    }
+
     public CarState changePosition(Vector position) {
         return new CarState(position, this.velocity);
     }

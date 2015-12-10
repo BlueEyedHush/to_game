@@ -51,4 +51,9 @@ public class Vector implements Serializable {
         result = 31 * result + y;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("{").append(x).append(",").append(y).append("}").toString();
+    }
 }

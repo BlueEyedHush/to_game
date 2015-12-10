@@ -1,26 +1,34 @@
 package pl.edu.agh.to.game.server;
 
+import org.apache.log4j.BasicConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
+
+    static {
+        BasicConfigurator.configure();
+    }
+
     private Map<Integer, Controller> controllers;
     private Observer observer;
     private GameState gameState;
     private boolean isFinished;
 
-    Game(GameState gameState) {
+    public Game(GameState gameState) {
         this.gameState = gameState;
     }
 
     public void startGame() {
+        LOGGER.info("Game Started");
         observer.gameStarted(gameState);
         while (!isFinished) {
             makeTurn();
@@ -36,25 +44,35 @@ public class Game {
     }
 
     private void makeTurn() {
-        for (int carId : controllers.keySet()) {
+        List<Integer> ids = new LinkedList<>(controllers.keySet());
+        Collections.sort(ids);//to ensure the order
+        LOGGER.info("Cars in game: {}", ids);
+        if (ids.size() == 1) {
+            gameOver(ids.get(0));
+            return;
+        }
+        for (int carId : ids) {
             Controller currentCarController = controllers.get(carId);
             CarState currentCarState = gameState.getCarById(carId);
+            LOGGER.info("It is {}'s turn. It is on position {} with velocity {}", carId, currentCarState.getPosition(), currentCarState.getVelocity());
 
             List<Vector> allowedVectors = getPossibleTurns(currentCarState.getPosition(), currentCarState.getVelocity());
+            LOGGER.info("Allowed moves: {}", allowedVectors);
 
             if (!allowedVectors.isEmpty()) { //if there are still moves o perform
                 int chosenIndex = currentCarController.makeMove(gameState, carId, allowedVectors);
+                LOGGER.info("Chosen move: {}", allowedVectors.get(chosenIndex));
                 currentCarState = currentCarState.moveCar(allowedVectors.get(chosenIndex));
                 observer.move(carId, currentCarState);
-                gameState.getCarStates().replace(carId, currentCarState);
+                gameState.changeCarState(carId, currentCarState);
 
                 if (currentCarState.getPosition().equals(gameState.getBoard().getFinish())) {
-                    observer.gameOver(carId);
-                    isFinished = true;
+                    gameOver(carId);
                     return;
                 }
 
             } else {
+                LOGGER.info("Car {} lost", carId);
                 controllers.remove(carId);
                 observer.carLost(carId);
             }
@@ -67,7 +85,7 @@ public class Game {
 
         for (Vector vector : allVectors) {
             Vector newPosition = position.add(vector);
-            if (gameState.getBoard().get(newPosition)) {
+            if (gameState.validateField(newPosition)) {
                 allowedVectors.add(vector);
             }
         }
@@ -75,12 +93,18 @@ public class Game {
     }
 
     private List<Vector> findAllVectors(Vector velocity) {
-        List<Vector> allVectors = new LinkedList<Vector>();
+        List<Vector> allVectors = new LinkedList<>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 allVectors.add(velocity.add(new Vector(i, j)));
             }
         }
         return allVectors;
+    }
+
+    private void gameOver(int carId) {
+        LOGGER.info("Game over");
+        observer.gameOver(carId);
+        isFinished = true;
     }
 }
