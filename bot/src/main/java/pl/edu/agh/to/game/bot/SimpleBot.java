@@ -21,14 +21,15 @@ public class SimpleBot implements Controller {
         } else if (currentPosition.getX() > meta.getX()) {
             move = new Vector(-1, 0);
         }
+        currentPosition = currentPosition.add(move);
 
         if(currentPosition.getY() < meta.getY()) {
             move = new Vector(0, 1);
         } else if (currentPosition.getY() > meta.getY()) {
             move = new Vector(0, -1);
         }
-        currentPosition.add(move);
+        Vector nextMove = currentPosition.add(move);
 
-        return allowedPositions.indexOf(currentPosition);
+        return allowedPositions.indexOf(nextMove);
     }
 }

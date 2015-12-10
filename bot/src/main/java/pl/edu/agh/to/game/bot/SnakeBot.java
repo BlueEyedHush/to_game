@@ -45,8 +45,8 @@ public class SnakeBot implements Controller {
                 }
             }
         }
-        currentPosition.add(move);
+        Vector nextMove = currentPosition.add(move);
 
-        return allowedPositions.indexOf(currentPosition);
+        return allowedPositions.indexOf(nextMove);
     }
 }

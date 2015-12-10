@@ -30,12 +30,10 @@ public class BotFactoryTest {
         assertThat(bot, instanceOf(SnakeBot.class));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void CreateBadBot() {
         BotFactory botFactory = new BotFactory();
 
         Controller bot = botFactory.createBot("not_known_key");
-
-        assertNull(bot);
     }
 }
