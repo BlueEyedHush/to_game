@@ -11,6 +11,7 @@ import pl.edu.agh.to.game.remoteproxy.client.GameModel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class GameController implements ClientActionHandler {
@@ -108,7 +109,7 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void receiveCarId(int carId) {
-
+        Map<Integer,GameModel.Position> mapOfCars = gameModel.getMapOfCars();
     }
 
 }

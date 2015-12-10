@@ -2,6 +2,9 @@ package pl.edu.agh.to.game.remoteproxy.client;
 
 import pl.edu.agh.to.game.common.state.Board;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by rafal_000 on 12/9/2015.
  */
@@ -10,6 +13,7 @@ public class GameModel {
     public short map[][];
     private int maxX;
     private int maxY;
+    private Map<Integer, Position> mapOfCars = new HashMap<>();
 
     public GameModel(Board board) {
         this.maxX = board.getMaxX();
@@ -36,4 +40,35 @@ public class GameModel {
     public int getMaxY() {
         return maxY;
     }
+
+    public class Position{
+        private int x;
+        private int y;
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public Map<Integer, Position> getMapOfCars() {
+        return mapOfCars;
+    }
 }
+
