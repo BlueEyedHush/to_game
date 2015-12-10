@@ -58,7 +58,7 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public synchronized void receiveCarId(int carId) throws RemoteException {
+	public synchronized void receiveCarId(int carId) {
 		handler.receiveCarId(carId);
 	}
 

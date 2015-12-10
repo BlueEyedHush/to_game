@@ -1,5 +1,6 @@
 package pl.edu.agh.to.game.remoteproxy;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
@@ -45,6 +46,9 @@ public class ServerThread implements Runnable {
 			}
 
 		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

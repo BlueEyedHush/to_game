@@ -36,7 +36,7 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 		ClientType type = service.getClientType();
 		if (!acceptsConnections(type))
 			throw new RemoteException(
-					"Serwer refused connection of ClientType " + type.name());
+					"Server refused connection of ClientType " + type.name());
 		if (ClientType.CONTROLLER.equals(type)) {
 			Controller controller = new RemoteController(service);
 			Observer observer = new RemoteObserver(service);
@@ -51,7 +51,7 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 		}
 	}
 
-	public boolean acceptsConnections(ClientType type) {
+	public boolean acceptsConnections(ClientType type) throws RemoteException {
 		if(builder==null)
 			return false;
 		if (ClientType.CONTROLLER.equals(type)) {
@@ -62,15 +62,15 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 			return false;
 	}
 
-	public int getObserversCount() {
+	public int getObserversCount() throws RemoteException {
 		return observersCount;
 	}
 
-	public int getControllersCount() {
+	public int getControllersCount() throws RemoteException {
 		return controllersCount;
 	}
 	
-	public void setBuilder(GameBuilder builder){
+	public void setBuilder(GameBuilder builder) throws RemoteException {
 		this.builder=builder;
 	}
 }

@@ -25,7 +25,7 @@ public class RPServer {
 
 	}
 
-	public void initialize(GameBuilder builder) throws TimeoutException {
+	public void initialize(GameBuilder builder) throws TimeoutException, RemoteException {
 		try {
 			server.setBuilder(builder);
 			long time = 0;
