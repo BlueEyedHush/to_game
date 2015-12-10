@@ -38,8 +38,8 @@ public class Tester {
 		
 		List<HandlerMethod> controllerMethods = controllerHandler.getInvokedMethods();
 		List<HandlerMethod> observerMethods = observerHandler.getInvokedMethods();
-//		System.out.println("Controller: " + observerMethods);
-//		System.out.println("Observer: " + controllerMethod);
+//		System.out.println("pl.edu.agh.to.game.common.Controller: " + observerMethods);
+//		System.out.println("pl.edu.agh.to.game.common.Observer: " + controllerMethod);
 		
 		assertTrue(HandlerMethod.RECEIVE_CAR_ID.equals(controllerMethods.get(0)));
 		assertTrue(HandlerMethod.NEXT_MOVE.equals(controllerMethods.get(1)));

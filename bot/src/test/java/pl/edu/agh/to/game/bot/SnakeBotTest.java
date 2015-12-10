@@ -4,12 +4,7 @@ import org.junit.Test;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.state.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by piotr on 09/12/15.

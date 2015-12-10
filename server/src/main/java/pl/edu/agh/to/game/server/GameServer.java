@@ -41,8 +41,8 @@ public class GameServer {
         Board board = buildAndVerifiyBoard(rawBoard, metadatas.first(), metadatas.second());
 
         buildInitialGamestate(board, metadatas.second());
-        GameBuilder gameBuilder = new GameBuilder(state, controllers, observers);
-        RPServer remoteProxy = new RPServer(gameBuilder);
+        GameBuilderImpl gameBuilder = new GameBuilderImpl(state, controllers, observers);
+        RPServer remoteProxy = new RPServer();
         remoteProxy.initialize(gameBuilder);
         Game game = gameBuilder.build();
         game.startGame();

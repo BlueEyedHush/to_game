@@ -1,6 +1,5 @@
 package pl.edu.agh.to.game.bot;
 
-import org.junit.Before;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;

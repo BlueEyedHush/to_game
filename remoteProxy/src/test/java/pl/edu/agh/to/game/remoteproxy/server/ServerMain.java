@@ -18,7 +18,6 @@ import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
-import pl.edu.agh.to.game.remoteproxy.server.RPServer;
 import pl.edu.agh.to.game.remoteproxy.server.common.TestCarState;
 import pl.edu.agh.to.game.remoteproxy.server.common.TestGameState;
 import pl.edu.agh.to.game.remoteproxy.server.common.TestVector;
@@ -97,7 +96,7 @@ public class ServerMain {
 	}
 
 	private static void move() throws NumberFormatException, IOException {
-		System.out.println("choose Controller:");
+		System.out.println("choose pl.edu.agh.to.game.common.Controller:");
 		seePlayers();
 		System.out.println();
 		Integer cont = Integer.parseInt(bufferedReader.readLine());
@@ -115,7 +114,7 @@ public class ServerMain {
 		state.setPosition(new TestVector(state.getPosition().getX()
 				+ state.getVelocity().getX(), state.getPosition().getY()
 				+ state.getVelocity().getY()));
-		System.out.println("new state of controller " + cont + ": " + state);
+		System.out.println("new pl.edu.agh.to.game.common.state of controller " + cont + ": " + state);
 		for (Observer o : observers) {
 			o.move(cont, state);
 		}
@@ -147,7 +146,7 @@ public class ServerMain {
 		states = initStates;
 
 		GameState initialState = new TestGameState(board, -1, initStates);
-		System.out.println("generated initial game state: \n" + initialState);
+		System.out.println("generated initial game pl.edu.agh.to.game.common.state: \n" + initialState);
 
 		for (Observer o : observers)
 			o.gameStarted(initialState);
@@ -166,7 +165,7 @@ public class ServerMain {
 	
 
 	private static void die() throws NumberFormatException, IOException {
-		System.out.println("choose Controller:");
+		System.out.println("choose pl.edu.agh.to.game.common.Controller:");
 		seePlayers();
 		System.out.println();
 		Integer cont = Integer.parseInt(bufferedReader.readLine());
@@ -177,7 +176,7 @@ public class ServerMain {
 	}
 	
 	private static void win() throws NumberFormatException, IOException {
-		System.out.println("choose Controller:");
+		System.out.println("choose pl.edu.agh.to.game.common.Controller:");
 		seePlayers();
 		System.out.println();
 		Integer cont = Integer.parseInt(bufferedReader.readLine());

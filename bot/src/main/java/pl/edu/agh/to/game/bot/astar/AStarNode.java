@@ -1,6 +1,5 @@
 package pl.edu.agh.to.game.bot.astar;
 
-import org.jetbrains.annotations.NotNull;
 import pl.edu.agh.to.game.common.state.Vector;
 
 import java.util.Collections;

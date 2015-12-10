@@ -3,7 +3,6 @@ package pl.edu.agh.to.game.remoteproxy;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.locks.Condition;
 
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;

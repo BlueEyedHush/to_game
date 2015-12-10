@@ -27,13 +27,13 @@ public class TestGameBuilder extends GameBuilder {
 	public int registerController(Controller controller) {
 		carId++;
 		controllers.put(carId,controller);
-		System.out.println("Controller registered");
+		System.out.println("pl.edu.agh.to.game.common.Controller registered");
 		return carId;
 	}
 	
 	public void registerObserver(Observer observer) {
 		observers.add(observer);
-		System.out.println("Observer registered");
+		System.out.println("pl.edu.agh.to.game.common.Observer registered");
 	}
 	
 	public int requiredControllers() {

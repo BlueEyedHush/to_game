@@ -4,7 +4,6 @@ import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class SnakeBot implements Controller {

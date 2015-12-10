@@ -1,26 +1,29 @@
-package pl.edu.agh.to.game.common;
+package pl.edu.agh.to.game.server;
 
+import pl.edu.agh.to.game.common.Controller;
+import pl.edu.agh.to.game.common.GameBuilder;
+import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.GameState;
-import pl.edu.agh.to.game.server.Game;
 
 import java.util.List;
 import java.util.Map;
 
-public class GameBuilder {
+public class GameBuilderImpl implements GameBuilder {
     private final GameState gameState;
     private final Map<Integer, Controller> controllers;
     private final List<Observer> observers;
 
-    public GameBuilder(GameState gameState, Map<Integer, Controller> controllers, List<Observer> observers) {
+    public GameBuilderImpl(GameState gameState, Map<Integer, Controller> controllers, List<Observer> observers) {
         this.gameState = gameState;
         this.controllers = controllers;
         this.observers = observers;
     }
 
-    public void registerController(Controller controller) {
+    public int registerController(Controller controller) {
         /* id's start from 0 */
         int id = controllers.size() - 1;
         controllers.put(id, controller);
+        return id;
     }
 
     public void registerObserver(Observer observer) {
