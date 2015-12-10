@@ -8,7 +8,7 @@ import pl.edu.agh.to.game.remoteproxy.client.ClientType;
 import pl.edu.agh.to.game.remoteproxy.client.RPClient;
 
 public class ClientMain {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		TestHandler handler = new TestHandler();
 
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -32,16 +32,22 @@ public class ClientMain {
 		RPClient rp = new RPClient(handler, type);
 		
 		while(true) {
-			System.out.println("\nClientConsole [? for help] > : ");
-			cmd = bufferedReader.readLine();
-			
-			if(cmd.startsWith("?")) {
-				System.out.println("'?'           - print this help");
-				System.out.println("'q'           - close program");
-			} else if(cmd.startsWith("q")) {
-				break;
+			if(!handler.isGameOver()) {
+				Thread.sleep(1000);
 			}
 		}
+		
+//		while(true) {
+//			System.out.println("\nClientConsole [? for help] > : ");
+//			cmd = bufferedReader.readLine();
+//			
+//			if(cmd.startsWith("?")) {
+//				System.out.println("'?'           - print this help");
+//				System.out.println("'q'           - close program");
+//			} else if(cmd.startsWith("q")) {
+//				break;
+//			}
+//		}
 		
 	}
 }

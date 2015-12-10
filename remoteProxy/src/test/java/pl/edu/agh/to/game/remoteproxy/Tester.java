@@ -1,34 +1,52 @@
 package pl.edu.agh.to.game.remoteproxy;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.junit.Test;
+
+import pl.edu.agh.to.game.remoteproxy.SimpleTestHandler.HandlerMethod;
 import pl.edu.agh.to.game.remoteproxy.client.ClientType;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
 import pl.edu.agh.to.game.remoteproxy.server.TestGameBuilder;
 
 public class Tester {
 
-	public static void main(String[] args) throws InterruptedException {
+	@Test
+	public void clientShouldHandleActions() throws InterruptedException {
 
 		RPServer server = new RPServer();
 		TestGameBuilder builder = new TestGameBuilder(1, 1);
 
-		SimpleTestHandler handler1 = new SimpleTestHandler();
-		SimpleTestHandler handler2 = new SimpleTestHandler();
+		SimpleTestHandler controllerHandler = new SimpleTestHandler();
+		SimpleTestHandler observerHandler = new SimpleTestHandler();
 
 		ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		new Thread(new ServerThread(server, builder)).start();
 
-		executor.execute(new ClientThread(ClientType.CONTROLLER, handler1));
-		executor.execute(new ClientThread(ClientType.OBSERVER, handler2));
+		executor.execute(new ClientThread(ClientType.CONTROLLER, controllerHandler));
+		executor.execute(new ClientThread(ClientType.OBSERVER, observerHandler));
 		executor.shutdown();
 
 		while (!executor.isTerminated());
 		
-		System.out.println("Controller: " + handler1.invokedMethods);
-		System.out.println("Observer: " + handler2.invokedMethods);
-
+		List<HandlerMethod> controllerMethods = controllerHandler.getInvokedMethods();
+		List<HandlerMethod> observerMethods = observerHandler.getInvokedMethods();
+//		System.out.println("Controller: " + observerMethods);
+//		System.out.println("Observer: " + controllerMethod);
+		
+		assertTrue(HandlerMethod.RECEIVE_CAR_ID.equals(controllerMethods.get(0)));
+		assertTrue(HandlerMethod.NEXT_MOVE.equals(controllerMethods.get(1)));
+		assertTrue(HandlerMethod.GAME_STARTED.equals(controllerMethods.get(2)));
+		assertTrue(HandlerMethod.MOVE_PERFORMED.equals(controllerMethods.get(3)));
+		assertTrue(HandlerMethod.GAME_OVER.equals(controllerMethods.get(4)));
+		
+		assertTrue(HandlerMethod.GAME_STARTED.equals(observerMethods.get(0)));
+		assertTrue(HandlerMethod.MOVE_PERFORMED.equals(observerMethods.get(1)));
+		assertTrue(HandlerMethod.GAME_OVER.equals(observerMethods.get(2)));
 	}
 }

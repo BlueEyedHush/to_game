@@ -16,6 +16,8 @@ public class TestHandler implements ClientActionHandler{
 
 	private Integer id;
 	
+	private boolean gameOver = false;
+	
 	@Override
 	public Vector handleNextMove(Set<Vector> availableMoves) {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
@@ -64,6 +66,7 @@ public class TestHandler implements ClientActionHandler{
 		System.out.println("Game over, winner: " + winnerId);	
 		if(id!=null && id.equals(winnerId))
 			System.out.println("you won!");
+		gameOver = true;
 	}
 
 	@Override
@@ -73,4 +76,8 @@ public class TestHandler implements ClientActionHandler{
 		
 	}
 
+	public boolean isGameOver() {
+		return gameOver;
+	}
+	
 }

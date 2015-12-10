@@ -12,7 +12,7 @@ import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 
 public class SimpleTestHandler implements ClientActionHandler {
 
-	public List<HandlerMethod> invokedMethods = new LinkedList<>();
+	private List<HandlerMethod> invokedMethods = new LinkedList<>();
 
 	private boolean gameOver;
 
@@ -58,7 +58,12 @@ public class SimpleTestHandler implements ClientActionHandler {
 		return gameOver;
 	}
 
+	public List<HandlerMethod> getInvokedMethods() {
+		return invokedMethods;
+	}
+
 	enum HandlerMethod {
 		NEXT_MOVE, MOVE_PERFORMED, GAME_STARTED, CAR_LOST, GAME_OVER, RECEIVE_CAR_ID
 	}
+
 }
