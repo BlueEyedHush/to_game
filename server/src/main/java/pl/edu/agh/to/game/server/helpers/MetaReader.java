@@ -21,19 +21,29 @@ public class MetaReader {
         try(BufferedReader reader = Files.newBufferedReader(filepath, Charsets.UTF_8)) {
             List<List<String>> lines = reader.lines().map(MetaReader::splitOnCommasAndTrim).collect(Collectors.toList());
 
+            if(lines.size() < 2) {
+                throw new RuntimeException("To few entries in .meta file");
+            }
+
             List<String> mapMetadata = lines.get(0);
             Vector finish = vectorFromStrings(mapMetadata.get(0), mapMetadata.get(1));
 
             List<List<String>> carInfos = lines.subList(1, lines.size());
             List<Metadata> carMetadatas = carInfos.stream()
-                    .map(l -> {
-                        Vector initPos = vectorFromStrings(l.get(0), l.get(1));
-                        return (l.size() == 2) ? Metadata.player(initPos) : Metadata.bot(initPos, l.get(2));
-                    })
+                    .map(MetaReader::metadataFromFields)
                     .collect(Collectors.toList());
 
             return Pair.of(finish, carMetadatas);
         }
+    }
+
+    private static Metadata metadataFromFields(List<String> fields) {
+        if(fields.size() != 2 || fields.size() != 3) {
+            throw new RuntimeException("Incorrectly formatted .meta file");
+        }
+
+        Vector initPos = vectorFromStrings(fields.get(0), fields.get(1));
+        return (fields.size() == 2) ? Metadata.player(initPos) : Metadata.bot(initPos, fields.get(2));
     }
 
     private static List<String> splitOnCommasAndTrim(String str) {
