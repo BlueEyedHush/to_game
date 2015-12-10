@@ -6,13 +6,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.mockito.Mockito;
 import pl.edu.agh.to.game.common.state.Board;
@@ -82,7 +80,7 @@ public class StartScreen extends Application {
         root.getChildren().add(gridPane);
 
 
-        GameState gameState = new GameState();
+        // GameState gameState = new GameState();
 
 
         primaryStage.show();
