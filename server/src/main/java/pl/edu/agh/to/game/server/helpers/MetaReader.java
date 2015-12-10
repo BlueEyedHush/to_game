@@ -38,7 +38,7 @@ public class MetaReader {
     }
 
     private static Metadata metadataFromFields(List<String> fields) {
-        if(fields.size() != 2 || fields.size() != 3) {
+        if(fields.size() != 2 && fields.size() != 3) {
             throw new RuntimeException("Incorrectly formatted .meta file");
         }
 
