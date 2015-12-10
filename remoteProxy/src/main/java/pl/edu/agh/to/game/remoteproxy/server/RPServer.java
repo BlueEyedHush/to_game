@@ -14,14 +14,13 @@ import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
 public class RPServer {
 
 	private ServerRemoteObject server;
-	private GameBuilder builder;
+
 	
-	public RPServer(GameBuilder builder){
-		this.builder=builder;
+	public RPServer(){
 		try {
 		System.setProperty("java.rmi.server.hostname",
 				RemoteConfig.SERVER_HOST);
-		server = new ServerRemoteObject(builder);
+		server = new ServerRemoteObject();
 		Registry registry = LocateRegistry.createRegistry(RemoteConfig.PORT);
 		
 			registry.bind(RemoteConfig.RMI_ID, server);
@@ -37,8 +36,9 @@ public class RPServer {
 		}
 	}
 
-	public void initialize() throws TimeoutException {
+	public void initialize(GameBuilder builder) throws TimeoutException {
 		try {
+			server.setBuilder(builder);
 			long time = 0;
 			while ((server.acceptsConnections(ClientType.OBSERVER))) {
 				System.out.println("Waiting for players: "
