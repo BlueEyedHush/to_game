@@ -1,24 +1,36 @@
 package pl.edu.agh.to.game.common.state;
 
-import java.io.Serializable;
+public class CarState {
+    private final Vector position;
+    private final Vector velocity;
 
-public class CarState implements Serializable {
-
-	private static final long serialVersionUID = 4143202791136379270L;
-
-	public CarState changePosition(Vector vector) {
-        return null;
+    public CarState(Vector position, Vector velocity) {
+        this.position = position;
+        this.velocity = velocity;
     }
 
-    public CarState changeVelocity(Vector vector) {
-        return null;
+    public CarState(Vector position) {
+        this.position = position;
+        this.velocity = new Vector(0, 0);
     }
 
-    public Vector getVelocity(){
-        return null;
+    public CarState changePosition(Vector position) {
+        return new CarState(position, this.velocity);
     }
 
-    public Vector getPosition(){
-        return null;
+    public CarState changeVelocity(Vector velocity) {
+        return new CarState(this.position, velocity);
+    }
+
+    public CarState moveCar(Vector vector) {
+        return new CarState(position.add(vector), vector);
+    }
+
+    public Vector getVelocity() {
+        return velocity;
+    }
+
+    public Vector getPosition() {
+        return position;
     }
 }
