@@ -9,8 +9,8 @@ public class Board implements Serializable {
     private int maxY;
     private Vector finish;
 
-    public Board(boolean[][] baord, Vector finish) {
-        this.board = baord;
+    public Board() {
+        this.board = board;
         this.maxY = board.length;
         this.maxX = board[0].length;
         this.finish = finish;

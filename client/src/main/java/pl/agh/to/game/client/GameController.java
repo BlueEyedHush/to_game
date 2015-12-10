@@ -3,14 +3,10 @@ package pl.agh.to.game.client;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
-import pl.edu.agh.to.game.remoteproxy.client.GameModel;
 
 import java.util.HashSet;
 import java.util.Iterator;

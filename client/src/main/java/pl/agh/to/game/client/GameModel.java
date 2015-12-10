@@ -1,4 +1,4 @@
-package pl.edu.agh.to.game.remoteproxy.client;
+package pl.agh.to.game.client;
 
 import pl.edu.agh.to.game.common.state.GameState;
 
