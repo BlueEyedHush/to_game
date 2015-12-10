@@ -83,7 +83,6 @@ public class StartScreen extends Application {
 
 
         GameState gameState = new GameState();
-        Board board = new Board();
 
 
         primaryStage.show();

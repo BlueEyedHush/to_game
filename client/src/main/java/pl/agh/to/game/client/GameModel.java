@@ -1,6 +1,9 @@
 package pl.agh.to.game.client;
 
-import pl.edu.agh.to.game.common.state.GameState;
+import pl.edu.agh.to.game.common.state.Board;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by rafal_000 on 12/9/2015.
@@ -10,17 +13,17 @@ public class GameModel {
     public short map[][];
     private int maxX;
     private int maxY;
+    private Map<Integer, Position> mapOfCars = new HashMap<>();
 
-    public GameModel(GameState gameState) {
-        this.maxX = gameState.getBoard().getMaxX();
-        this.maxY = gameState.getBoard().getMaxY();
-        map = new short[gameState.getBoard().getMaxX()][gameState.getBoard().getMaxY()];
-        for (int i = 0; i < gameState.getBoard().getMaxX(); i++) {
-            for (int j = 0; j < gameState.getBoard().getMaxY(); j++) {
-                if (gameState.getBoard().get(i,j)) {
+    public GameModel(Board board) {
+        this.maxX = board.getMaxX();
+        this.maxY = board.getMaxY();
+        map = new short[board.getMaxX()][board.getMaxY()];
+        for (int i = 0; i < board.getMaxX(); i++) {
+            for (int j = 0; j < board.getMaxY(); j++) {
+                if (board.get(i, j)) {
                     map[i][j] = 1;
-                }
-                else
+                } else
                     map[i][j] = 0;
             }
         }
@@ -37,4 +40,35 @@ public class GameModel {
     public int getMaxY() {
         return maxY;
     }
+
+    public class Position{
+        private int x;
+        private int y;
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public Map<Integer, Position> getMapOfCars() {
+        return mapOfCars;
+    }
 }
+
