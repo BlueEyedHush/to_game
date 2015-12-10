@@ -1,20 +1,19 @@
 package pl.edu.agh.to.game.remoteproxy.client;
 
-import pl.edu.agh.to.game.common.state.CarState;
-import pl.edu.agh.to.game.common.state.Vector;
-
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Set;
 
-public interface ClientService {
-    Vector handleNextMove(Set<Vector> availableMoves);
+import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
+import pl.edu.agh.to.game.common.state.Vector;
 
-    void handleMovePerformed(CarState change);
-
-    void handleGameStarted();
-
-    void handleCarLost(int carId);
-
-    void handleGameOver(int winnerId);
-
-    ClientType getClientType();
+public interface ClientService extends Remote{
+	Vector handleNextMove(Set<Vector> availableMoves) throws RemoteException;
+	void handleMovePerformed(int CarId, CarState change) throws RemoteException;
+	void handleGameStarted(GameState initialState) throws RemoteException;
+	void handleCarLost(int carId) throws RemoteException;
+	void handleGameOver(int winnerId) throws RemoteException;
+	ClientType getClientType() throws RemoteException;
+	void receiveCarId(int carId) throws RemoteException;
 }
