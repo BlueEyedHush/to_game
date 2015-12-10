@@ -16,10 +16,16 @@ public class SimpleBot implements Controller {
         Vector meta = gameState.getBoard().getFinish();
         Vector move = null;
 
+        if(allowedPositions.contains(meta)) {
+            return allowedPositions.indexOf(meta);
+        }
+
         if(currentPosition.getX() < meta.getX()) {
             move = new Vector(1, 0);
         } else if (currentPosition.getX() > meta.getX()) {
             move = new Vector(-1, 0);
+        } else {
+            move = new Vector(0, 0);
         }
         currentPosition = currentPosition.add(move);
 
@@ -27,9 +33,11 @@ public class SimpleBot implements Controller {
             move = new Vector(0, 1);
         } else if (currentPosition.getY() > meta.getY()) {
             move = new Vector(0, -1);
+        } else {
+            move = new Vector(0, 0);
         }
-        Vector nextMove = currentPosition.add(move);
+        currentPosition = currentPosition.add(move);
 
-        return allowedPositions.indexOf(nextMove);
+        return allowedPositions.indexOf(currentPosition);
     }
 }

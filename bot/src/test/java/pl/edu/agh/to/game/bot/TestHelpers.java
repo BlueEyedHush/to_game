@@ -20,6 +20,7 @@ public class TestHelpers {
     CarState carState;
     int id;
     List<Vector> allowedPositions;
+    Vector position, velocity;
 
     public static class SimpleEmptySquareBoard extends Board {
         @Override
@@ -41,20 +42,25 @@ public class TestHelpers {
         }
     }
 
-    @Before
-    public void beforeEach() {
+    public void generateData() {
         id = 0;
         gameState = mock(GameState.class);
         carState = mock(CarState.class);
         when(gameState.getBoard()).thenReturn(new SimpleEmptySquareBoard());
         when(gameState.getCarById(id)).thenReturn(carState);
-        when(carState.getPosition()).thenReturn(new Vector(1, 1));
-        when(carState.getVelocity()).thenReturn(new Vector(0, 0));
+        when(carState.getPosition()).thenReturn(position);
+        when(carState.getVelocity()).thenReturn(velocity);
 
         allowedPositions = Arrays.asList(
-                new Vector(0, 0), new Vector(1, 0), new Vector(2, 0),
-                new Vector(0, 1), new Vector(1, 1), new Vector(2, 1),
-                new Vector(0, 2), new Vector(1, 2), new Vector(2, 2)
+            position.add(velocity).add(new Vector(-1, 1)),
+            position.add(velocity).add(new Vector(0, 1)),
+            position.add(velocity).add(new Vector(1, 1)),
+            position.add(velocity).add(new Vector(1, 0)),
+            position.add(velocity).add(new Vector(1, -1)),
+            position.add(velocity).add(new Vector(0, -1)),
+            position.add(velocity).add(new Vector(-1, -1)),
+            position.add(velocity).add(new Vector(-1, 0)),
+            position.add(velocity).add(new Vector(0, 0))
         );
     }
 }

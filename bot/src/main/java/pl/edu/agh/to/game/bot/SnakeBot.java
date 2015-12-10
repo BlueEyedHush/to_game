@@ -14,6 +14,10 @@ public class SnakeBot implements Controller {
         Vector velocity = gameState.getCarById(currentCarId).getVelocity();
         Vector move = null;
 
+        if(allowedPositions.contains(meta)) {
+            return allowedPositions.indexOf(meta);
+        }
+
         if(meta.getX() == currentPosition.getX()) {
             if(meta.getY() < currentPosition.getY()) {
                 move = new Vector(0, 1);
@@ -45,8 +49,8 @@ public class SnakeBot implements Controller {
                 }
             }
         }
-        Vector nextMove = currentPosition.add(move);
+        currentPosition = currentPosition.add(move);
 
-        return allowedPositions.indexOf(nextMove);
+        return allowedPositions.indexOf(currentPosition);
     }
 }

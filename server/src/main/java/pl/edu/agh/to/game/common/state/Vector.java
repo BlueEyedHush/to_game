@@ -45,4 +45,9 @@ public class Vector {
         return getX() == vector.getX() && getY() == vector.getY();
 
     }
+
+    @Override
+    public String toString() {
+        return "[" + getX() + ", " + getY() + "]";
+    }
 }

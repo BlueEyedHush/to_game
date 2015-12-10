@@ -21,8 +21,12 @@ public class AStarBotTest extends TestHelpers {
 
     @Test
     public void testWillTellOptimalWayOnSimpleEmptySquareBoard() {
-        int bestIndex = allowedPositions.indexOf(new Vector(2, 2));
+        int bestIndex;
 
+        position = new Vector(1, 1);
+        velocity = new Vector(0, 0);
+        generateData();
+        bestIndex = allowedPositions.indexOf(new Vector(2, 2));
         assertEquals("should point (2, 2)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
     }
 

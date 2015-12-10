@@ -14,8 +14,8 @@ import static org.mockito.Mockito.*;
 /**
  * Created by piotr on 09/12/15.
  */
-public class SimpleBotTest extends TestHelpers {
-    private Controller underTest = new SimpleBot();
+public class SnakeBotTest extends TestHelpers {
+    private Controller underTest = new SnakeBot();
 
     @Test
     public void testEmptyBoard() {
@@ -24,31 +24,31 @@ public class SimpleBotTest extends TestHelpers {
         position = new Vector(1, 1);
         velocity = new Vector(0, 0);
         generateData();
-        bestIndex = allowedPositions.indexOf(new Vector(2, 2));
-        assertEquals("should point (2, 2)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
+        bestIndex = allowedPositions.indexOf(new Vector(1, 0));
+        assertEquals("should point (1, 0)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
 
         position = new Vector(40, 99);
-        velocity = new Vector(1, 1);
+        velocity = new Vector(0, 1);
         generateData();
         bestIndex = allowedPositions.indexOf(new Vector(41, 99));
         assertEquals("should point (41, 99)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
 
-        position = new Vector(97, 99);
-        velocity = new Vector(1, 1);
+        position = new Vector(90, 99);
+        velocity = new Vector(0, -1);
         generateData();
-        bestIndex = allowedPositions.indexOf(new Vector(98, 99));
-        assertEquals("should point (98, 99)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
+        bestIndex = allowedPositions.indexOf(new Vector(90, 98));
+        assertEquals("should point (96, 99)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
 
-        position = new Vector(98, 40);
-        velocity = new Vector(1, 1);
+        position = new Vector(40, 0);
+        velocity = new Vector(0, -1);
         generateData();
-        bestIndex = allowedPositions.indexOf(new Vector(98, 41));
+        bestIndex = allowedPositions.indexOf(new Vector(41, 0));
         assertEquals("should point (98, 41)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
 
-        position = new Vector(98, 98);
-        velocity = new Vector(1, 1);
+        position = new Vector(41, 0);
+        velocity = new Vector(1, 0);
         generateData();
-        bestIndex = allowedPositions.indexOf(new Vector(98, 99));
+        bestIndex = allowedPositions.indexOf(new Vector(41, 1));
         assertEquals("should point (98, 99)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
     }
 }
