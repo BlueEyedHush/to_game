@@ -14,6 +14,7 @@
         <module>remoteProxy</module>
         <module>client</module>
         <module>bot</module>
+        <module>common</module>
     </modules>
 
     <build>
