@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import pl.edu.agh.to.game.common.state.Board;
+import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
@@ -88,18 +89,17 @@ public class GameController implements ClientActionHandler {
     }
 
     @Override
-    public void handleMovePerformed() {
+    public void handleMovePerformed(int carId, CarState change) {
 
     }
 
     @Override
-    public void handleGameStarted() {
-
+    public void handleGameStarted(GameState initialState) {
 
     }
 
     @Override
-    public void handleCarLost() {
+    public void handleCarLost(int carId) {
 
     }
 
@@ -108,5 +108,9 @@ public class GameController implements ClientActionHandler {
 
     }
 
+    @Override
+    public void receiveCarId(int carId) {
+
+    }
 
 }
