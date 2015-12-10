@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
@@ -29,7 +30,7 @@ public class ServerMain {
 	private static Random random = new Random();
 	private static Map<Integer, CarState> states;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, TimeoutException {
 		// .....................................
 
 		final String ERROR = "Invalid input, shutting down";
@@ -50,8 +51,8 @@ public class ServerMain {
 
 		System.out.println("initializing...");
 
-		RPServer server = new RPServer();
-		server.initialize(builder);
+		RPServer server = new RPServer(builder);
+		server.initialize();
 
 		TestGameBuilder testBuilder = (TestGameBuilder) builder;
 		controllers = testBuilder.getControllers();
