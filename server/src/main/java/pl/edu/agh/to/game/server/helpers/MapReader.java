@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MapReader {
-    private static int ACTIVE = 'x';
-    private static int INACTIVE = '.';
+    private static final int ACTIVE = 'x';
+    private static final int INACTIVE = '.';
 
     public static boolean[][] getBoard(Path filepath) throws IOException {
         /* assumes filepath exists */

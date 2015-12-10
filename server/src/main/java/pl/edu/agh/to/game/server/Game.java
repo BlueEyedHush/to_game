@@ -21,9 +21,9 @@ public class Game {
         BasicConfigurator.configure();
     }
 
-    private Map<Integer, Controller> controllers;
-    private Observer observer;
-    private GameState gameState;
+    private final Map<Integer, Controller> controllers;
+    private final Observer observer;
+    private final GameState gameState;
     private boolean isFinished;
 
     public Game(GameState gameState, Map<Integer, Controller> controllers, Observer observer) {

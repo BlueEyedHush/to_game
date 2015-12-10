@@ -40,10 +40,10 @@ public class GameBuilder {
 
     public Game build() {
         if(gameState.getCarStates().size() != controllers.size()) {
-            throw new IllegalStateException("Too few controllers registered");
+            throw new RuntimeException("Too few controllers registered");
         }
         if(observers.size() < 1) {
-            throw new IllegalStateException("At least 1 observer must be registered");
+            throw new RuntimeException("At least 1 observer must be registered");
         }
 
         Game game = new Game(gameState, controllers, observers.iterator().next());

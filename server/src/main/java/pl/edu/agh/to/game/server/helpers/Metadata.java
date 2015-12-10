@@ -8,8 +8,8 @@ import java.util.Optional;
  * Created by blueeyedhush on 10.12.15.
  */
 public class Metadata {
-    private Vector initialPosition = null;
-    private Optional<String> algorithmId = Optional.empty();
+    private final Vector initialPosition;
+    private final Optional<String> algorithmId;
 
     public static Metadata player(Vector initialPosition) {
         return new Metadata(initialPosition, null);
