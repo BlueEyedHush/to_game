@@ -9,10 +9,10 @@ public class Board implements Serializable {
     private int maxY;
     private Vector finish;
 
-    Board(int maxX, int maxY, Vector finish, boolean[][] board) {
+    public Board(int height, int width, Vector finish, boolean[][] board) {
         this.board = board;
-        this.maxX = maxX;
-        this.maxY = maxY;
+        this.maxX = height;
+        this.maxY = width;
         this.finish = finish;
     }
 
@@ -34,10 +34,12 @@ public class Board implements Serializable {
         return y < maxY && y >= 0;
     }
 
+    /* get height */
     public int getMaxX() {
         return maxX;
     }
 
+    /* get width */
     public int getMaxY() {
         return maxY;
     }

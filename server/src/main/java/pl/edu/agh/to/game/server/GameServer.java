@@ -5,18 +5,16 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
-import pl.edu.agh.to.game.common.state.Board;
-import pl.edu.agh.to.game.common.state.CarState;
-import pl.edu.agh.to.game.common.state.GameState;
-import pl.edu.agh.to.game.server.helpers.MapReader;
-import pl.edu.agh.to.game.server.helpers.MetaReader;
-import pl.edu.agh.to.game.server.helpers.Metadata;
-import pl.edu.agh.to.game.server.helpers.SequenceGenerator;
+import pl.edu.agh.to.game.common.state.*;
+import pl.edu.agh.to.game.server.helpers.*;
 import pl.edu.agh.to.game.bot.factory;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GameServer {
@@ -29,7 +27,7 @@ public class GameServer {
     private Map<Integer, Controller> controllers = null;
     private List<Observer> observers = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         if(args.length < 1) {
             LOGGER.error("Map name is required");
             return;
@@ -38,11 +36,12 @@ public class GameServer {
         Path mapPath = Paths.get(args[0], MAP_FILE_EXT);
         Path metaPath = Paths.get(args[0], METADATA_FILE_EXT);
 
-        Board board = MapReader.getBoard(mapPath);
-        List<Metadata> metadatas = MetaReader.readMetadataFrom(metaPath);
+        boolean[][] rawBoard = MapReader.getBoard(mapPath);
+        Pair<Vector, List<Metadata>> metadatas = MetaReader.readMetadataFrom(metaPath);
+        Board board = new Board(rawBoard.length, rawBoard[0].length, metadatas.first(), rawBoard);
 
         GameServer server = new GameServer();
-        server.buildInitialGamestate(board, metadatas);
+        server.buildInitialGamestate(board, metadatas.second());
         GameBuilder gameBuilder = new GameBuilder(server.state, server.controllers, server.observers);
         RPServer remoteProxy = new RPServer(gameBuilder);
         remoteProxy.initialize();
