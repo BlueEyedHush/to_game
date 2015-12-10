@@ -18,23 +18,22 @@ import java.util.stream.Collectors;
 public class MetaReader {
     public static Pair<Vector, List<Metadata>> readMetadataFrom(Path filepath) throws IOException {
         /* assumes filepath exists */
+        try(BufferedReader reader = Files.newBufferedReader(filepath, Charsets.UTF_8)) {
+            List<List<String>> lines = reader.lines().map(MetaReader::splitOnCommasAndTrim).collect(Collectors.toList());
 
-        BufferedReader reader = Files.newBufferedReader(filepath, Charsets.UTF_8);
-        List<List<String>> lines = reader.lines().map(MetaReader::splitOnCommasAndTrim).collect(Collectors.toList());
-        reader.close();
+            List<String> mapMetadata = lines.get(0);
+            Vector finish = vectorFromStrings(mapMetadata.get(0), mapMetadata.get(1));
 
-        List<String> mapMetadata = lines.get(0);
-        Vector finish = vectorFromStrings(mapMetadata.get(0), mapMetadata.get(1));
+            List<List<String>> carInfos = lines.subList(1, lines.size());
+            List<Metadata> carMetadatas = carInfos.stream()
+                    .map(l -> {
+                        Vector initPos = vectorFromStrings(l.get(0), l.get(1));
+                        return (l.size() == 2) ? Metadata.player(initPos) : Metadata.bot(initPos, l.get(2));
+                    })
+                    .collect(Collectors.toList());
 
-        List<List<String>> carInfos = lines.subList(1, lines.size());
-        List<Metadata> carMetadatas = carInfos.stream()
-                .map(l -> {
-                    Vector initPos = vectorFromStrings(l.get(0), l.get(1));
-                    return (l.size() == 2) ? Metadata.player(initPos) : Metadata.bot(initPos, l.get(2));
-                })
-                .collect(Collectors.toList());
-
-        return Pair.of(finish, carMetadatas);
+            return Pair.of(finish, carMetadatas);
+        }
     }
 
     private static List<String> splitOnCommasAndTrim(String str) {
