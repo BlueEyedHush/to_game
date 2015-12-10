@@ -4,12 +4,12 @@ public class CarState {
     private final Vector position;
     private final Vector velocity;
 
-    CarState(Vector position, Vector velocity) {
+    public CarState(Vector position, Vector velocity) {
         this.position = position;
         this.velocity = velocity;
     }
 
-    CarState(Vector position) {
+    public CarState(Vector position) {
         this.position = position;
         this.velocity = new Vector(0, 0);
     }

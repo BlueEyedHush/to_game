@@ -7,7 +7,7 @@ public class GameState {
     private Map<Integer, CarState> carStates;
     private Board board;
 
-    GameState(Map<Integer, CarState> carStates, Board board) {
+    public GameState(Map<Integer, CarState> carStates, Board board) {
         this.carStates = carStates;
         this.board = board;
     }
