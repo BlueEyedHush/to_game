@@ -50,7 +50,18 @@ public class GameServer {
 
     private Board buildAndVerifiyBoard(boolean[][] rawBoard, Vector finish, List<Metadata> carInfo) {
         Board board = new Board(finish, rawBoard);
+
+        if(finish.getX() > board.getMaxX() || finish.getY() > board.getMaxY()) {
+            throw new RuntimeException("Finish outside of board");
+        }
+
         for(Metadata m: carInfo) {
+            int initX = m.getInitialPosition().getX();
+            int initY = m.getInitialPosition().getY();
+            if(initX < 0 || initY < 0 || initX > board.getMaxX() || initY > board.getMaxY()) {
+                throw new RuntimeException("Car placed outside of the board");
+            }
+
             if(board.get(m.getInitialPosition())) {
                 throw new RuntimeException("Car placed on inactive position");
             }

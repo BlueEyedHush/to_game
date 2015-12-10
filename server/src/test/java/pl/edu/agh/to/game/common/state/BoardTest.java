@@ -20,7 +20,7 @@ public class BoardTest {
                         {true, true, true, false, true, true, true, true, true, true},
                         {true, true, true, false, true, true, true, true, true, true}};
 
-        Board board = new Board(10, 10, new Vector(3, 3), boardArr);
+        Board board = new Board(new Vector(3, 3), boardArr);
         assertEquals(false, board.get(1, 3));
         assertEquals(true, board.get(5, 5));
         assertEquals(false, board.get(10, 1));
