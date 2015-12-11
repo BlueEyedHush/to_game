@@ -21,7 +21,6 @@ import static pl.edu.agh.to.game.common.state.StateGenerator.getExampleGameState
 
 public class GameTest {
     private Game game;
-    @Mock
     private GameState gameState;
     @Mock
     private Observer observer;
@@ -52,8 +51,13 @@ public class GameTest {
 
     @Test
     public void testMove() throws Exception {
+        when(observer.toString()).thenReturn("blabal");
+        doNothing().when(observer).gameStarted(any(GameState.class));
+        doNothing().when(observer).carLost(any(Integer.class));
+        doNothing().when(observer).gameOver(any(Integer.class));
+
         doThrow(new RuntimeException("Car moved")).when(observer).move(eq(0), any(CarState.class));
-        when(controller.makeMove(eq(gameState), any(Integer.class), any(List.class))).thenReturn(0);
+        when(controller.makeMove(any(GameState.class), any(Integer.class), any(List.class))).thenReturn(0);
         try {
             game.startGame();
             fail();
@@ -65,7 +69,7 @@ public class GameTest {
     @Test
     public void testMoreMoves() throws Exception {
         doThrow(new RuntimeException("Car moved")).when(observer).move(eq(1), any(CarState.class));
-        when(controller.makeMove(eq(gameState), any(Integer.class), any(List.class))).thenReturn(0);
+        when(controller.makeMove(eq(gameState), any(Integer.class), any(List.class))).thenReturn(eq(0));
         try {
             game.startGame();
             fail();
@@ -77,7 +81,7 @@ public class GameTest {
     @Test
     public void testLost() throws Exception {
         doThrow(new RuntimeException("Car lost")).when(observer).carLost(any(Integer.class));
-        when(controller.makeMove(eq(gameState), any(Integer.class), any(List.class))).thenReturn(0);
+        when(controller.makeMove(eq(gameState), any(Integer.class), any(List.class))).thenReturn(eq(0));
         try {
             game.startGame();
             fail();
@@ -89,6 +93,7 @@ public class GameTest {
     @Test
     public void testGameOver() throws Exception {
         doThrow(new RuntimeException("Game Over")).when(observer).gameOver(any(Integer.class));
+        when(controller.makeMove(eq(gameState), any(Integer.class), any(List.class))).thenReturn(eq(0));
         try {
             game.startGame();
             fail();
