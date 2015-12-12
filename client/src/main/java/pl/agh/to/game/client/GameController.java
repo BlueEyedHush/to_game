@@ -16,6 +16,7 @@ import java.util.Set;
 public class GameController implements ClientActionHandler {
 
     int pointSize = 20;
+
     private Canvas gameCanvas;
     private GameState gameState;
     public GameModel gameModel;
@@ -31,7 +32,7 @@ public class GameController implements ClientActionHandler {
         //clientProxy = Mockito.mock(ClientRemoteProxy.class);
         //Mockito.when(clientProxy.tellClientToMove()).
         gameModel = new GameModel(gameState.getBoard());
-        drawMap(gameCanvas, gameModel);
+        drawMap(gameCanvas);
         Set<Vector> vectors = new HashSet<Vector>();
         Vector v = new Vector();
         v.setX(2);
@@ -40,18 +41,14 @@ public class GameController implements ClientActionHandler {
         handleNextMove(vectors);
     }
 
-    private void drawMap(Canvas gameCanvas, GameModel gameModel) {
-        //drawing only background with possible no go positions
+    private void drawMap(Canvas gameCanvas) {
 
-        //Board board = gameModel.getBoard();
-//        int mapSizeX = board.getMaxX();
-//        int mapSizeY = board.getMaxY();
-        //// FIXME: 09.12.2015
+        //drawing only background with possible no go positions
         int mapSizeX = gameModel.getMaxX();
         int mapSizeY = gameModel.getMaxY();
+
         gameCanvas.setWidth(mapSizeX * pointSize);
         gameCanvas.setHeight(mapSizeY * pointSize);
-//        gameCanvas = new Canvas(mapSizeX*pointSize,mapSizeY*pointSize);
 
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         gc.fillRect(0, 0, mapSizeX, mapSizeY);
@@ -69,6 +66,25 @@ public class GameController implements ClientActionHandler {
                 gc.fillRect(i * pointSize, j * pointSize, pointSize / 2, pointSize / 2);
             }
         }
+
+        //Drawing positions of cars
+        for (Map.Entry<Integer, Position> carPositionEntry : gameModel.getMapOfCars().entrySet()) {
+            gc.setFill(Color.BLUE);
+            Position positionOfCar = carPositionEntry.getValue();
+            gc.fillRect(positionOfCar.getX() * pointSize, positionOfCar.getY() * pointSize, pointSize / 2, pointSize / 2);
+            gc.setFill(Color.BLACK);
+            gc.fillText(carPositionEntry.getKey().toString(), positionOfCar.getX() * pointSize, positionOfCar.getX() * pointSize);
+        }
+
+
+    }
+
+    private void deleteCarFromMap(int carId) {
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        Position positionOfCarToBeDeleted = gameModel.getMapOfCars().get(carId);
+        gc.setFill(Color.BISQUE);
+        gc.fillRect(pointSize * positionOfCarToBeDeleted.getX(), pointSize * positionOfCarToBeDeleted.getY(), pointSize / 2, pointSize / 2);
+        gameModel.getMapOfCars().remove(carId);
     }
 
 
@@ -79,7 +95,7 @@ public class GameController implements ClientActionHandler {
             Vector availableVector = availableMovesIter.next();
             gameModel.map[availableVector.getX()][availableVector.getY()] = 2;
         }
-        drawMap(gameCanvas, gameModel);
+        drawMap(gameCanvas);
 
         return null;
 
@@ -93,7 +109,13 @@ public class GameController implements ClientActionHandler {
     @Override
     public void handleGameStarted(GameState initialState) {
         gameModel = new GameModel(initialState.getBoard());
-        this.drawMap(gameCanvas,gameModel);
+
+        for (Map.Entry<Integer, CarState> carStateEntry : initialState.getCarStates().entrySet()) {
+            Vector carStatePosition = carStateEntry.getValue().getPosition();
+            gameModel.getMapOfCars().put(carStateEntry.getKey(), new Position(carStatePosition.getX(), carStatePosition.getY()));
+        }
+
+        this.drawMap(gameCanvas);
     }
 
     @Override
@@ -108,7 +130,7 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void receiveCarId(int carId) {
-        Map<Integer,GameModel.Position> mapOfCars = gameModel.getMapOfCars();
+        Map<Integer, Position> mapOfCars = gameModel.getMapOfCars();
     }
 
 }
