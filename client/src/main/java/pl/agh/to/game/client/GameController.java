@@ -41,6 +41,10 @@ public class GameController implements ClientActionHandler {
         handleNextMove(vectors);
     }
 
+    public void redraw() {
+        this.drawMap(gameCanvas);
+    }
+
     private void drawMap(Canvas gameCanvas) {
 
         //drawing only background with possible no go positions

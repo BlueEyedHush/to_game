@@ -8,11 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.mockito.Mockito;
 import pl.edu.agh.to.game.common.state.Board;
@@ -23,8 +24,9 @@ public class StartScreen extends Application {
     int pointSize = 30;
 
     private Canvas gameCanvas;
+    private Canvas lineLayer;
 
-    private GameController gc;
+    private GameController gameController;
 
     private double startX;
     private double startY;
@@ -49,6 +51,7 @@ public class StartScreen extends Application {
 
         //Creating game canvas
         gameCanvas = new Canvas(1000, 1000);
+        lineLayer = new Canvas(1000, 1000);
 
         BorderPane border = new BorderPane();
         border.setPadding(new Insets(20, 0, 20, 20));
@@ -66,14 +69,14 @@ public class StartScreen extends Application {
             Mockito.when(temporaryBoard.getMaxY()).thenReturn(10);
             GameState gameState = Mockito.mock(GameState.class);
             Mockito.when(gameState.getBoard()).thenReturn(temporaryBoard);
-            gc = new GameController(gameCanvas, gameState);
-            gc.init();
+            gameController = new GameController(gameCanvas, gameState);
+            gameController.init();
             //drawMap(gameCanvas, gameState);
         });
 
 
-        gameCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            GraphicsContext graphicsContext = gameCanvas.getGraphicsContext2D();
+        lineLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
             graphicsContext.save();
             System.out.println("PRESSED");
             startX = event.getX();
@@ -82,9 +85,14 @@ public class StartScreen extends Application {
             endY = startY;
         });
 
-        gameCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+        lineLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             System.out.println("DRAGGED");
-            GraphicsContext graphicsContext = gameCanvas.getGraphicsContext2D();
+
+            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
+            graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
+            graphicsContext.setFill(Color.TRANSPARENT);
+            graphicsContext.rect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
+            graphicsContext.setFill(Color.BLACK);
 
 
             endX = event.getX();
@@ -93,14 +101,17 @@ public class StartScreen extends Application {
 
         });
 
-        gameCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+        lineLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
             System.out.println("RELEASED");
-            GraphicsContext graphicsContext = gameCanvas.getGraphicsContext2D();
+            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
             endX = event.getX();
             endY = event.getY();
             graphicsContext.strokeLine(startX, startY, endX, endY);
             System.out.println(startX + " " + startY);
             System.out.println(endX + " " + endY);
+            graphicsContext.setFill(Color.TRANSPARENT);
+            graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
+            graphicsContext.setFill(Color.BLACK);
         });
 
         Button buttonExit = new Button("Exit");
@@ -110,12 +121,13 @@ public class StartScreen extends Application {
 
         hButtons.getChildren().addAll(startGameButton, buttonExit, buttonSettings);
 
-        ScrollPane scrollPane = new ScrollPane(gameCanvas);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setPrefSize(500, 400);
+//        ScrollPane scrollPane = new ScrollPane(gameCanvas);
+//        scrollPane.setFitToWidth(true);
+//        scrollPane.setFitToHeight(true);
+//        scrollPane.setPrefSize(500, 400);
         gridPane.addRow(0, hButtons);
-        gridPane.addRow(1, scrollPane);
+        Pane pane = new Pane(gameCanvas, lineLayer);
+        gridPane.addRow(1, pane);
         root.getChildren().add(gridPane);
 
 
