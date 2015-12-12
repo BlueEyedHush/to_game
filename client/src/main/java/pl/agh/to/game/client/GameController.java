@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class GameController implements ClientActionHandler {
 
-    int pointSize = 20;
+    int pointSize = 30;
 
     private Canvas gameCanvas;
     private GameState gameState;
@@ -98,7 +98,6 @@ public class GameController implements ClientActionHandler {
         drawMap(gameCanvas);
 
         return null;
-
     }
 
     @Override
