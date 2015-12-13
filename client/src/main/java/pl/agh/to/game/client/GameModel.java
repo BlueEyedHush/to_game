@@ -1,6 +1,8 @@
 package pl.agh.to.game.client;
 
 import pl.edu.agh.to.game.common.state.Board;
+import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +13,10 @@ public class GameModel {
     public short map[][];
     private int maxX;
     private int maxY;
-    private Map<Integer, Position> mapOfCars = new HashMap<>();
+    private Map<Integer, CarState> mapOfCars;
 
-    public GameModel(Board board) {
+    public GameModel(GameState gameState) {
+        Board board = gameState.getBoard();
         this.maxX = board.getMaxX();
         this.maxY = board.getMaxY();
         map = new short[board.getMaxX()][board.getMaxY()];
@@ -25,6 +28,8 @@ public class GameModel {
                     map[i][j] = 0;
             }
         }
+        // initializing mapofcars
+        mapOfCars = new HashMap<>(gameState.getCarStates());
     }
 
     public short[][] getMap() {
@@ -41,7 +46,7 @@ public class GameModel {
 
 
 
-    public Map<Integer, Position> getMapOfCars() {
+    public Map<Integer, CarState> getMapOfCars() {
         return mapOfCars;
     }
 }

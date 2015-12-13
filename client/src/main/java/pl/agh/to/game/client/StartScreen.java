@@ -28,10 +28,9 @@ public class StartScreen extends Application {
 
     private GameController gameController;
 
-    private double startX;
-    private double startY;
-    private double endX;
-    private double endY;
+
+
+    public static boolean isReleased = false;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -69,50 +68,13 @@ public class StartScreen extends Application {
             Mockito.when(temporaryBoard.getMaxY()).thenReturn(10);
             GameState gameState = Mockito.mock(GameState.class);
             Mockito.when(gameState.getBoard()).thenReturn(temporaryBoard);
-            gameController = new GameController(gameCanvas, gameState);
+            gameController = new GameController(gameCanvas, lineLayer, gameState);
             gameController.init();
             //drawMap(gameCanvas, gameState);
         });
 
 
-        lineLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
-            graphicsContext.save();
-            System.out.println("PRESSED");
-            startX = event.getX();
-            startY = event.getY();
-            endX = startX;
-            endY = startY;
-        });
 
-        lineLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            System.out.println("DRAGGED");
-
-            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
-            graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
-            graphicsContext.setFill(Color.TRANSPARENT);
-            graphicsContext.rect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
-            graphicsContext.setFill(Color.BLACK);
-
-
-            endX = event.getX();
-            endY = event.getY();
-            graphicsContext.strokeLine(startX, startY, endX, endY);
-
-        });
-
-        lineLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-            System.out.println("RELEASED");
-            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
-            endX = event.getX();
-            endY = event.getY();
-            graphicsContext.strokeLine(startX, startY, endX, endY);
-            System.out.println(startX + " " + startY);
-            System.out.println(endX + " " + endY);
-            graphicsContext.setFill(Color.TRANSPARENT);
-            graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
-            graphicsContext.setFill(Color.BLACK);
-        });
 
         Button buttonExit = new Button("Exit");
         buttonExit.setOnMouseClicked(event -> Platform.exit());
