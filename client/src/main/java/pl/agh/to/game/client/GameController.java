@@ -36,9 +36,6 @@ public class GameController implements ClientActionHandler {
     }
 
     public void init() {
-        gameModel = new GameModel(gameState);
-        drawMap(gameCanvas);
-
         lineLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
             graphicsContext.save();
@@ -79,17 +76,28 @@ public class GameController implements ClientActionHandler {
 
             int i = (int) (endX/(pointSize));
             int j = (int) (endY/(pointSize));
+            boolean movePerformed = false;
 
-            if (true) {
-                if (gameModel.getMap()[i][j] == 2) {
-                    gameModel.getMap()[i][j] = 1;
+            if (!gameModel.getAvailableMoves().isEmpty()) {
+                for (Vector v : gameModel.getAvailableMoves()) {
+                    if (i == v.getX() && j == v.getY()) {
+                        // player will be moved
+                        CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
+                        gameModel.setCarChange(gameModel.ourCar, changed);
+                        movePerformed = true;
+                    }
                 }
             }
+
+            if (movePerformed) gameModel.emptyAvailableMoves();
+
+            System.out.println(gameModel.getMapOfCars().toString());
+
             System.out.println(i + " " + j);
             redraw();
 
         });
-
+        handleGameStarted(gameState);
         Set<Vector> vectors = new HashSet<Vector>();
         Vector v = new Vector();
         v = v.setX(2);
@@ -118,14 +126,13 @@ public class GameController implements ClientActionHandler {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         gc.fillRect(0, 0, mapSizeX, mapSizeY);
 
+        // printing possible and nogo positions
         for (int i = 0; i < mapSizeX; i++) {
             for (int j = 0; j < mapSizeY; j++) {
-                if (gameModel.map[i][j] == 1) {
+                if (gameModel.map[i][j] == true) {
                     gc.setFill(Color.BISQUE);
-                } else if (gameModel.map[i][j] == 0) {
-                    gc.setFill(Color.RED);
                 } else {
-                    gc.setFill(Color.YELLOW);
+                    gc.setFill(Color.RED);
                 }
                 gc.fillRect(i * pointSize, j * pointSize, pointSize / 2, pointSize / 2);
             }
@@ -137,9 +144,14 @@ public class GameController implements ClientActionHandler {
             Vector positionOfCar = carPositionEntry.getValue().getPosition();
             gc.fillRect(positionOfCar.getX() * pointSize, positionOfCar.getY() * pointSize, pointSize / 2, pointSize / 2);
             gc.setFill(Color.BLACK);
-            gc.fillText(carPositionEntry.getKey().toString(), positionOfCar.getX() * pointSize, positionOfCar.getX() * pointSize);
+            gc.fillText(carPositionEntry.getKey().toString(), positionOfCar.getX() * pointSize, positionOfCar.getY() * pointSize+pointSize);
         }
 
+        //Drawing available moves for player
+        for (Vector v : gameModel.getAvailableMoves()) {
+            gc.setFill(Color.YELLOW);
+            gc.fillRect(v.getX()*pointSize, v.getY()*pointSize, pointSize/2, pointSize/2);
+        }
 
     }
 
@@ -154,15 +166,8 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public Vector handleNextMove(Set<Vector> availableMoves) {
-        Iterator<Vector> availableMovesIter = availableMoves.iterator();
-        while (availableMovesIter.hasNext()) {
-            Vector availableVector = availableMovesIter.next();
-            gameModel.map[availableVector.getX()][availableVector.getY()] = 2;
-        }
+        gameModel.setAvailableMoves(availableMoves);
         redraw();
-
-
-
 
 
         return null;

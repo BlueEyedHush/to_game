@@ -6,18 +6,19 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.mockito.Mockito;
 import pl.edu.agh.to.game.common.state.Board;
+import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
+import pl.edu.agh.to.game.common.state.Vector;
+
+import java.util.Hashtable;
 
 public class StartScreen extends Application {
 
@@ -66,8 +67,25 @@ public class StartScreen extends Application {
             Mockito.when(temporaryBoard.get(Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
             Mockito.when(temporaryBoard.getMaxX()).thenReturn(10);
             Mockito.when(temporaryBoard.getMaxY()).thenReturn(10);
-            GameState gameState = Mockito.mock(GameState.class);
-            Mockito.when(gameState.getBoard()).thenReturn(temporaryBoard);
+            //mocking gamestate
+            GameState gameState;
+            boolean[][] boardArr = {
+                    {true, true, true, true, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true},
+                    {true, true, true, false, true, true, true, true, true, true}
+            };
+
+            Board board = new Board(new Vector(3, 3), boardArr);
+            gameState = new GameState(new Hashtable<>(), board);
+            gameState.putCarState(0, new CarState(new Vector(3, 0)));
+            gameState.putCarState(1, new CarState(new Vector(1, 0)));
             gameController = new GameController(gameCanvas, lineLayer, gameState);
             gameController.init();
             //drawMap(gameCanvas, gameState);
