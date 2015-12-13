@@ -29,6 +29,9 @@ public class GameController implements ClientActionHandler {
     private double endX;
     private double endY;
 
+    private static boolean movePerfGlobal = false;
+    private static Vector movePerfVector;
+
     public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState) {
         this.gameCanvas = gameCanvas;
         this.gameState = gameState;
@@ -81,15 +84,19 @@ public class GameController implements ClientActionHandler {
             if (!gameModel.getAvailableMoves().isEmpty()) {
                 for (Vector v : gameModel.getAvailableMoves()) {
                     if (i == v.getX() && j == v.getY()) {
-                        // player will be moved
+                        // player will be moved - note: this will be commented since we don't need to update model here
                         CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
                         gameModel.setCarChange(gameModel.ourCar, changed);
                         movePerformed = true;
+                        movePerfVector = v;
                     }
                 }
             }
 
-            if (movePerformed) gameModel.emptyAvailableMoves();
+            if (movePerformed) {
+                gameModel.emptyAvailableMoves();
+                movePerfGlobal = true;
+            }
 
             System.out.println(gameModel.getMapOfCars().toString());
 
@@ -108,6 +115,10 @@ public class GameController implements ClientActionHandler {
         vectors.add(v);
         vectors.add(v2);
         handleNextMove(vectors);
+        CarState change = new CarState(new Vector(0,8), new Vector(0,0));
+        handleMovePerformed(1, change);
+        change = new CarState(new Vector(4,4), new Vector(0,0));
+        handleMovePerformed(1, change);
     }
 
     public void redraw() {
@@ -115,7 +126,6 @@ public class GameController implements ClientActionHandler {
     }
 
     private void drawMap(Canvas gameCanvas) {
-
         //drawing only background with possible no go positions
         int mapSizeX = gameModel.getMaxX();
         int mapSizeY = gameModel.getMaxY();
@@ -124,6 +134,7 @@ public class GameController implements ClientActionHandler {
         gameCanvas.setHeight(mapSizeY * pointSize);
 
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, mapSizeX, mapSizeY);
 
         // printing possible and nogo positions
@@ -139,6 +150,7 @@ public class GameController implements ClientActionHandler {
         }
 
         //Drawing positions of cars
+        System.out.println(gameModel.getMapOfCars().size());
         for (Map.Entry<Integer, CarState> carPositionEntry : gameModel.getMapOfCars().entrySet()) {
             gc.setFill(Color.BLUE);
             Vector positionOfCar = carPositionEntry.getValue().getPosition();
@@ -169,13 +181,26 @@ public class GameController implements ClientActionHandler {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
 
-
+        //TODO busy loop - to change
+        /*while (true) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (movePerfGlobal) {
+                movePerfGlobal = false;
+                return movePerfVector;
+            }
+        }*/
         return null;
+
     }
 
     @Override
     public void handleMovePerformed(int carId, CarState change) {
-
+        gameModel.setCarChange(carId, change);
+        redraw();
     }
 
     @Override

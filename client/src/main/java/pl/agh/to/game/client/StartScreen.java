@@ -7,6 +7,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -100,14 +103,16 @@ public class StartScreen extends Application {
         Button buttonSettings = new Button("Settings");
 
         hButtons.getChildren().addAll(startGameButton, buttonExit, buttonSettings);
-
 //        ScrollPane scrollPane = new ScrollPane(gameCanvas);
 //        scrollPane.setFitToWidth(true);
 //        scrollPane.setFitToHeight(true);
 //        scrollPane.setPrefSize(500, 400);
         gridPane.addRow(0, hButtons);
+
         Pane pane = new Pane(gameCanvas, lineLayer);
         gridPane.addRow(1, pane);
+
+
         root.getChildren().add(gridPane);
 
 
