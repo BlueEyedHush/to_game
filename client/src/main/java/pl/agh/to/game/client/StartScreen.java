@@ -85,7 +85,7 @@ public class StartScreen extends Application {
             gameState = new GameState(new Hashtable<>(), board);
             gameState.putCarState(0, new CarState(new Vector(3, 0)));
             gameState.putCarState(1, new CarState(new Vector(1, 0)));
-            gameController = new GameController(gameCanvas, lineLayer, gameState);
+            gameController = new GameController(gameCanvas, lineLayer, gameState, ipTextFiled.getText());
             gameController.init();
             //drawMap(gameCanvas, gameState);
         });
@@ -97,7 +97,7 @@ public class StartScreen extends Application {
         buttonExit.setOnMouseClicked(event -> Platform.exit());
 
         ipTextFiled = new TextField();
-        ipTextFiled.setPromptText("Enter ip address...");
+        ipTextFiled.setPromptText("Enter ip address... ");
         hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled);
 //        ScrollPane scrollPane = new ScrollPane(gameCanvas);
 //        scrollPane.setFitToWidth(true);

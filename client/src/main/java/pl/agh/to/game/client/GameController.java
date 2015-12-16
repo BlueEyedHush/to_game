@@ -23,6 +23,7 @@ public class GameController implements ClientActionHandler {
     private MousePressStatus currentMouseStatus = MousePressStatus.NONE;
     private Canvas gameCanvas;
     private Canvas lineLayer;
+    private String serverIp;
     private GameState gameState;
     private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
@@ -37,10 +38,11 @@ public class GameController implements ClientActionHandler {
     private static Vector movePerfVector;
     private final Object lock = new Object();
 
-    public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState) {
+    public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
         this.gameCanvas = gameCanvas;
         this.gameState = gameState;
         this.lineLayer = lineLayer;
+        this.serverIp = ip;
     }
 
     private boolean ifWithinField(int xGame, int yGame, double xCanvas, double yCanvas) {
