@@ -4,13 +4,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -105,7 +107,7 @@ public class GameController implements ClientActionHandler {
 
         });
         handleGameStarted(gameState);
-        Set<Vector> vectors = new HashSet<Vector>();
+        Set<Vector> vectors = new HashSet<>();
         Vector v = new Vector();
         v = v.setX(2);
         v = v.setY(3);
@@ -127,6 +129,11 @@ public class GameController implements ClientActionHandler {
 
     private void drawMap(Canvas gameCanvas) {
         //drawing only background with possible no go positions
+        gameCanvas.setHeight(gameModel.getMaxY() * pointSize);
+        gameCanvas.setWidth(gameModel.getMaxX() * pointSize);
+        lineLayer.setHeight(gameModel.getMaxY() * pointSize);
+        lineLayer.setWidth(gameModel.getMaxX() * pointSize);
+
         int mapSizeX = gameModel.getMaxX();
         int mapSizeY = gameModel.getMaxY();
 
@@ -140,7 +147,7 @@ public class GameController implements ClientActionHandler {
         // printing possible and nogo positions
         for (int i = 0; i < mapSizeX; i++) {
             for (int j = 0; j < mapSizeY; j++) {
-                if (gameModel.map[i][j] == true) {
+                if (gameModel.map[i][j]) {
                     gc.setFill(Color.BISQUE);
                 } else {
                     gc.setFill(Color.RED);
@@ -194,7 +201,6 @@ public class GameController implements ClientActionHandler {
             }
         }*/
         return null;
-
     }
 
     @Override
@@ -211,12 +217,29 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void handleCarLost(int carId) {
-
+        gameModel.getMapOfCars().remove(carId);
     }
 
     @Override
     public void handleGameOver(int winnerId) {
+        System.out.println("GAME OVER!");
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
+        Font previousFont = gc.getFont();
+        Paint previousFill = gc.getFill();
+        TextAlignment previousAlignment = gc.getTextAlign();
+
+        gc.setFill(Color.LIGHTGOLDENRODYELLOW);
+        gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+
+        gc.setFont(new Font("Arial", gameCanvas.getWidth() / 25));
+        gc.setFill(Color.BLACK);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("GAME OVER! WINNER : " + winnerId, gameCanvas.getWidth() / 2, gameCanvas.getHeight() / 2);
+
+        gc.setTextAlign(previousAlignment);
+        gc.setFont(previousFont);
+        gc.setFill(previousFill);
     }
 
     @Override
