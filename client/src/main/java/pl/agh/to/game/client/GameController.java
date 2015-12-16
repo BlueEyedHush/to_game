@@ -108,7 +108,7 @@ public class GameController implements ClientActionHandler {
                 }
             }
 
-            System.out.println(gameModel.getMapOfCars().toString());
+            //System.out.println(gameModel.getMapOfCars().toString());
 
             System.out.println(i + " " + j);
             redraw();
@@ -124,11 +124,13 @@ public class GameController implements ClientActionHandler {
         v2 = v2.setX(8);
         vectors.add(v);
         vectors.add(v2);
-        handleNextMove(vectors);
+        Vector vecres = handleNextMove(vectors);
+        System.out.println(vecres);
         CarState change = new CarState(new Vector(0,8), new Vector(0,0));
         handleMovePerformed(1, change);
         change = new CarState(new Vector(4,4), new Vector(0,0));
         handleMovePerformed(1, change);
+        //handleGameOver(2);
     }
 
     public void redraw() {
@@ -209,7 +211,7 @@ public class GameController implements ClientActionHandler {
                             movePerfGlobal = false;
                         }
                         // debug
-                        System.out.println("Vector returned: " + movePerfVector.toString());
+                        //System.out.println("Vector returned: " + movePerfVector.toString());
                         return movePerfVector;
                     }
                     try {
@@ -236,6 +238,7 @@ public class GameController implements ClientActionHandler {
                 result[0] = task.getValue();
             }
         });
+        
         return result[0];
 
     }
