@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,6 +26,7 @@ public class StartScreen extends Application {
 
     private Canvas gameCanvas;
     private Canvas lineLayer;
+    private TextField ipTextFiled;
 
     private GameController gameController;
 
@@ -94,9 +96,9 @@ public class StartScreen extends Application {
         Button buttonExit = new Button("Exit");
         buttonExit.setOnMouseClicked(event -> Platform.exit());
 
-        Button buttonSettings = new Button("Settings");
-
-        hButtons.getChildren().addAll(startGameButton, buttonExit, buttonSettings);
+        ipTextFiled = new TextField();
+        ipTextFiled.setPromptText("Enter ip address...");
+        hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled);
 //        ScrollPane scrollPane = new ScrollPane(gameCanvas);
 //        scrollPane.setFitToWidth(true);
 //        scrollPane.setFitToHeight(true);
