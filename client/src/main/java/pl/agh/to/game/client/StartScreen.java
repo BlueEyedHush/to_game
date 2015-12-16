@@ -8,8 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,15 +22,13 @@ import pl.edu.agh.to.game.common.state.Vector;
 import java.util.Hashtable;
 
 public class StartScreen extends Application {
-
-    int pointSize = 30;
+    static int pointSize = 30;
 
     private Canvas gameCanvas;
     private Canvas lineLayer;
+    private TextField ipTextFiled;
 
     private GameController gameController;
-
-
 
     public static boolean isReleased = false;
 
@@ -42,7 +38,7 @@ public class StartScreen extends Application {
         primaryStage.setTitle("Gra w gre");
         primaryStage.setHeight(520);
         primaryStage.setWidth(535);
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -89,7 +85,7 @@ public class StartScreen extends Application {
             gameState = new GameState(new Hashtable<>(), board);
             gameState.putCarState(0, new CarState(new Vector(3, 0)));
             gameState.putCarState(1, new CarState(new Vector(1, 0)));
-            gameController = new GameController(gameCanvas, lineLayer, gameState);
+            gameController = new GameController(gameCanvas, lineLayer, gameState, ipTextFiled.getText());
             gameController.init();
             //drawMap(gameCanvas, gameState);
         });
@@ -100,9 +96,9 @@ public class StartScreen extends Application {
         Button buttonExit = new Button("Exit");
         buttonExit.setOnMouseClicked(event -> Platform.exit());
 
-        Button buttonSettings = new Button("Settings");
-
-        hButtons.getChildren().addAll(startGameButton, buttonExit, buttonSettings);
+        ipTextFiled = new TextField();
+        ipTextFiled.setPromptText("Enter ip address... ");
+        hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled);
 //        ScrollPane scrollPane = new ScrollPane(gameCanvas);
 //        scrollPane.setFitToWidth(true);
 //        scrollPane.setFitToHeight(true);
@@ -126,8 +122,6 @@ public class StartScreen extends Application {
 
 
     public void run() {
-//        Thread thread = new Thread(Application::launch);
-//        thread.start();
         launch();
     }
 

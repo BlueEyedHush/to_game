@@ -7,6 +7,7 @@ import java.util.Set;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
+import pl.edu.agh.to.game.common.state.VectorFuture;
 
 public class ClientRemoteObject extends UnicastRemoteObject implements ClientService {
 	/**
@@ -24,7 +25,7 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 	}
 
 	@Override
-	public synchronized Vector handleNextMove(Set<Vector> availableMoves) {
+	public synchronized VectorFuture handleNextMove(Set<Vector> availableMoves) {
 		return handler.handleNextMove(availableMoves);
 		
 	}
