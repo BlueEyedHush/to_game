@@ -19,7 +19,7 @@ public class TestHandler implements ClientActionHandler{
 	private boolean gameOver = false;
 	
 	@Override
-	public VectorFuture handleNextMove(Set<Vector> availableMoves) {
+	public void requestMove(List<Vector> availableMoves) {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		List<Vector> moves = new ArrayList<Vector>(availableMoves);
 		System.out.println("Choose move:");
@@ -34,7 +34,7 @@ public class TestHandler implements ClientActionHandler{
 			int vecId = Integer.parseInt(bf.readLine());
 			VectorFuture vf = new VectorFuture();
 			vf.setVector(moves.get(vecId));
-			return vf;
+	//		return vf;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -42,7 +42,7 @@ public class TestHandler implements ClientActionHandler{
 			e.printStackTrace();
 		}
 		
-		return null;
+//		return null;
 	}
 
 	@Override

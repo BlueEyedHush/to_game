@@ -35,6 +35,10 @@ public class RPClient {
 		server.handleConnect(this.client);
 	}
 	
+	public void makeMove(Integer move){
+		client.setNextMove(move);
+	}
+	
 	private void setRmiHostname() {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 

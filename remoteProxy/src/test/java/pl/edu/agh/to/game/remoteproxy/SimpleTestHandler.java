@@ -21,9 +21,8 @@ public class SimpleTestHandler implements ClientActionHandler {
 	}
 
 	@Override
-	public VectorFuture handleNextMove(Set<Vector> availableMoves) {
+	public void requestMove(List<Vector> availableMoves) {
 		invokedMethods.add(HandlerMethod.NEXT_MOVE);
-		return null;
 	}
 
 	@Override
