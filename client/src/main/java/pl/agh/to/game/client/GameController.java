@@ -26,7 +26,7 @@ public class GameController implements ClientActionHandler {
     private GameState gameState;
     private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
-    private long ourId;
+    private long ourCarId;
 
     private double startX;
     private double startY;
@@ -60,7 +60,7 @@ public class GameController implements ClientActionHandler {
             // FIXME: 16.12.2015 Only draw line with current selected car not all of them
             boolean mousePressedOnCar = gameModel.getMapOfCars().entrySet().
                     stream().
-                    filter(car -> car.getKey() == this.ourId).
+                    filter(car -> car.getKey() == this.ourCarId).
                     map(car -> car.getValue().getPosition()).
                     anyMatch(position -> ifWithinField(position.getX(), position.getY(), event.getX(), event.getY()));
 
@@ -305,7 +305,7 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void receiveCarId(int carId) {
-        this.ourId = carId;
+        this.ourCarId = carId;
     }
 
 
