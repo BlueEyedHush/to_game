@@ -7,9 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,15 +21,12 @@ import pl.edu.agh.to.game.common.state.Vector;
 import java.util.Hashtable;
 
 public class StartScreen extends Application {
-
-    int pointSize = 30;
+    static int pointSize = 30;
 
     private Canvas gameCanvas;
     private Canvas lineLayer;
 
     private GameController gameController;
-
-
 
     public static boolean isReleased = false;
 
@@ -126,8 +120,6 @@ public class StartScreen extends Application {
 
 
     public void run() {
-//        Thread thread = new Thread(Application::launch);
-//        thread.start();
         launch();
     }
 
