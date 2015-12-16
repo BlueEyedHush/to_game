@@ -10,6 +10,7 @@ import java.util.Set;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
+import pl.edu.agh.to.game.common.state.VectorFuture;
 
 public class TestHandler implements ClientActionHandler{
 
@@ -18,7 +19,7 @@ public class TestHandler implements ClientActionHandler{
 	private boolean gameOver = false;
 	
 	@Override
-	public Vector handleNextMove(Set<Vector> availableMoves) {
+	public VectorFuture handleNextMove(Set<Vector> availableMoves) {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		List<Vector> moves = new ArrayList<Vector>(availableMoves);
 		System.out.println("Choose move:");
@@ -31,7 +32,9 @@ public class TestHandler implements ClientActionHandler{
 		
 		try {
 			int vecId = Integer.parseInt(bf.readLine());
-			return moves.get(vecId);
+			VectorFuture vf = new VectorFuture();
+			vf.setVector(moves.get(vecId));
+			return vf;
 			
 		} catch (IOException e) {
 			e.printStackTrace();

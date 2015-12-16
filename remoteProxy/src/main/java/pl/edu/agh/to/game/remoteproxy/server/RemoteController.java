@@ -7,6 +7,7 @@ import java.util.List;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
+import pl.edu.agh.to.game.common.state.VectorFuture;
 import pl.edu.agh.to.game.remoteproxy.client.ClientService;
 
 public class RemoteController implements Controller {
@@ -21,7 +22,7 @@ public class RemoteController implements Controller {
 	@Override
 	public int makeMove(GameState gameState, int currentCarId, List<Vector> allowedPositions) { //TODO: czy zwracamy index z listy?
 		HashSet<Vector> positionSet = new HashSet<Vector>(allowedPositions); //TODO: moze zmienic interfejs?
-		Vector chosen;
+		VectorFuture chosen;
 		try {
 			chosen = service.handleNextMove(positionSet);
 		} catch (RemoteException e) {
@@ -31,7 +32,7 @@ public class RemoteController implements Controller {
 		}
 		int chosenIndex = -1;
 		for(int i = 0; i < allowedPositions.size(); i++) {
-			if(allowedPositions.get(i).getX() == chosen.getX() && allowedPositions.get(i).getY() == chosen.getY()) { //TODO: lepiej vector.equals
+			if(allowedPositions.get(i).getX() == chosen.getVector().getX() && allowedPositions.get(i).getY() == chosen.getVector().getY()) { //TODO: lepiej vector.equals
 				chosenIndex = i;
 				break;
 			}

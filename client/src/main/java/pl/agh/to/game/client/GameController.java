@@ -13,13 +13,12 @@ import javafx.scene.text.TextAlignment;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
+import pl.edu.agh.to.game.common.state.VectorFuture;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class GameController implements ClientActionHandler {
     private Canvas gameCanvas;
@@ -114,6 +113,8 @@ public class GameController implements ClientActionHandler {
             redraw();
 
         });
+
+        //testing
         handleGameStarted(gameState);
         Set<Vector> vectors = new HashSet<>();
         Vector v = new Vector();
@@ -124,13 +125,26 @@ public class GameController implements ClientActionHandler {
         v2 = v2.setX(8);
         vectors.add(v);
         vectors.add(v2);
-        Vector vecres = handleNextMove(vectors);
-        System.out.println(vecres);
+        VectorFuture vecres = handleNextMove(vectors);
+/*
+        //Vector vecResult = vecres.getVector();
+        CarState change2 = new CarState(new Vector(6,8), new Vector(0,0));
+        handleMovePerformed(0, change2);
         CarState change = new CarState(new Vector(0,8), new Vector(0,0));
         handleMovePerformed(1, change);
+        v = v.setX(5);
+        v = v.setY(10);
+        v2 = v2.setX(8);
+        v2 = v2.setY(0);
+        Set<Vector> vectors2 = new HashSet<>();
+        vectors2.add(v);
+        vectors2.add(v);
+        vecres = handleNextMove(vectors2);
+        //vecResult = vecres.getVector();
+        change2 = new CarState(new Vector(5,10), new Vector(0,0));
+        handleMovePerformed(0, change2);
         change = new CarState(new Vector(4,4), new Vector(0,0));
-        handleMovePerformed(1, change);
-        //handleGameOver(2);
+        handleMovePerformed(1, change);*/
     }
 
     public void redraw() {
@@ -198,7 +212,7 @@ public class GameController implements ClientActionHandler {
 
 
     @Override
-    public Vector handleNextMove(Set<Vector> availableMoves) {
+    public VectorFuture handleNextMove(Set<Vector> availableMoves) {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
         Task<Vector> task = new Task<Vector>() {
@@ -231,15 +245,16 @@ public class GameController implements ClientActionHandler {
         Thread th = new Thread(task);
         th.setDaemon(true);
         th.start();
-        Vector[] result = new Vector[1];
+        VectorFuture vf = new VectorFuture();
+        //Vector[] result = new Vector[1];
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                result[0] = task.getValue();
+                vf.setVector(task.getValue());
             }
         });
-        
-        return result[0];
+
+        return vf;
 
     }
 
