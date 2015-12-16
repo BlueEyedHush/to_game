@@ -129,8 +129,8 @@ public class GameController implements ClientActionHandler {
                 if (movePerformed) {
                     gameModel.emptyAvailableMoves();
                     synchronized (lock) {
-                    movePerfGlobal = true;
-                }
+                        movePerfGlobal = true;
+                    }
                 }
 
                 //System.out.println(gameModel.getMapOfCars().toString());
