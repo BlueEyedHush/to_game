@@ -30,6 +30,7 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 
 	@Override
 	public synchronized Integer handleNextMove(List<Vector> availableMoves) throws TimeoutException, InterruptedException {
+		nextMove=null;
 		handler.requestMove(availableMoves);
 		
 		long time = 0;
@@ -39,11 +40,8 @@ public class ClientRemoteObject extends UnicastRemoteObject implements ClientSer
 			time += RemoteConfig.TIME_STEP;
 			if (time >= RemoteConfig.TIMEOUT)
 				throw new TimeoutException("failed to receive controller move in " + RemoteConfig.TIMEOUT / 1000 + "s");
-		}
-		
-		Integer tmpResult = nextMove;
-		nextMove=null;
-		return tmpResult;
+		}	
+		return nextMove;
 	}
 
 	@Override
