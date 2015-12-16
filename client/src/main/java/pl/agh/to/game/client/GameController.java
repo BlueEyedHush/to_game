@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class GameController implements ClientActionHandler {
+    private enum MousePressStatus {PRESSED, DRAGGED, NONE}
+
+    private MousePressStatus currentMouseStatus = MousePressStatus.NONE;
     private Canvas gameCanvas;
     private Canvas lineLayer;
     private GameState gameState;
@@ -37,71 +40,93 @@ public class GameController implements ClientActionHandler {
         this.lineLayer = lineLayer;
     }
 
+    private boolean ifWithinField(int xGame, int yGame, double xCanvas, double yCanvas) {
+        boolean xOk = false;
+        boolean yOk = false;
+        if (xGame * StartScreen.pointSize < xCanvas && xGame * StartScreen.pointSize + StartScreen.pointSize > xCanvas) {
+            xOk = true;
+        }
+        if (yGame * StartScreen.pointSize < yCanvas && yGame * StartScreen.pointSize + StartScreen.pointSize > yCanvas) {
+            yOk = true;
+        }
+        return xOk && yOk;
+    }
+
     public void init() {
         lineLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
-            graphicsContext.save();
-            System.out.println("PRESSED");
-            startX = event.getX();
-            startY = event.getY();
-            endX = startX;
-            endY = startY;
+            // FIXME: 16.12.2015 Only draw line with current selected car not all of them
+            boolean mousePressedOnCar = gameModel.getMapOfCars().entrySet().
+                    stream().
+                    map(car -> car.getValue().getPosition()).
+                    anyMatch(position -> ifWithinField(position.getX(), position.getY(), event.getX(), event.getY()));
+
+            if (mousePressedOnCar) {
+                GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
+                graphicsContext.save();
+                startX = event.getX();
+                startY = event.getY();
+                endX = startX;
+                endY = startY;
+                currentMouseStatus = MousePressStatus.PRESSED;
+            }
         });
 
         lineLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            System.out.println("DRAGGED");
+            if (currentMouseStatus != MousePressStatus.NONE) {
+                GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
+                graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
+                graphicsContext.setFill(Color.TRANSPARENT);
+                graphicsContext.rect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
+                graphicsContext.setFill(Color.BLACK);
 
-            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
-            graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
-            graphicsContext.setFill(Color.TRANSPARENT);
-            graphicsContext.rect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
-            graphicsContext.setFill(Color.BLACK);
+                endX = event.getX();
+                endY = event.getY();
+                graphicsContext.strokeLine(startX, startY, endX, endY);
 
-
-            endX = event.getX();
-            endY = event.getY();
-            graphicsContext.strokeLine(startX, startY, endX, endY);
+                currentMouseStatus = MousePressStatus.DRAGGED;
+            }
 
         });
 
         lineLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-            System.out.println("RELEASED");
-            GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
-            endX = event.getX();
-            endY = event.getY();
-            graphicsContext.strokeLine(startX, startY, endX, endY);
-            System.out.println(startX + " " + startY);
-            System.out.println(endX + " " + endY);
-            graphicsContext.setFill(Color.TRANSPARENT);
-            graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
-            graphicsContext.setFill(Color.BLACK);
+            if (currentMouseStatus == MousePressStatus.DRAGGED) {
+                GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
+                endX = event.getX();
+                endY = event.getY();
+                graphicsContext.strokeLine(startX, startY, endX, endY);
+                System.out.println(startX + " " + startY);
+                System.out.println(endX + " " + endY);
+                graphicsContext.setFill(Color.TRANSPARENT);
+                graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
+                graphicsContext.setFill(Color.BLACK);
 
-            int i = (int) (endX / (StartScreen.pointSize));
-            int j = (int) (endY / (StartScreen.pointSize));
-            boolean movePerformed = false;
+                int i = (int) (endX / (StartScreen.pointSize));
+                int j = (int) (endY / (StartScreen.pointSize));
+                boolean movePerformed = false;
 
-            if (!gameModel.getAvailableMoves().isEmpty()) {
-                for (Vector v : gameModel.getAvailableMoves()) {
-                    if (i == v.getX() && j == v.getY()) {
-                        // player will be moved - note: this will be commented since we don't need to update model here
-                        CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
-                        gameModel.setCarChange(gameModel.ourCar, changed);
-                        movePerformed = true;
-                        movePerfVector = v;
+                if (!gameModel.getAvailableMoves().isEmpty()) {
+                    for (Vector v : gameModel.getAvailableMoves()) {
+                        if (i == v.getX() && j == v.getY()) {
+                            // player will be moved - note: this will be commented since we don't need to update model here
+                            CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
+                            gameModel.setCarChange(gameModel.ourCar, changed);
+                            movePerformed = true;
+                            movePerfVector = v;
+                        }
                     }
                 }
+
+                if (movePerformed) {
+                    gameModel.emptyAvailableMoves();
+                    movePerfGlobal = true;
+                }
+
+                System.out.println(gameModel.getMapOfCars().toString());
+
+                System.out.println(i + " " + j);
+                redraw();
+                currentMouseStatus = MousePressStatus.NONE;
             }
-
-            if (movePerformed) {
-                gameModel.emptyAvailableMoves();
-                movePerfGlobal = true;
-            }
-
-            System.out.println(gameModel.getMapOfCars().toString());
-
-            System.out.println(i + " " + j);
-            redraw();
-
         });
         handleGameStarted(gameState);
         Set<Vector> vectors = new HashSet<>();

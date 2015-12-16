@@ -36,7 +36,7 @@ public class StartScreen extends Application {
         primaryStage.setTitle("Gra w gre");
         primaryStage.setHeight(520);
         primaryStage.setWidth(535);
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
