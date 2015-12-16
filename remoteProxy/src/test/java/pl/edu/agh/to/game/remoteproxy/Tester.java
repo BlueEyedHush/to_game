@@ -17,7 +17,7 @@ import pl.edu.agh.to.game.remoteproxy.server.TestGameBuilder;
 
 public class Tester {
 
-	//@Test
+	@Test
 	public void clientShouldHandleActions() throws InterruptedException, RemoteException, AlreadyBoundException {
 
 		RPServer server = new RPServer();
