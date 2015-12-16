@@ -17,13 +17,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class GameController implements ClientActionHandler {
-
-    int pointSize = 30;
-
     private Canvas gameCanvas;
     private Canvas lineLayer;
     private GameState gameState;
-    public GameModel gameModel;
+    private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
 
     private double startX;
@@ -79,8 +76,8 @@ public class GameController implements ClientActionHandler {
             graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
             graphicsContext.setFill(Color.BLACK);
 
-            int i = (int) (endX/(pointSize));
-            int j = (int) (endY/(pointSize));
+            int i = (int) (endX / (StartScreen.pointSize));
+            int j = (int) (endY / (StartScreen.pointSize));
             boolean movePerformed = false;
 
             if (!gameModel.getAvailableMoves().isEmpty()) {
@@ -128,19 +125,23 @@ public class GameController implements ClientActionHandler {
     }
 
     private void drawMap(Canvas gameCanvas) {
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+
+
         //drawing only background with possible no go positions
-        gameCanvas.setHeight(gameModel.getMaxY() * pointSize);
-        gameCanvas.setWidth(gameModel.getMaxX() * pointSize);
-        lineLayer.setHeight(gameModel.getMaxY() * pointSize);
-        lineLayer.setWidth(gameModel.getMaxX() * pointSize);
+        gameCanvas.setHeight(gameModel.getMaxY() * StartScreen.pointSize);
+        gameCanvas.setWidth(gameModel.getMaxX() * StartScreen.pointSize);
+        lineLayer.setHeight(gameModel.getMaxY() * StartScreen.pointSize);
+        lineLayer.setWidth(gameModel.getMaxX() * StartScreen.pointSize);
 
         int mapSizeX = gameModel.getMaxX();
         int mapSizeY = gameModel.getMaxY();
 
-        gameCanvas.setWidth(mapSizeX * pointSize);
-        gameCanvas.setHeight(mapSizeY * pointSize);
+        gameCanvas.setWidth(mapSizeX * StartScreen.pointSize);
+        gameCanvas.setHeight(mapSizeY * StartScreen.pointSize);
 
-        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, mapSizeX, mapSizeY);
 
@@ -152,7 +153,7 @@ public class GameController implements ClientActionHandler {
                 } else {
                     gc.setFill(Color.RED);
                 }
-                gc.fillRect(i * pointSize, j * pointSize, pointSize / 2, pointSize / 2);
+                gc.fillRect(i * StartScreen.pointSize, j * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
             }
         }
 
@@ -161,15 +162,15 @@ public class GameController implements ClientActionHandler {
         for (Map.Entry<Integer, CarState> carPositionEntry : gameModel.getMapOfCars().entrySet()) {
             gc.setFill(Color.BLUE);
             Vector positionOfCar = carPositionEntry.getValue().getPosition();
-            gc.fillRect(positionOfCar.getX() * pointSize, positionOfCar.getY() * pointSize, pointSize / 2, pointSize / 2);
+            gc.fillRect(positionOfCar.getX() * StartScreen.pointSize, positionOfCar.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
             gc.setFill(Color.BLACK);
-            gc.fillText(carPositionEntry.getKey().toString(), positionOfCar.getX() * pointSize, positionOfCar.getY() * pointSize+pointSize);
+            gc.fillText(carPositionEntry.getKey().toString(), positionOfCar.getX() * StartScreen.pointSize, positionOfCar.getY() * StartScreen.pointSize + StartScreen.pointSize);
         }
 
         //Drawing available moves for player
         for (Vector v : gameModel.getAvailableMoves()) {
             gc.setFill(Color.YELLOW);
-            gc.fillRect(v.getX()*pointSize, v.getY()*pointSize, pointSize/2, pointSize/2);
+            gc.fillRect(v.getX() * StartScreen.pointSize, v.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
         }
 
     }
@@ -178,7 +179,7 @@ public class GameController implements ClientActionHandler {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         CarState carToBeDeleted = gameModel.getMapOfCars().get(carId);
         gc.setFill(Color.BISQUE);
-        gc.fillRect(pointSize * carToBeDeleted.getPosition().getX(), pointSize * carToBeDeleted.getPosition().getY(), pointSize / 2, pointSize / 2);
+        gc.fillRect(StartScreen.pointSize * carToBeDeleted.getPosition().getX(), StartScreen.pointSize * carToBeDeleted.getPosition().getY(), StartScreen.pointSize / 2, StartScreen.pointSize / 2);
         gameModel.getMapOfCars().remove(carId);
     }
 
