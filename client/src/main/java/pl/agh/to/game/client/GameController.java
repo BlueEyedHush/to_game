@@ -1,8 +1,6 @@
 package pl.agh.to.game.client;
 
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -18,8 +16,6 @@ import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class GameController implements ClientActionHandler {
     private enum MousePressStatus {PRESSED, DRAGGED, NONE}
@@ -110,29 +106,29 @@ public class GameController implements ClientActionHandler {
                 int j = (int) (endY / (StartScreen.pointSize));
                 boolean movePerformed = false;
 
-            if (!gameModel.getAvailableMoves().isEmpty()) {
-                for (Vector v : gameModel.getAvailableMoves()) {
-                    if (i == v.getX() && j == v.getY()) {
-                        // player will be moved - note: this will be commented since we don't need to update model here
-                        //CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
-                        // will be given by proxy...
-                        //gameModel.setCarChange(gameModel.ourCar, changed);
-                        movePerformed = true;
-                        synchronized (lock) {
+                if (!gameModel.getAvailableMoves().isEmpty()) {
+                    for (Vector v : gameModel.getAvailableMoves()) {
+                        if (i == v.getX() && j == v.getY()) {
+                            // player will be moved - note: this will be commented since we don't need to update model here
+                            //CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
+                            // will be given by proxy...
+                            //gameModel.setCarChange(gameModel.ourCar, changed);
+                            movePerformed = true;
+                            synchronized (lock) {
                             movePerfVector = v;
                         }
                     }
                 }
-            }
+                }
 
-            if (movePerformed) {
-                gameModel.emptyAvailableMoves();
-                synchronized (lock) {
+                if (movePerformed) {
+                    gameModel.emptyAvailableMoves();
+                    synchronized (lock) {
                     movePerfGlobal = true;
                 }
-            }
+                }
 
-            //System.out.println(gameModel.getMapOfCars().toString());
+                //System.out.println(gameModel.getMapOfCars().toString());
 
                 System.out.println(i + " " + j);
                 redraw();
@@ -240,7 +236,7 @@ public class GameController implements ClientActionHandler {
                     }
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e){
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                         return null;
                     }
@@ -256,12 +252,7 @@ public class GameController implements ClientActionHandler {
         th.setDaemon(true);
         th.start();
         Vector[] result = new Vector[1];
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                result[0] = task.getValue();
-            }
-        });
+        task.setOnSucceeded(event -> result[0] = task.getValue());
 
         return result[0];
 
