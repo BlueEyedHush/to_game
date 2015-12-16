@@ -21,6 +21,10 @@ public class RPClient {
 	private ServerService server;
 
 	public RPClient(ClientActionHandler handler, ClientType type) throws RemoteException, NotBoundException {
+		this(handler, type, RemoteConfig.SERVER_HOST);
+	}
+
+	public RPClient(ClientActionHandler handler, ClientType type, String serverIP) throws RemoteException, NotBoundException {
 		setRmiHostname();
 		Registry registry = LocateRegistry.getRegistry(RemoteConfig.SERVER_HOST, RemoteConfig.PORT);
 		Remote lookup = registry.lookup(RemoteConfig.RMI_ID);
@@ -29,12 +33,11 @@ public class RPClient {
 		this.type = type;
 		this.client = new ClientRemoteObject(handler, type);
 		server.handleConnect(this.client);
-
 	}
-
+	
 	private void setRmiHostname() {
-		// System.setProperty("java.net.preferIPv4Stack" , "true");
-		
+		System.setProperty("java.net.preferIPv4Stack", "true");
+
 		try {
 			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 			while (interfaces.hasMoreElements()) {
@@ -45,12 +48,9 @@ public class RPClient {
 
 				Enumeration<InetAddress> addresses = iface.getInetAddresses();
 				InetAddress addr = addresses.nextElement();
-				if (addresses.hasMoreElements()) {
-					System.out.println("Using " + addr.getHostAddress() + " as hostname");
-					System.setProperty("java.rmi.server.hostname", addr.getHostAddress());
-				} else {
-					throw new SocketException();
-				}
+
+				System.out.println("Using " + addr.getHostAddress() + " as hostname");
+				System.setProperty("java.rmi.server.hostname", addr.getHostAddress());
 
 			}
 		} catch (SocketException e) {
