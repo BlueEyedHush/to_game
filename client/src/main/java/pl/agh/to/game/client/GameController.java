@@ -107,7 +107,7 @@ public class GameController implements ClientActionHandler {
 
         });
         handleGameStarted(gameState);
-        Set<Vector> vectors = new HashSet<Vector>();
+        Set<Vector> vectors = new HashSet<>();
         Vector v = new Vector();
         v = v.setX(2);
         v = v.setY(3);
@@ -201,7 +201,6 @@ public class GameController implements ClientActionHandler {
             }
         }*/
         return null;
-
     }
 
     @Override
@@ -228,6 +227,7 @@ public class GameController implements ClientActionHandler {
 
         Font previousFont = gc.getFont();
         Paint previousFill = gc.getFill();
+        TextAlignment previousAlignment = gc.getTextAlign();
 
         gc.setFill(Color.LIGHTGOLDENRODYELLOW);
         gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
@@ -237,6 +237,7 @@ public class GameController implements ClientActionHandler {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText("GAME OVER! WINNER : " + winnerId, gameCanvas.getWidth() / 2, gameCanvas.getHeight() / 2);
 
+        gc.setTextAlign(previousAlignment);
         gc.setFont(previousFont);
         gc.setFill(previousFill);
     }
