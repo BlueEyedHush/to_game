@@ -1,6 +1,8 @@
 package pl.edu.agh.to.game.common.state;
 
-public class CarState {
+import java.io.Serializable;
+
+public class CarState  implements Serializable {
     private final Vector position;
     private final Vector velocity;
 

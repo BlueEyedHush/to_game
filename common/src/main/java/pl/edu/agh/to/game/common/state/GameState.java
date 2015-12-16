@@ -1,9 +1,10 @@
 package pl.edu.agh.to.game.common.state;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class GameState {
+public class GameState  implements Serializable {
     private Map<Integer, CarState> carStates;
     private Board board;
 
