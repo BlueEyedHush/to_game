@@ -1,5 +1,8 @@
 package pl.agh.to.game.client;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -13,6 +16,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class GameController implements ClientActionHandler {
 
@@ -31,6 +36,7 @@ public class GameController implements ClientActionHandler {
 
     private static boolean movePerfGlobal = false;
     private static Vector movePerfVector;
+    private final Object lock = new Object();
 
     public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState) {
         this.gameCanvas = gameCanvas;
@@ -85,17 +91,22 @@ public class GameController implements ClientActionHandler {
                 for (Vector v : gameModel.getAvailableMoves()) {
                     if (i == v.getX() && j == v.getY()) {
                         // player will be moved - note: this will be commented since we don't need to update model here
-                        CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
-                        gameModel.setCarChange(gameModel.ourCar, changed);
+                        //CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
+                        // will be given by proxy...
+                        //gameModel.setCarChange(gameModel.ourCar, changed);
                         movePerformed = true;
-                        movePerfVector = v;
+                        synchronized (lock) {
+                            movePerfVector = v;
+                        }
                     }
                 }
             }
 
             if (movePerformed) {
                 gameModel.emptyAvailableMoves();
-                movePerfGlobal = true;
+                synchronized (lock) {
+                    movePerfGlobal = true;
+                }
             }
 
             System.out.println(gameModel.getMapOfCars().toString());
@@ -180,20 +191,45 @@ public class GameController implements ClientActionHandler {
     public Vector handleNextMove(Set<Vector> availableMoves) {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
+        Task<Vector> task = new Task<Vector>() {
+            @Override
+            protected Vector call() throws Exception {
+                int iterations;
+                for (iterations = 0; iterations < 100; iterations++) {
+                    if (movePerfGlobal) {
+                        synchronized (lock) {
+                            movePerfGlobal = false;
+                        }
+                        // debug
+                        System.out.println("Vector returned: " + movePerfVector.toString());
+                        return movePerfVector;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e){
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
 
-        //TODO busy loop - to change
-        /*while (true) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+                // co gdy użytkownik nie wykona ruchu
+                return null;
+
             }
-            if (movePerfGlobal) {
-                movePerfGlobal = false;
-                return movePerfVector;
+        };
+
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
+        Vector[] result = new Vector[1];
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                result[0] = task.getValue();
             }
-        }*/
-        return null;
+        });
+        return result[0];
 
     }
 
@@ -211,12 +247,13 @@ public class GameController implements ClientActionHandler {
 
     @Override
     public void handleCarLost(int carId) {
-
+        gameModel.getMapOfCars().remove(carId);
+        redraw();
     }
 
     @Override
     public void handleGameOver(int winnerId) {
-
+        // displaying some information about game over...
     }
 
     @Override
