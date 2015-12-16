@@ -9,9 +9,12 @@ import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.common.state.VectorFuture;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
+import pl.edu.agh.to.game.remoteproxy.client.RPClient;
 
 public class SimpleTestHandler implements ClientActionHandler {
 
+	private RPClient client;
+	
 	private List<HandlerMethod> invokedMethods = new LinkedList<>();
 
 	private boolean gameOver;
@@ -22,6 +25,17 @@ public class SimpleTestHandler implements ClientActionHandler {
 
 	@Override
 	public void requestMove(List<Vector> availableMoves) {
+		while(client==null)
+		{
+			System.out.println("making move...");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		client.makeMove(0);
 		invokedMethods.add(HandlerMethod.NEXT_MOVE);
 	}
 
@@ -63,6 +77,10 @@ public class SimpleTestHandler implements ClientActionHandler {
 
 	enum HandlerMethod {
 		NEXT_MOVE, MOVE_PERFORMED, GAME_STARTED, CAR_LOST, GAME_OVER, RECEIVE_CAR_ID
+	}
+
+	public void setClient(RPClient client) {
+		this.client=client;
 	}
 
 }

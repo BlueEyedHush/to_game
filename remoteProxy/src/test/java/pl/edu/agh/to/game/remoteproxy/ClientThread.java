@@ -24,6 +24,7 @@ public class ClientThread implements Runnable {
 
 		try {
 			RPClient client = new RPClient(handler, type);
+			handler.setClient(client);
 			while(!handler.isGameOver()) {
 				System.out.println("Client is waiting");
 				Thread.sleep(500);
