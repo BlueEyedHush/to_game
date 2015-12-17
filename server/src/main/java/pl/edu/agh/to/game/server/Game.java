@@ -19,6 +19,7 @@ public class Game {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
     static {
+        BasicConfigurator.resetConfiguration();
         BasicConfigurator.configure();
     }
 
@@ -44,12 +45,12 @@ public class Game {
     private void makeTurn() {
         List<Integer> ids = new LinkedList<>(controllers.keySet());
         Collections.sort(ids);//to ensure the order
-        LOGGER.info("Cars in game: {}", ids);
-        if (ids.size() == 1) {
-            gameOver(ids.get(0));
-            return;
-        }
+        //LOGGER.info("Cars in game: {}", ids);
+
         for (int carId : ids) {
+            if(isEndGame(ids)){
+                return;
+            }
             Controller currentCarController = controllers.get(carId);
             CarState currentCarState = gameState.getCarById(carId);
             LOGGER.info("It is {}'s turn. It is on position {} with velocity {}", carId, currentCarState.getPosition(), currentCarState.getVelocity());
@@ -69,7 +70,7 @@ public class Game {
                     gameState.changeCarState(carId, currentCarState);
 
                     if (currentCarState.getPosition().equals(gameState.getBoard().getFinish())) {
-                        gameOver(carId);
+                        isEndGame(ids);
                         return;
                     }
                 } catch(ControllerException e) {
@@ -79,11 +80,25 @@ public class Game {
                 }
             } else {
                 LOGGER.info("Car {} lost", carId);
+                LOGGER.info("Cars in game: {}", ids.size());
                 controllers.remove(carId);
+                LOGGER.info("Cars in game: {}", ids.size());
                 observer.carLost(carId);
             }
+
         }
     }
+
+    private boolean isEndGame(List<Integer> ids){
+        if (ids.size() == 1) {
+            gameOver(ids.get(0));
+            return true;
+        } else if(ids.size()==0){
+            return true;
+        }
+        return false;
+    }
+
 
     private List<Vector> getPossibleTurns(Vector position, Vector velocity) {
         List<Vector> allowedVectors = new LinkedList<>();
