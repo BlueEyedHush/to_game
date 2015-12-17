@@ -6,15 +6,13 @@ import pl.edu.agh.to.game.common.state.*;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by piotr on 09/12/15.
- */
 public class SnakeBotTest extends TestHelpers {
     private Controller underTest = new SnakeBot();
 
     @Test
     public void testEmptyBoard() {
         int bestIndex;
+        board = SIMPLE_EMPTY_BOARD;
 
         position = new Vector(1, 1);
         velocity = new Vector(0, 0);

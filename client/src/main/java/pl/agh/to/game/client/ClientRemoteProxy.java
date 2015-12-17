@@ -4,9 +4,7 @@ import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 import pl.edu.agh.to.game.remoteproxy.client.ClientType;
 
-/**
- * Created by rafal_000 on 12/9/2015.
- */
+
 public class ClientRemoteProxy {
 
     private ClientType clientType;

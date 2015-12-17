@@ -15,6 +15,7 @@ public class SimpleBotTest extends TestHelpers {
     @Test
     public void testEmptyBoard() {
         int bestIndex;
+        board = SIMPLE_EMPTY_BOARD;
 
         position = new Vector(1, 1);
         velocity = new Vector(0, 0);

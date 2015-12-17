@@ -12,12 +12,12 @@ public class AStarNode{
     //can be deduced from velocity, but I believe it will simplify
     private AStarNode cameFrom;
     private Set<AStarNode> neighbours;
-    private AstarNodesGraph graph;
+    private AStarGraph graph;
     private AStarNode comeFrom;
     private int movesTo;
 
 
-    public AStarNode(Vector position, Vector velocity, AstarNodesGraph graph) {
+    public AStarNode(Vector position, Vector velocity, AStarGraph graph) {
         this.position = position;
         this.velocity = velocity;
         this.graph = graph;

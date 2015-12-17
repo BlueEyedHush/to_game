@@ -1,5 +1,8 @@
 package pl.edu.agh.to.game.bot;
 
+import pl.edu.agh.to.game.bot.board.TestBoard;
+import pl.edu.agh.to.game.bot.board.TestBoardFromFileFactory;
+import pl.edu.agh.to.game.bot.utils.NextMovePrompter;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
@@ -15,59 +18,38 @@ import static org.mockito.Mockito.when;
  * Created by piotr on 10/12/15.
  */
 public class TestHelpers {
+    protected static final TestBoard SIMPLE_EMPTY_BOARD = new TestBoardFromFileFactory("simpleEmpty100.txt").create();
+    protected static final TestBoard SNAKE_ONE_WAY_BOARD = new TestBoardFromFileFactory("snakeOneWayBoard.txt").create();
+    protected static final TestBoard STRAIGHT_JUMP_BOARD = new TestBoardFromFileFactory("straight6JumpBoard.txt").create();
+
     GameState gameState;
     CarState carState;
     int id;
     List<Vector> allowedPositions;
     Vector position, velocity;
-
-    public static class SimpleEmptySquareBoard extends Board {
-        public SimpleEmptySquareBoard(Vector finish, boolean[][] board) {
-            super(finish, board);
-        }
-
-        @Override
-        public boolean get(int x, int y) {
-            return x >=0 && x < 100 && y >=0 && y<100;
-        }
-
-        @Override
-        public Vector getFinish() {
-            return new Vector(98, 99);
-        }
-    }
-
-    public static class StringParsingBoard extends Board {
-
-        public StringParsingBoard(Vector finish, boolean[][] board) {
-            super(finish, board);
-        }
-
-        @Override
-        public boolean get(int x, int y) {
-            return super.get(x, y);
-        }
-    }
+    TestBoard board;
 
     public void generateData() {
         id = 0;
         gameState = mock(GameState.class);
         carState = mock(CarState.class);
-//        when(gameState.getBoard()).thenReturn(new SimpleEmptySquareBoard());
+        NextMovePrompter nextMovePrompter = new NextMovePrompter(board, position);
+
+        when(gameState.getBoard()).thenReturn(board);
         when(gameState.getCarById(id)).thenReturn(carState);
         when(carState.getPosition()).thenReturn(position);
         when(carState.getVelocity()).thenReturn(velocity);
 
-        allowedPositions = Arrays.asList(
-            position.add(velocity).add(new Vector(-1, 1)),
-            position.add(velocity).add(new Vector(0, 1)),
-            position.add(velocity).add(new Vector(1, 1)),
-            position.add(velocity).add(new Vector(1, 0)),
-            position.add(velocity).add(new Vector(1, -1)),
-            position.add(velocity).add(new Vector(0, -1)),
-            position.add(velocity).add(new Vector(-1, -1)),
-            position.add(velocity).add(new Vector(-1, 0)),
-            position.add(velocity).add(new Vector(0, 0))
-        );
+        allowedPositions = nextMovePrompter.getAvailablePositions(position, velocity);
+    }
+
+    protected void updatePositionAndVelocity(int newPositionIndex) {
+        Vector newPostion = allowedPositions.get(newPositionIndex);
+        velocity = calculateNewVelocity(newPostion);
+        position = newPostion;
+    }
+
+    protected Vector calculateNewVelocity(Vector newPostion) {
+        return newPostion.add(new Vector(-position.getX(), -position.getY()));
     }
 }

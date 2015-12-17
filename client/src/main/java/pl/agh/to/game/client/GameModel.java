@@ -1,35 +1,42 @@
 package pl.agh.to.game.client;
 
 import pl.edu.agh.to.game.common.state.Board;
+import pl.edu.agh.to.game.common.state.CarState;
+import pl.edu.agh.to.game.common.state.GameState;
+import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Created by rafal_000 on 12/9/2015.
- */
+
 public class GameModel {
 
-    public short map[][];
+    public boolean map[][];
     private int maxX;
     private int maxY;
-    private Map<Integer, Position> mapOfCars = new HashMap<>();
+    public int ourCar = 0;
 
-    public GameModel(Board board) {
+    private Map<Integer, CarState> mapOfCars;
+    private List<Vector> availableMoves;
+
+    public GameModel(GameState gameState) {
+        Board board = gameState.getBoard();
         this.maxX = board.getMaxX();
         this.maxY = board.getMaxY();
-        map = new short[board.getMaxX()][board.getMaxY()];
+        map = new boolean[board.getMaxX()][board.getMaxY()];
         for (int i = 0; i < board.getMaxX(); i++) {
             for (int j = 0; j < board.getMaxY(); j++) {
                 if (board.get(i, j)) {
-                    map[i][j] = 1;
+                    map[i][j] = true;
                 } else
-                    map[i][j] = 0;
+                    map[i][j] = false;
             }
         }
+        // initializing mapofcars
+        mapOfCars = new HashMap<>(gameState.getCarStates());
+        availableMoves = new LinkedList<Vector>();
     }
 
-    public short[][] getMap() {
+    public boolean[][] getMap() {
         return map;
     }
 
@@ -41,33 +48,23 @@ public class GameModel {
         return maxY;
     }
 
-    public class Position{
-        private int x;
-        private int y;
-
-        public int getX() {
-            return x;
-        }
-
-        public void setX(int x) {
-            this.x = x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
-
-        public Position(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+    public void setCarChange(int carID, CarState changedState) {
+        mapOfCars.put(carID, changedState);
     }
 
-    public Map<Integer, Position> getMapOfCars() {
+    public void setAvailableMoves(List<Vector> moves) {
+        this.availableMoves = moves;
+    }
+
+    public void emptyAvailableMoves() {
+        this.availableMoves.clear();
+    }
+
+    public List<Vector> getAvailableMoves() {
+        return availableMoves;
+    }
+
+    public Map<Integer, CarState> getMapOfCars() {
         return mapOfCars;
     }
 }

@@ -35,7 +35,7 @@ public class RPServer {
 
 				Thread.sleep(RemoteConfig.TIME_STEP);
 				time += RemoteConfig.TIME_STEP;
-				if (time > RemoteConfig.TIMEOUT)
+				if (time >= RemoteConfig.TIMEOUT)
 					throw new TimeoutException("failed to initialize in " + RemoteConfig.TIMEOUT / 1000 + "s");
 			}
 		} catch (InterruptedException e) {
