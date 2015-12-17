@@ -1,11 +1,12 @@
 package pl.edu.agh.to.game.bot.astar;
 
+import pl.edu.agh.to.game.bot.utils.NextMovePrompter;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.Vector;
 
 import java.util.*;
 
-public class AstarNodesGraph {
+public class AStarGraph {
     private static final Vector[] deltaVs = {
             new Vector(-1, 1), new Vector(0, 1), new Vector(1, 1),
             new Vector(-1, 0), new Vector(0, 0), new Vector(1, 0),
@@ -16,12 +17,14 @@ public class AstarNodesGraph {
     private AStarNode root;
     private Map<AStarNode, AStarNode> allNodes;
     private Board board;
+    private NextMovePrompter nextMovePrompter;
 
-    public AstarNodesGraph(Board board, Vector rootPosition, Vector rootVelocity) {
+    public AStarGraph(Board board, Vector rootPosition, Vector rootVelocity) {
         this.board = board;
         this.root = new AStarNode(rootPosition, rootVelocity, this);
         this.allNodes = new HashMap<>();
         allNodes.put(root, root);
+        nextMovePrompter = new NextMovePrompter(board, rootPosition);
     }
 
     private AStarNode getOrCreate(Vector position, Vector velocity) {
@@ -31,17 +34,12 @@ public class AstarNodesGraph {
     }
 
     public Set<AStarNode> getNeigbours(AStarNode node) {
-        if(node.getPosition().equals(board.getFinish())) {
-            return Collections.emptySet();
-        }
+        Set<NextMovePrompter.NextMoveData> nextMoves = nextMovePrompter.getNextMovesData(node.getPosition(), node.getVelocity());
         HashSet<AStarNode> neighbours = new HashSet<>(MAX_NEIGHBOURS);
-        for (Vector deltaV : deltaVs) {
-            Vector newVelocity = node.getVelocity().add(deltaV);
-            Vector newPosition = node.getPosition().add(newVelocity);
-            // acually we don't know if the field is locked by another car or is forbidden
-            if (board.get(newPosition.getX(), newPosition.getY()) || root.getPosition().equals(newPosition)) {
-                neighbours.add(getOrCreate(newPosition, newVelocity));
-            }
+        for (NextMovePrompter.NextMoveData nextMove : nextMoves) {
+            AStarNode nextNeigbour = getOrCreate(nextMove.position, nextMove.velocity);
+            neighbours.add(nextNeigbour);
+
         }
         return neighbours;
     }

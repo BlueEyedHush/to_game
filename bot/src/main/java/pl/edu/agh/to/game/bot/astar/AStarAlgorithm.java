@@ -17,7 +17,7 @@ public class AStarAlgorithm {
     }
 
     public Vector countNext(CarState initialCarState) {
-        AstarNodesGraph graph = new AstarNodesGraph(this.board, initialCarState.getPosition(), initialCarState.getVelocity());
+        AStarGraph graph = new AStarGraph(this.board, initialCarState.getPosition(), initialCarState.getVelocity());
         Set<AStarNode> visited = new HashSet<>();
         Set<AStarNode> toBeVisited = new HashSet<>();
         AStarNode root = graph.getRoot();
