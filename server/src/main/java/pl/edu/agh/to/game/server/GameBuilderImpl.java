@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class GameBuilderImpl implements GameBuilder {
+    private static final int REQ_OBSERVERS = 1;
+
     private final GameState gameState;
     private final Map<Integer, Controller> controllers;
     private final List<Observer> observers;
@@ -38,7 +40,7 @@ public class GameBuilderImpl implements GameBuilder {
     }
 
     public int requiredObservers() {
-        return 1;
+        return Math.max(0, REQ_OBSERVERS - observers.size());
     }
 
     public Game build() {
