@@ -13,8 +13,13 @@ import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 import pl.edu.agh.to.game.common.state.VectorFuture;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
+import pl.edu.agh.to.game.remoteproxy.client.ClientType;
+import pl.edu.agh.to.game.remoteproxy.client.RPClient;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +34,7 @@ public class GameController implements ClientActionHandler {
     private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
     private long ourCarId;
+    private RPClient rpClient;
 
     private double startX;
     private double startY;
@@ -36,7 +42,7 @@ public class GameController implements ClientActionHandler {
     private double endY;
 
     private static boolean movePerfGlobal = false;
-    private static Vector movePerfVector;
+    private static int movePerfInd;
     private final Object lock = new Object();
 
     public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
@@ -112,6 +118,7 @@ public class GameController implements ClientActionHandler {
                 boolean movePerformed = false;
 
                 if (!gameModel.getAvailableMoves().isEmpty()) {
+                    int cnt = 0;
                     for (Vector v : gameModel.getAvailableMoves()) {
                         if (i == v.getX() && j == v.getY()) {
                             // player will be moved - note: this will be commented since we don't need to update model here
@@ -120,10 +127,12 @@ public class GameController implements ClientActionHandler {
                             //gameModel.setCarChange(gameModel.ourCar, changed);
                             movePerformed = true;
                             synchronized (lock) {
-                            movePerfVector = v;
+                                movePerfInd = cnt;
+                            }
                         }
+                        cnt++;
+
                     }
-                }
                 }
 
                 if (movePerformed) {
@@ -135,14 +144,24 @@ public class GameController implements ClientActionHandler {
 
                 //System.out.println(gameModel.getMapOfCars().toString());
 
-                System.out.println(i + " " + j);
+                //System.out.println(i + " " + j);
                 redraw();
                 currentMouseStatus = MousePressStatus.NONE;
             }
         });
 
+        // creating remote proxy
+        try {
+            rpClient = new RPClient(this, ClientType.CONTROLLER, serverIp);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+
+
         //testing
-        handleGameStarted(gameState);
+        /*handleGameStarted(gameState);
         Set<Vector> vectors = new HashSet<>();
         Vector v = new Vector();
         v = v.setX(2);
@@ -152,7 +171,7 @@ public class GameController implements ClientActionHandler {
         v2 = v2.setX(8);
         vectors.add(v);
         vectors.add(v2);
-        VectorFuture vecres = handleNextMove(vectors);
+        VectorFuture vecres = handleNextMove(vectors);*/
 /*
         //Vector vecResult = vecres.getVector();
         CarState change2 = new CarState(new Vector(6,8), new Vector(0,0));
@@ -239,32 +258,31 @@ public class GameController implements ClientActionHandler {
 
 
     @Override
-    public VectorFuture handleNextMove(Set<Vector> availableMoves) {
+    public void requestMove(List<Vector> availableMoves) {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
-        Task<Vector> task = new Task<Vector>() {
+        Task<Integer> task = new Task<Integer>() {
             @Override
-            protected Vector call() throws Exception {
+            protected Integer call() throws Exception {
                 int iterations;
                 for (iterations = 0; iterations < 100; iterations++) {
                     if (movePerfGlobal) {
                         synchronized (lock) {
                             movePerfGlobal = false;
                         }
-                        // debug
-                        //System.out.println("Vector returned: " + movePerfVector.toString());
-                        return movePerfVector;
+
+                        return movePerfInd;
                     }
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                        return null;
+                        return 0;
                     }
                 }
 
                 // co gdy użytkownik nie wykona ruchu
-                return null;
+                return 0;
 
             }
         };
@@ -274,8 +292,7 @@ public class GameController implements ClientActionHandler {
         th.start();
         VectorFuture vf = new VectorFuture();
         //Vector[] result = new Vector[1];
-        task.setOnSucceeded(event -> vf.setVector(task.getValue()));
-        return vf;
+        task.setOnSucceeded(event -> rpClient.makeMove(movePerfInd));
     }
 
     @Override
