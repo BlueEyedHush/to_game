@@ -25,7 +25,7 @@ public class GameBuilderImpl implements GameBuilder {
 
     public int registerController(Controller controller) {
         /* id's start from 0 */
-        int id = controllers.size() - 1;
+        int id = controllers.size();
         controllers.put(id, controller);
         return id;
     }
