@@ -9,16 +9,18 @@ import java.util.List;
 import java.util.Map;
 
 public class GameBuilderImpl implements GameBuilder {
-    private static final int REQ_OBSERVERS = 1;
-
     private final GameState gameState;
     private final Map<Integer, Controller> controllers;
     private final List<Observer> observers;
+
+    private static final int REQUIRED_OBSERVERS = 1;
+    private final int requiredPlayers;
 
     public GameBuilderImpl(GameState gameState, Map<Integer, Controller> controllers, List<Observer> observers) {
         this.gameState = gameState;
         this.controllers = controllers;
         this.observers = observers;
+        this.requiredPlayers = calculateRequiredPlayers();
     }
 
     public int registerController(Controller controller) {
@@ -33,14 +35,11 @@ public class GameBuilderImpl implements GameBuilder {
     }
 
     public int requiredControllers() {
-        int carStatesNum = gameState.getCarStates().size();
-        int controllersNum = controllers.size();
-        assert carStatesNum >= controllersNum;
-        return carStatesNum - controllersNum;
+        return requiredPlayers;
     }
 
     public int requiredObservers() {
-        return Math.max(0, REQ_OBSERVERS - observers.size());
+        return REQUIRED_OBSERVERS;
     }
 
     public Game build() {
@@ -54,5 +53,12 @@ public class GameBuilderImpl implements GameBuilder {
         Game game = new Game(gameState, controllers, observers.iterator().next());
 
         return game;
+    }
+
+    private int calculateRequiredPlayers() {
+        int carStatesNum = gameState.getCarStates().size();
+        int controllersNum = controllers.size();
+        assert carStatesNum >= controllersNum;
+        return carStatesNum - controllersNum;
     }
 }
