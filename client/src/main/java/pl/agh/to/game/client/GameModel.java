@@ -5,10 +5,7 @@ import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class GameModel {
@@ -19,7 +16,7 @@ public class GameModel {
     public int ourCar = 0;
 
     private Map<Integer, CarState> mapOfCars;
-    private Set<Vector> availableMoves;
+    private List<Vector> availableMoves;
 
     public GameModel(GameState gameState) {
         Board board = gameState.getBoard();
@@ -36,7 +33,7 @@ public class GameModel {
         }
         // initializing mapofcars
         mapOfCars = new HashMap<>(gameState.getCarStates());
-        availableMoves = new HashSet<Vector>();
+        availableMoves = new LinkedList<Vector>();
     }
 
     public boolean[][] getMap() {
@@ -55,7 +52,7 @@ public class GameModel {
         mapOfCars.put(carID, changedState);
     }
 
-    public void setAvailableMoves(Set<Vector> moves) {
+    public void setAvailableMoves(List<Vector> moves) {
         this.availableMoves = moves;
     }
 
@@ -63,7 +60,7 @@ public class GameModel {
         this.availableMoves.clear();
     }
 
-    public Set<Vector> getAvailableMoves() {
+    public List<Vector> getAvailableMoves() {
         return availableMoves;
     }
 
