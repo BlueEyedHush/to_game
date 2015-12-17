@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.to.game.common.Controller;
 import pl.edu.agh.to.game.common.Observer;
+import pl.edu.agh.to.game.common.exceptions.ControllerException;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
@@ -57,17 +58,22 @@ public class Game {
             LOGGER.info("Allowed moves: {}", allowedVectors);
 
             if (!allowedVectors.isEmpty()) { //if there are still moves o perform
-                int chosenIndex = currentCarController.makeMove(gameState, carId, allowedVectors);
-                LOGGER.info("Chosen move: {}", allowedVectors.get(chosenIndex));
-                currentCarState = currentCarState.moveCar(allowedVectors.get(chosenIndex));
-                observer.move(carId, currentCarState);
-                gameState.changeCarState(carId, currentCarState);
+                try {
+                    int chosenIndex = currentCarController.makeMove(gameState, carId, allowedVectors);
+                    LOGGER.info("Chosen move: {}", allowedVectors.get(chosenIndex));
+                    currentCarState = currentCarState.moveCar(allowedVectors.get(chosenIndex));
+                    observer.move(carId, currentCarState);
+                    gameState.changeCarState(carId, currentCarState);
 
-                if (currentCarState.getPosition().equals(gameState.getBoard().getFinish())) {
-                    gameOver(carId);
-                    return;
+                    if (currentCarState.getPosition().equals(gameState.getBoard().getFinish())) {
+                        gameOver(carId);
+                        return;
+                    }
+                } catch(ControllerException e) {
+                    controllers.remove(carId);
+                    observer.carLost(carId);
+                    LOGGER.warn("Error in car's controller (id: {}), kicking out from the game", carId);
                 }
-
             } else {
                 LOGGER.info("Car {} lost", carId);
                 controllers.remove(carId);
