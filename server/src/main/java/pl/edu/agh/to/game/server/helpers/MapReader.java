@@ -27,7 +27,7 @@ public class MapReader {
                 char[] row = lines[i].toCharArray();
                 for (int j = 0; j < row.length; j++) {
                     /* transpose matrix so that x is first and y second coordinate */
-                    board[j][i] = (row[j] == ACTIVE);
+                    board[j][i] = (row[j] == INACTIVE);
                 }
             }
 

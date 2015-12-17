@@ -62,7 +62,7 @@ public class GameServer {
                 throw new RuntimeException("Car placed outside of the board");
             }
 
-            if(board.get(m.getInitialPosition())) {
+            if(!board.get(m.getInitialPosition())) {
                 throw new RuntimeException("Car placed on inactive position");
             }
         }
