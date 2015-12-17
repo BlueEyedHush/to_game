@@ -60,6 +60,9 @@ public class Game {
             if (!allowedVectors.isEmpty()) { //if there are still moves o perform
                 try {
                     int chosenIndex = currentCarController.makeMove(gameState, carId, allowedVectors);
+                    if(chosenIndex < 0 || (chosenIndex > allowedVectors.size() - 1)) {
+                        throw new ControllerException("Controller move id out of bounds, kicking out");
+                    }
                     LOGGER.info("Chosen move: {}", allowedVectors.get(chosenIndex));
                     currentCarState = currentCarState.moveCar(allowedVectors.get(chosenIndex));
                     observer.move(carId, currentCarState);
@@ -72,7 +75,7 @@ public class Game {
                 } catch(ControllerException e) {
                     controllers.remove(carId);
                     observer.carLost(carId);
-                    LOGGER.warn("Error in car's controller (id: {}), kicking out from the game", carId);
+                    LOGGER.warn("Error in car's controller (id: {}), kicking out from the game", carId, e);
                 }
             } else {
                 LOGGER.info("Car {} lost", carId);

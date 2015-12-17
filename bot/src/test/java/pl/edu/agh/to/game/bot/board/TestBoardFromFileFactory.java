@@ -3,6 +3,7 @@ package pl.edu.agh.to.game.bot.board;
 import org.apache.commons.lang3.ArrayUtils;
 import pl.edu.agh.to.game.common.state.Vector;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -24,7 +25,7 @@ public class TestBoardFromFileFactory {
     public TestBoardFromFileFactory(String filename) {
         filename = filename.startsWith("/") ? filename : "/" + filename;
         String pathStr = TestBoard.class.getResource(filename).getPath();
-        this.path = FileSystems.getDefault().getPath(pathStr);
+        this.path = FileSystems.getDefault().getPath(new File(pathStr).getAbsolutePath());
     }
 
     public TestBoard create() {

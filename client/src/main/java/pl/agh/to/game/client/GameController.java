@@ -263,39 +263,26 @@ public class GameController implements ClientActionHandler {
     public void requestMove(List<Vector> availableMoves) {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
-        Task<Integer> task = new Task<Integer>() {
-            @Override
-            protected Integer call() throws Exception {
-                int iterations;
-                for (iterations = 0; iterations < 100; iterations++) {
-                    if (movePerfGlobal) {
-                        synchronized (lock) {
-                            movePerfGlobal = false;
-                        }
 
-                        return movePerfInd;
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        return 0;
-                    }
+        int iterations;
+        for (iterations = 0; iterations < 100; iterations++) {
+            if (movePerfGlobal) {
+                synchronized (lock) {
+                    movePerfGlobal = false;
+                    rpClient.makeMove(movePerfInd);
                 }
-
-                // co gdy użytkownik nie wykona ruchu
-                return 0;
-
             }
-        };
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-        VectorFuture vf = new VectorFuture();
-        //Vector[] result = new Vector[1];
-        task.setOnSucceeded(event -> rpClient.makeMove(movePerfInd));
+        rpClient.makeMove(0);
+
     }
+
 
     @Override
     public void handleMovePerformed(int carId, CarState change) {
