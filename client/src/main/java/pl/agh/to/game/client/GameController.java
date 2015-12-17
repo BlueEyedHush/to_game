@@ -18,10 +18,8 @@ import pl.edu.agh.to.game.remoteproxy.client.RPClient;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class GameController implements ClientActionHandler {
     private enum MousePressStatus {PRESSED, DRAGGED, NONE}
@@ -66,7 +64,6 @@ public class GameController implements ClientActionHandler {
 
     public void init() {
         lineLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            // FIXME: 16.12.2015 Only draw line with current selected car not all of them
             boolean mousePressedOnCar = gameModel.getMapOfCars().entrySet().
                     stream().
                     filter(car -> car.getKey() == this.ourCarId).
@@ -246,6 +243,11 @@ public class GameController implements ClientActionHandler {
             gc.fillRect(v.getX() * StartScreen.pointSize, v.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
         }
 
+        Vector finishVector = gameState.getBoard().getFinish();
+        gc.setFill(Color.ALICEBLUE);
+        gc.fillRect(finishVector.getX() * StartScreen.pointSize, finishVector.getY() * StartScreen.pointSize,
+                StartScreen.pointSize / 2, StartScreen.pointSize / 2);
+
     }
 
     private void deleteCarFromMap(int carId) {
@@ -342,7 +344,6 @@ public class GameController implements ClientActionHandler {
     public void receiveCarId(int carId) {
         this.ourCarId = carId;
     }
-
 
 
 }
