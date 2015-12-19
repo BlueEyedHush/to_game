@@ -13,6 +13,7 @@ public class GameModel {
     public boolean map[][];
     private int maxX;
     private int maxY;
+    private final Vector finish;
     public int ourCar = 0;
 
     private Map<Integer, CarState> mapOfCars;
@@ -22,6 +23,7 @@ public class GameModel {
         Board board = gameState.getBoard();
         this.maxX = board.getMaxX();
         this.maxY = board.getMaxY();
+        this.finish = gameState.getBoard().getFinish();
         map = new boolean[board.getMaxX()][board.getMaxY()];
         for (int i = 0; i < board.getMaxX(); i++) {
             for (int j = 0; j < board.getMaxY(); j++) {
@@ -66,6 +68,10 @@ public class GameModel {
 
     public Map<Integer, CarState> getMapOfCars() {
         return mapOfCars;
+    }
+
+    public Vector getFinish() {
+        return finish;
     }
 }
 

@@ -245,7 +245,9 @@ public class GameController implements ClientActionHandler {
             gc.fillRect(finalVel.getX() * StartScreen.pointSize, finalVel.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
         }
 
-        Vector finishVector = gameState.getBoard().getFinish();
+        // gameState does not seem to be updated on game start, dummy always used
+        // Vector finishVector = gameState.getBoard().getFinish();
+        Vector finishVector = gameModel.getFinish();
         gc.setFill(Color.ALICEBLUE);
         gc.fillRect(finishVector.getX() * StartScreen.pointSize, finishVector.getY() * StartScreen.pointSize,
                 StartScreen.pointSize / 2, StartScreen.pointSize / 2);
