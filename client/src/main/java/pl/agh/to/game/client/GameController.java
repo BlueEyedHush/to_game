@@ -39,8 +39,8 @@ public class GameController implements ClientActionHandler {
     private double endX;
     private double endY;
 
-    private static boolean movePerfGlobal = false;
-    private static int movePerfInd;
+    private static volatile boolean moveWasRequested = false;
+    private static volatile int movePerfInd;
     private final Object lock = new Object();
 
     public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
@@ -122,20 +122,18 @@ public class GameController implements ClientActionHandler {
                             //CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
                             // will be given by proxy...
                             //gameModel.setCarChange(gameModel.ourCar, changed);
-                            movePerformed = true;
+
                             synchronized (lock) {
-                                movePerfInd = cnt;
+                                if(moveWasRequested) {
+                                    movePerfInd = cnt;
+                                    moveWasRequested = false;
+                                    lock.notifyAll();
+                                }
                             }
+                            gameModel.emptyAvailableMoves();
                         }
                         cnt++;
 
-                    }
-                }
-
-                if (movePerformed) {
-                    gameModel.emptyAvailableMoves();
-                    synchronized (lock) {
-                        movePerfGlobal = true;
                     }
                 }
 
@@ -264,23 +262,11 @@ public class GameController implements ClientActionHandler {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
 
-        int iterations;
-        for (iterations = 0; iterations < 100; iterations++) {
-            if (movePerfGlobal) {
-                synchronized (lock) {
-                    movePerfGlobal = false;
-                    rpClient.makeMove(movePerfInd);
-                }
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        synchronized (lock) {
+            moveWasRequested = true;
+            while (moveWasRequested) try{lock.wait();} catch(InterruptedException ignored) {}
+            rpClient.makeMove(movePerfInd);
         }
-
-        rpClient.makeMove(0);
-
     }
 
 

@@ -35,8 +35,8 @@ public class SimpleBot implements Controller {
         } else {
             move = new Vector(0, 0);
         }
-        currentPosition = currentPosition.add(move);
 
-        return allowedPositions.indexOf(currentPosition);
+        assert allowedPositions.contains(move);
+        return allowedPositions.indexOf(move);
     }
 }
