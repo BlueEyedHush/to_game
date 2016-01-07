@@ -37,6 +37,10 @@ public class Vector implements Serializable {
         return new Vector(x + augend.getX(), y + augend.getY());
     }
 
+    public Vector sub(Vector augend) {
+        return new Vector(x - augend.getX(), y - augend.getY());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

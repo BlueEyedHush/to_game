@@ -10,13 +10,14 @@ import java.util.List;
  * Created by piotr on 08/12/15.
  */
 public class SimpleBot implements Controller {
-    public int makeMove(GameState gameState, int currentCarId, List<Vector> allowedPositions) {
+    public int makeMove(GameState gameState, int currentCarId, List<Vector> allowedMoves) {
         Vector currentPosition = gameState.getCarById(currentCarId).getPosition();
         Vector meta = gameState.getBoard().getFinish();
         Vector move = null;
 
-        if(allowedPositions.contains(meta)) {
-            return allowedPositions.indexOf(meta);
+        move = meta.sub(currentPosition);
+        if(allowedMoves.contains(move)) {
+            return allowedMoves.indexOf(move);
         }
 
         if(currentPosition.getX() < meta.getX()) {
@@ -36,7 +37,10 @@ public class SimpleBot implements Controller {
             move = new Vector(0, 0);
         }
 
-        assert allowedPositions.contains(move);
-        return allowedPositions.indexOf(move);
+        if (allowedMoves.contains(move)) {
+            return allowedMoves.indexOf(move);
+        } else {
+            return 0;
+        }
     }
 }

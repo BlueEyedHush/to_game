@@ -7,14 +7,15 @@ import pl.edu.agh.to.game.common.state.Vector;
 import java.util.List;
 
 public class SnakeBot implements Controller {
-    public int makeMove(GameState gameState, int currentCarId, List<Vector> allowedPositions) {
+    public int makeMove(GameState gameState, int currentCarId, List<Vector> allowedMoves) {
         Vector currentPosition = gameState.getCarById(currentCarId).getPosition();
         Vector meta = gameState.getBoard().getFinish();
         Vector velocity = gameState.getCarById(currentCarId).getVelocity();
         Vector move = null;
 
-        if(allowedPositions.contains(meta)) {
-            return allowedPositions.indexOf(meta);
+        move = meta.sub(currentPosition);
+        if(allowedMoves.contains(move)) {
+            return allowedMoves.indexOf(move);
         }
 
         if(meta.getX() == currentPosition.getX()) {
@@ -48,8 +49,11 @@ public class SnakeBot implements Controller {
                 }
             }
         }
-        currentPosition = currentPosition.add(move);
 
-        return allowedPositions.indexOf(currentPosition);
+        if (allowedMoves.contains(move)) {
+            return allowedMoves.indexOf(move);
+        } else {
+            return 0;
+        }
     }
 }
