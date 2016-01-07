@@ -6,6 +6,8 @@ package pl.edu.agh.to.game.common;
 public interface  GameBuilder {
     int registerController(Controller controller);
 
+    int registerController(Controller controller, Integer groupId);
+
     void registerObserver(Observer observer);
 
     int requiredControllers();

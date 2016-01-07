@@ -10,10 +10,7 @@ import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
@@ -24,6 +21,7 @@ public class Game {
     }
 
     private final Map<Integer, Controller> controllers;
+    private final Map<Integer, Integer> mapCarIdAndGroupId; //map cars and their groups
     private final Observer observer;
     private final GameState gameState;
     private boolean isFinished;
@@ -32,6 +30,17 @@ public class Game {
         this.gameState = gameState;
         this.controllers = controllers;
         this.observer = observer;
+        this.mapCarIdAndGroupId = new Hashtable<>();
+        for(Integer id : controllers.keySet()) {
+            mapCarIdAndGroupId.put(id, id); //if there is no groups, during game over return car's id
+        }
+    }
+
+    public Game(GameState gameState, Map<Integer, Controller> controllers, Map<Integer, Integer> mapCarIdAndGroupId, Observer observer) {
+        this.gameState = gameState;
+        this.controllers = controllers;
+        this.observer = observer;
+        this.mapCarIdAndGroupId = mapCarIdAndGroupId;
     }
 
     public void startGame() {
@@ -124,8 +133,9 @@ public class Game {
     }
 
     private void gameOver(int carId) {
-        LOGGER.info("Game over");
-        observer.gameOver(carId);
+        Integer finalId = mapCarIdAndGroupId.get(carId);
+        LOGGER.info("Game over, won {}",finalId);
+        observer.gameOver(finalId);
         isFinished = true;
     }
 }
