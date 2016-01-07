@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.to.game.bot.factory.BotFactory;
 import pl.edu.agh.to.game.common.Controller;
-import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
@@ -62,7 +61,7 @@ public class GameServer {
                 throw new RuntimeException("Car placed outside of the board");
             }
 
-            if(board.get(m.getInitialPosition())) {
+            if(!board.get(m.getInitialPosition())) {
                 throw new RuntimeException("Car placed on inactive position");
             }
         }

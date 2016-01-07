@@ -10,19 +10,18 @@ import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
     static {
+        BasicConfigurator.resetConfiguration();
         BasicConfigurator.configure();
     }
 
     private final Map<Integer, Controller> controllers;
+    private final Map<Integer, Integer> mapCarIdAndGroupId; //map cars and their groups
     private final Observer observer;
     private final GameState gameState;
     private boolean isFinished;
@@ -31,6 +30,17 @@ public class Game {
         this.gameState = gameState;
         this.controllers = controllers;
         this.observer = observer;
+        this.mapCarIdAndGroupId = new Hashtable<>();
+        for(Integer id : controllers.keySet()) {
+            mapCarIdAndGroupId.put(id, id); //if there is no groups, during game over return car's id
+        }
+    }
+
+    public Game(GameState gameState, Map<Integer, Controller> controllers, Map<Integer, Integer> mapCarIdAndGroupId, Observer observer) {
+        this.gameState = gameState;
+        this.controllers = controllers;
+        this.observer = observer;
+        this.mapCarIdAndGroupId = mapCarIdAndGroupId;
     }
 
     public void startGame() {
@@ -44,12 +54,12 @@ public class Game {
     private void makeTurn() {
         List<Integer> ids = new LinkedList<>(controllers.keySet());
         Collections.sort(ids);//to ensure the order
-        LOGGER.info("Cars in game: {}", ids);
-        if (ids.size() == 1) {
-            gameOver(ids.get(0));
-            return;
-        }
+        //LOGGER.info("Cars in game: {}", ids);
+
         for (int carId : ids) {
+            if(isEndGame(ids)){
+                return;
+            }
             Controller currentCarController = controllers.get(carId);
             CarState currentCarState = gameState.getCarById(carId);
             LOGGER.info("It is {}'s turn. It is on position {} with velocity {}", carId, currentCarState.getPosition(), currentCarState.getVelocity());
@@ -60,27 +70,44 @@ public class Game {
             if (!allowedVectors.isEmpty()) { //if there are still moves o perform
                 try {
                     int chosenIndex = currentCarController.makeMove(gameState, carId, allowedVectors);
+                    if(chosenIndex < 0 || (chosenIndex > allowedVectors.size() - 1)) {
+                        throw new ControllerException("Controller move id out of bounds, kicking out");
+                    }
                     LOGGER.info("Chosen move: {}", allowedVectors.get(chosenIndex));
                     currentCarState = currentCarState.moveCar(allowedVectors.get(chosenIndex));
                     observer.move(carId, currentCarState);
                     gameState.changeCarState(carId, currentCarState);
 
                     if (currentCarState.getPosition().equals(gameState.getBoard().getFinish())) {
-                        gameOver(carId);
+                        isEndGame(ids);
                         return;
                     }
                 } catch(ControllerException e) {
                     controllers.remove(carId);
                     observer.carLost(carId);
-                    LOGGER.warn("Error in car's controller (id: {}), kicking out from the game", carId);
+                    LOGGER.warn("Error in car's controller (id: {}), kicking out from the game", carId, e);
                 }
             } else {
                 LOGGER.info("Car {} lost", carId);
+                LOGGER.info("Cars in game: {}", ids.size());
                 controllers.remove(carId);
+                LOGGER.info("Cars in game: {}", ids.size());
                 observer.carLost(carId);
             }
+
         }
     }
+
+    private boolean isEndGame(List<Integer> ids){
+        if (ids.size() == 1) {
+            gameOver(ids.get(0));
+            return true;
+        } else if(ids.size()==0){
+            return true;
+        }
+        return false;
+    }
+
 
     private List<Vector> getPossibleTurns(Vector position, Vector velocity) {
         List<Vector> allowedVectors = new LinkedList<>();
@@ -106,8 +133,9 @@ public class Game {
     }
 
     private void gameOver(int carId) {
-        LOGGER.info("Game over");
-        observer.gameOver(carId);
+        Integer finalId = mapCarIdAndGroupId.get(carId);
+        LOGGER.info("Game over, won {}",finalId);
+        observer.gameOver(finalId);
         isFinished = true;
     }
 }

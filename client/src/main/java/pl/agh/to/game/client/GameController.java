@@ -31,7 +31,7 @@ public class GameController implements ClientActionHandler {
     private GameState gameState;
     private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
-    private long ourCarId;
+    private int ourCarId;
     private RPClient rpClient;
 
     private double startX;
@@ -39,8 +39,8 @@ public class GameController implements ClientActionHandler {
     private double endX;
     private double endY;
 
-    private static boolean movePerfGlobal = false;
-    private static int movePerfInd;
+    private static volatile boolean moveWasRequested = false;
+    private static volatile int movePerfInd;
     private final Object lock = new Object();
 
     public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
@@ -116,26 +116,26 @@ public class GameController implements ClientActionHandler {
 
                 if (!gameModel.getAvailableMoves().isEmpty()) {
                     int cnt = 0;
+                    Vector playerPos = getPlayerPos();
                     for (Vector v : gameModel.getAvailableMoves()) {
-                        if (i == v.getX() && j == v.getY()) {
+                        Vector finalVel = playerPos.add(v);
+                        if (i == finalVel.getX() && j == finalVel.getY()) {
                             // player will be moved - note: this will be commented since we don't need to update model here
                             //CarState changed = new CarState(new Vector(i, j), new Vector(0, 0));
                             // will be given by proxy...
                             //gameModel.setCarChange(gameModel.ourCar, changed);
-                            movePerformed = true;
+
                             synchronized (lock) {
-                                movePerfInd = cnt;
+                                if(moveWasRequested) {
+                                    movePerfInd = cnt;
+                                    moveWasRequested = false;
+                                    lock.notifyAll();
+                                }
                             }
+                            gameModel.emptyAvailableMoves();
                         }
                         cnt++;
 
-                    }
-                }
-
-                if (movePerformed) {
-                    gameModel.emptyAvailableMoves();
-                    synchronized (lock) {
-                        movePerfGlobal = true;
                     }
                 }
 
@@ -238,12 +238,16 @@ public class GameController implements ClientActionHandler {
         }
 
         //Drawing available moves for player
+        Vector playerPosition = getPlayerPos();
         for (Vector v : gameModel.getAvailableMoves()) {
+            Vector finalVel = playerPosition.add(v);
             gc.setFill(Color.YELLOW);
-            gc.fillRect(v.getX() * StartScreen.pointSize, v.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
+            gc.fillRect(finalVel.getX() * StartScreen.pointSize, finalVel.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
         }
 
-        Vector finishVector = gameState.getBoard().getFinish();
+        // gameState does not seem to be updated on game start, dummy always used
+        // Vector finishVector = gameState.getBoard().getFinish();
+        Vector finishVector = gameModel.getFinish();
         gc.setFill(Color.ALICEBLUE);
         gc.fillRect(finishVector.getX() * StartScreen.pointSize, finishVector.getY() * StartScreen.pointSize,
                 StartScreen.pointSize / 2, StartScreen.pointSize / 2);
@@ -263,39 +267,14 @@ public class GameController implements ClientActionHandler {
     public void requestMove(List<Vector> availableMoves) {
         gameModel.setAvailableMoves(availableMoves);
         redraw();
-        Task<Integer> task = new Task<Integer>() {
-            @Override
-            protected Integer call() throws Exception {
-                int iterations;
-                for (iterations = 0; iterations < 100; iterations++) {
-                    if (movePerfGlobal) {
-                        synchronized (lock) {
-                            movePerfGlobal = false;
-                        }
 
-                        return movePerfInd;
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        return 0;
-                    }
-                }
-
-                // co gdy użytkownik nie wykona ruchu
-                return 0;
-
-            }
-        };
-
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-        VectorFuture vf = new VectorFuture();
-        //Vector[] result = new Vector[1];
-        task.setOnSucceeded(event -> rpClient.makeMove(movePerfInd));
+        synchronized (lock) {
+            moveWasRequested = true;
+            while (moveWasRequested) try{lock.wait();} catch(InterruptedException ignored) {}
+            rpClient.makeMove(movePerfInd);
+        }
     }
+
 
     @Override
     public void handleMovePerformed(int carId, CarState change) {
@@ -343,6 +322,10 @@ public class GameController implements ClientActionHandler {
     @Override
     public void receiveCarId(int carId) {
         this.ourCarId = carId;
+    }
+
+    private Vector getPlayerPos() {
+       return gameModel.getMapOfCars().get(ourCarId).getPosition();
     }
 
 

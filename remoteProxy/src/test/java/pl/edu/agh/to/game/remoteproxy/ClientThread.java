@@ -29,12 +29,8 @@ public class ClientThread implements Runnable {
 				System.out.println("Client is waiting");
 				Thread.sleep(500);
 			};
-		} catch (InterruptedException e) {
+		} catch (InterruptedException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch(RemoteException e) {
-			e.printStackTrace();
-		} catch(NotBoundException e) {
 			e.printStackTrace();
 		}
 
