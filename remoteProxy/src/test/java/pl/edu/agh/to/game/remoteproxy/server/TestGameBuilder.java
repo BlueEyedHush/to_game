@@ -52,6 +52,12 @@ public class TestGameBuilder implements GameBuilder {
 		return observers;
 	}
 
+	@Override
+	public int registerController(Controller controller, Integer groupId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 
 }
