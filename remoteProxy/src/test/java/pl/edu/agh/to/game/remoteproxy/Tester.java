@@ -21,7 +21,7 @@ public class Tester {
 	public void clientShouldHandleActions() throws InterruptedException, RemoteException, AlreadyBoundException {
 
 		RPServer server = new RPServer();
-		TestGameBuilder builder = new TestGameBuilder(1, 1);
+		TestGameBuilder builder = new TestGameBuilder(1, 2);
 
 		SimpleTestHandler controllerHandler = new SimpleTestHandler();
 		SimpleTestHandler observerHandler = new SimpleTestHandler();
