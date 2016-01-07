@@ -34,9 +34,9 @@ public class ServerRemoteObject extends UnicastRemoteObject implements
 	public synchronized void handleConnect(ClientService service)
 			throws RemoteException {
 		ClientType type = service.getClientType();
-		if (!acceptsConnections(type))
-			throw new RemoteException(
-					"Server refused connection of ClientType " + type.name());
+//		if (!acceptsConnections(type))
+//			throw new RemoteException(
+//					"Server refused connection of ClientType " + type.name());
 		if (ClientType.CONTROLLER.equals(type)) {
 			Controller controller = new RemoteController(service);
 			Observer observer = new RemoteObserver(service);
