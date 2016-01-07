@@ -5,12 +5,14 @@ import pl.edu.agh.to.game.common.GameBuilder;
 import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.GameState;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 public class GameBuilderImpl implements GameBuilder {
     private final GameState gameState;
     private final Map<Integer, Controller> controllers;
+    private final Map<Integer, Integer> mapCarIdAndGroupId = new Hashtable<>();
     private final List<Observer> observers;
 
     private static final int REQUIRED_OBSERVERS = 1;
@@ -27,6 +29,15 @@ public class GameBuilderImpl implements GameBuilder {
         /* id's start from 0 */
         int id = controllers.size();
         controllers.put(id, controller);
+        mapCarIdAndGroupId.put(id, id);
+        return id;
+    }
+
+    public int registerController(Controller controller, Integer groupId) {
+        /* id's start from 0 */
+        int id = controllers.size();
+        controllers.put(id, controller);
+        mapCarIdAndGroupId.put(id, groupId);
         return id;
     }
 
@@ -50,7 +61,7 @@ public class GameBuilderImpl implements GameBuilder {
             throw new RuntimeException("At least 1 observer must be registered");
         }
 
-        Game game = new Game(gameState, controllers, observers.iterator().next());
+        Game game = new Game(gameState, controllers, mapCarIdAndGroupId, observers.iterator().next());
 
         return game;
     }
