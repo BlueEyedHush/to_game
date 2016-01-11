@@ -69,7 +69,6 @@ public class AStarBotTest extends TestHelpers {
             updatePositionAndVelocity(nextVelocityIndex);
             System.out.println(position);
         }
-        System.out.println(moves);
 
         assertEquals("Did not get to finish in moves limit: "+board.getOptimalMoves(), board.getFinish(), position);
     }
