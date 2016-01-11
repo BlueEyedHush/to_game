@@ -17,6 +17,6 @@ public class AStarBot implements Controller{
         CarState currentCarSate = gameState.getCarById(currentCarId);
         Vector nextMove = new AStarAlgorithm(gameState.getBoard()).countNext(currentCarSate);
 
-        return allowedPositions.indexOf(nextMove);
+        return allowedPositions.indexOf(nextMove.sub(currentCarSate.getPosition()));
     }
 }

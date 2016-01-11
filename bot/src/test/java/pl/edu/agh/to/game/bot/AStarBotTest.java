@@ -2,14 +2,11 @@ package pl.edu.agh.to.game.bot;
 
 import org.junit.Test;
 import pl.edu.agh.to.game.common.Controller;
-import pl.edu.agh.to.game.common.state.CarState;
-import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.validateMockitoUsage;
 
 
 public class AStarBotTest extends TestHelpers {
@@ -21,8 +18,8 @@ public class AStarBotTest extends TestHelpers {
         position = board.getStartingPosition();
         velocity = new Vector(0, 0);
         generateData();
-        int bestIndex = allowedPositions.indexOf(new Vector(2, 2));
-        assertEquals("should point (2, 2)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
+        int bestIndex = allowedMoves.indexOf(new Vector(1, 1));
+        assertEquals("should return (1, 1)", allowedMoves.get(bestIndex), allowedMoves.get(underTest.makeMove(gameState, id, allowedMoves)));
     }
 
     @Test
@@ -61,10 +58,9 @@ public class AStarBotTest extends TestHelpers {
         while (!position.equals(board.getFinish()) && moves <= board.getOptimalMoves()) {
             moves++;
             generateData();
-            int nextPositionIndex = underTest.makeMove(gameState, id, allowedPositions);
-            Vector newPosition = allowedPositions.get(nextPositionIndex);
-            velocity = calculateNewVelocity(newPosition);
-            position = newPosition;
+            int nextMoveIndex = underTest.makeMove(gameState, id, allowedMoves);
+            velocity = allowedMoves.get(nextMoveIndex);
+            position = gameState.getCarById(id).getPosition().add(velocity);
         }
 
         assertEquals("Did not get to finish in moves limit: "+board.getOptimalMoves(), board.getFinish(), position);

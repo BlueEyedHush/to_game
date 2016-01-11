@@ -3,12 +3,11 @@ package pl.edu.agh.to.game.bot;
 import pl.edu.agh.to.game.bot.board.TestBoard;
 import pl.edu.agh.to.game.bot.board.TestBoardFromFileFactory;
 import pl.edu.agh.to.game.bot.utils.NextMovePrompter;
-import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -25,7 +24,7 @@ public class TestHelpers {
     GameState gameState;
     CarState carState;
     int id;
-    List<Vector> allowedPositions;
+    List<Vector> allowedMoves;
     Vector position, velocity;
     TestBoard board;
 
@@ -40,11 +39,15 @@ public class TestHelpers {
         when(carState.getPosition()).thenReturn(position);
         when(carState.getVelocity()).thenReturn(velocity);
 
-        allowedPositions = nextMovePrompter.getAvailablePositions(position, velocity);
+        allowedMoves = new ArrayList<>();
+        for(Vector newPosition : nextMovePrompter.getAvailablePositions(position, velocity)) {
+            allowedMoves.add(newPosition.sub(position));
+        }
+//        allowedMoves = nextMovePrompter.getAvailablePositions(position, velocity);
     }
 
     protected void updatePositionAndVelocity(int newPositionIndex) {
-        Vector newPostion = allowedPositions.get(newPositionIndex);
+        Vector newPostion = allowedMoves.get(newPositionIndex);
         velocity = calculateNewVelocity(newPostion);
         position = newPostion;
     }
