@@ -26,7 +26,6 @@ public class TestHelpers {
     GameState gameState;
     CarState carState;
     int id;
-    List<Vector> allowedPositions;
     List<Vector> allowedVectors;
     Vector position, velocity;
     TestBoard board;
@@ -42,7 +41,6 @@ public class TestHelpers {
         when(carState.getPosition()).thenReturn(position);
         when(carState.getVelocity()).thenReturn(velocity);
 
-        allowedPositions = nextMovePrompter.getAvailablePositions(position, velocity);
         allowedVectors = nextMovePrompter.getAvailableVectors(position, velocity);
     }
 

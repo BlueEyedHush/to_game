@@ -17,31 +17,31 @@ public class SnakeBotTest extends TestHelpers {
         position = new Vector(1, 1);
         velocity = new Vector(0, 0);
         generateData();
-        bestIndex = allowedMoves.indexOf(new Vector(0, -1));
-        assertEquals("should return (0, -1)", allowedMoves.get(bestIndex), allowedMoves.get(underTest.makeMove(gameState, id, allowedMoves)));
+        bestIndex = allowedVectors.indexOf(new Vector(0, -1));
+        assertEquals("should return (0, -1)", allowedVectors.get(bestIndex), allowedVectors.get(underTest.makeMove(gameState, id, allowedVectors)));
 
         position = new Vector(40, 99);
         velocity = new Vector(0, 1);
         generateData();
-        bestIndex = allowedMoves.indexOf(new Vector(1, 0));
-        assertEquals("should return (1, 0)", allowedMoves.get(bestIndex), allowedMoves.get(underTest.makeMove(gameState, id, allowedMoves)));
+        bestIndex = allowedVectors.indexOf(new Vector(1, 0));
+        assertEquals("should return (1, 0)", allowedVectors.get(bestIndex), allowedVectors.get(underTest.makeMove(gameState, id, allowedVectors)));
 
         position = new Vector(90, 99);
         velocity = new Vector(0, -1);
         generateData();
-        bestIndex = allowedMoves.indexOf(new Vector(0, -1));
-        assertEquals("should return (0, -1)", allowedMoves.get(bestIndex), allowedMoves.get(underTest.makeMove(gameState, id, allowedMoves)));
+        bestIndex = allowedVectors.indexOf(new Vector(0, -1));
+        assertEquals("should return (0, -1)", allowedVectors.get(bestIndex), allowedVectors.get(underTest.makeMove(gameState, id, allowedVectors)));
 
         position = new Vector(40, 0);
         velocity = new Vector(0, -1);
         generateData();
-        bestIndex = allowedMoves.indexOf(new Vector(1, 0));
-        assertEquals("should return (1, 0)", allowedMoves.get(bestIndex), allowedMoves.get(underTest.makeMove(gameState, id, allowedMoves)));
+        bestIndex = allowedVectors.indexOf(new Vector(1, 0));
+        assertEquals("should return (1, 0)", allowedVectors.get(bestIndex), allowedVectors.get(underTest.makeMove(gameState, id, allowedVectors)));
 
         position = new Vector(41, 0);
         velocity = new Vector(1, 0);
         generateData();
-        bestIndex = allowedMoves.indexOf(new Vector(0, 1));
-        assertEquals("should return (0, 1)", allowedMoves.get(bestIndex), allowedMoves.get(underTest.makeMove(gameState, id, allowedMoves)));
+        bestIndex = allowedVectors.indexOf(new Vector(0, 1));
+        assertEquals("should return (0, 1)", allowedVectors.get(bestIndex), allowedVectors.get(underTest.makeMove(gameState, id, allowedVectors)));
     }
 }
