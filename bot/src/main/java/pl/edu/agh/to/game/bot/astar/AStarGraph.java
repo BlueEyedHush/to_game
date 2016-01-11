@@ -50,6 +50,10 @@ public class AStarGraph {
         return fromFinish.getX()*fromFinish.getX() + fromFinish.getY()*fromFinish.getY();
     }
 
+    public int getDistanceFromFinishManhatan(AStarNode node) {
+        return Math.abs(node.getPosition().getX() - root.getPosition().getX()) + Math.abs(root.getPosition().getY() - node.getPosition().getY());
+    }
+
     public AStarNode getRoot() {
         return root;
     }
@@ -59,6 +63,6 @@ public class AStarGraph {
         while (!node.getCameFrom().equals(root)) {
             node = node.getCameFrom();
         }
-        return root.getPosition().add(node.getVelocity());
+        return node.getVelocity();
     }
 }

@@ -21,7 +21,7 @@ public class AStarBotTest extends TestHelpers {
         position = board.getStartingPosition();
         velocity = new Vector(0, 0);
         generateData();
-        int bestIndex = allowedPositions.indexOf(new Vector(2, 2));
+        int bestIndex = allowedPositions.indexOf(new Vector(1, 1));
         assertEquals("should point (2, 2)", bestIndex, underTest.makeMove(gameState, id, allowedPositions));
     }
 
@@ -42,16 +42,20 @@ public class AStarBotTest extends TestHelpers {
     }
     @Test
     public void testWillGetToFinishOnSJumpBoard() {
-        /*
-        for some reason this tests errors out with the following message:
-        'Did not get to finish in moves limit: 14 expected:<[0, 26]> but was:<[0, 15]>'
-        */
-        /*
         board = STRAIGHT_JUMP_BOARD;
-        velocity = new Vector(0, 2);
+        velocity = new Vector(0, 1);
 
         moveTowardsFinishMaxOptimalMoves();
-        */
+
+    }
+
+    @Test//(timeout = 1000000L)
+    public void testWillGetToFinishOnWorstBoard() {
+        board = WORST_BOARD;
+        velocity = new Vector(0, 0);
+
+        moveTowardsFinishMaxOptimalMoves();
+
     }
 
     private void moveTowardsFinishMaxOptimalMoves() {
@@ -61,11 +65,11 @@ public class AStarBotTest extends TestHelpers {
         while (!position.equals(board.getFinish()) && moves <= board.getOptimalMoves()) {
             moves++;
             generateData();
-            int nextPositionIndex = underTest.makeMove(gameState, id, allowedPositions);
-            Vector newPosition = allowedPositions.get(nextPositionIndex);
-            velocity = calculateNewVelocity(newPosition);
-            position = newPosition;
+            int nextVelocityIndex = underTest.makeMove(gameState, id, allowedVectors);
+            updatePositionAndVelocity(nextVelocityIndex);
+            System.out.println(position);
         }
+        System.out.println(moves);
 
         assertEquals("Did not get to finish in moves limit: "+board.getOptimalMoves(), board.getFinish(), position);
     }

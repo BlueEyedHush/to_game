@@ -21,11 +21,13 @@ public class TestHelpers {
     protected static final TestBoard SIMPLE_EMPTY_BOARD = new TestBoardFromFileFactory("simpleEmpty100.txt").create();
     protected static final TestBoard SNAKE_ONE_WAY_BOARD = new TestBoardFromFileFactory("snakeOneWayBoard.txt").create();
     protected static final TestBoard STRAIGHT_JUMP_BOARD = new TestBoardFromFileFactory("straight6JumpBoard.txt").create();
+    protected static final TestBoard WORST_BOARD = new TestBoardFromFileFactory("worst.txt").create();
 
     GameState gameState;
     CarState carState;
     int id;
     List<Vector> allowedPositions;
+    List<Vector> allowedVectors;
     Vector position, velocity;
     TestBoard board;
 
@@ -41,15 +43,12 @@ public class TestHelpers {
         when(carState.getVelocity()).thenReturn(velocity);
 
         allowedPositions = nextMovePrompter.getAvailablePositions(position, velocity);
+        allowedVectors = nextMovePrompter.getAvailableVectors(position, velocity);
     }
 
-    protected void updatePositionAndVelocity(int newPositionIndex) {
-        Vector newPostion = allowedPositions.get(newPositionIndex);
-        velocity = calculateNewVelocity(newPostion);
-        position = newPostion;
+    protected void updatePositionAndVelocity(int newVectorIndex) {
+        velocity = allowedVectors.get(newVectorIndex);
+        position = position.add(velocity);
     }
 
-    protected Vector calculateNewVelocity(Vector newPostion) {
-        return newPostion.add(new Vector(-position.getX(), -position.getY()));
-    }
 }

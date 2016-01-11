@@ -13,7 +13,6 @@ public class AStarNode{
     private AStarNode cameFrom;
     private Set<AStarNode> neighbours;
     private AStarGraph graph;
-    private AStarNode comeFrom;
     private int movesTo;
 
 
@@ -34,10 +33,6 @@ public class AStarNode{
 
     public AStarNode getCameFrom() {
         return cameFrom;
-    }
-
-    public void setComeFrom(AStarNode comeFrom) {
-        this.comeFrom = comeFrom;
     }
 
     public void setCameFrom(AStarNode cameFrom) {
