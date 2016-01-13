@@ -58,9 +58,9 @@ public class Game {
                 final Integer carId = it.next();
                 switch(makeTurn(carId)) {
                     case WON:
-                        Integer finalId = mapCarIdAndGroupId.get(carId);
-                        LOGGER.info("Game over, won {}",finalId);
-                        observers.forEach(o -> o.gameOver(finalId));
+                        //Integer finalId = mapCarIdAndGroupId.get(carId);
+                        LOGGER.info("Game over, won {}",carId);
+                        observers.forEach(o -> o.gameOver(carId));
                         isFinished = true;
                         break;
                     case KICKED_OUT:
