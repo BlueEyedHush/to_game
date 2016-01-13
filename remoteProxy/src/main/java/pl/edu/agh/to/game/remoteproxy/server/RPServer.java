@@ -16,7 +16,7 @@ public class RPServer {
 
 	public RPServer() throws RemoteException, AlreadyBoundException {
 
-		System.setProperty("java.rmi.server.hostname", RemoteConfig.SERVER_HOST);
+		System.setProperty("java.rmi.server.hostname", RemoteConfig.getIPAddress());
 		server = new ServerRemoteObject();
 		Registry registry = LocateRegistry.createRegistry(RemoteConfig.PORT);
 

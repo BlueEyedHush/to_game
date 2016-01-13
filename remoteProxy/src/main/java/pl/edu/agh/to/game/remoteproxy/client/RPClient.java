@@ -29,7 +29,7 @@ public class RPClient {
 			String serverIP) throws RemoteException, NotBoundException {
 		setRmiHostname();
 		Registry registry = LocateRegistry.getRegistry(
-				RemoteConfig.SERVER_HOST, RemoteConfig.PORT);
+				serverIP, RemoteConfig.PORT);
 		Remote lookup = registry.lookup(RemoteConfig.RMI_ID);
 		server = (ServerService) lookup;
 		this.handler = handler;
