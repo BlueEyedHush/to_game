@@ -24,7 +24,7 @@ public class RPClient {
 
 	public RPClient(ClientActionHandler handler, ClientType type)
 			throws RemoteException, NotBoundException {
-		this(handler, type, RemoteConfig.SERVER_HOST);
+		this(handler, type, RemoteConfig.getIPAddress());
 	}
 
 	public RPClient(ClientActionHandler handler, ClientType type,
