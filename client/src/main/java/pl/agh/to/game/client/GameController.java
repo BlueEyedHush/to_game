@@ -237,14 +237,6 @@ public class GameController implements ClientActionHandler {
             gc.fillText(carPositionEntry.getKey().toString(), positionOfCar.getX() * StartScreen.pointSize, positionOfCar.getY() * StartScreen.pointSize + StartScreen.pointSize);
         }
 
-        //Drawing available moves for player
-        Vector playerPosition = getPlayerPos();
-        for (Vector v : gameModel.getAvailableMoves()) {
-            Vector finalVel = playerPosition.add(v);
-            gc.setFill(Color.YELLOW);
-            gc.fillRect(finalVel.getX() * StartScreen.pointSize, finalVel.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
-        }
-
         // gameState does not seem to be updated on game start, dummy always used
         // Vector finishVector = gameState.getBoard().getFinish();
         Vector finishVector = gameModel.getFinish();
@@ -252,6 +244,17 @@ public class GameController implements ClientActionHandler {
         gc.fillRect(finishVector.getX() * StartScreen.pointSize, finishVector.getY() * StartScreen.pointSize,
                 StartScreen.pointSize / 2, StartScreen.pointSize / 2);
 
+        if(gameModel.getMapOfCars().containsKey(ourCarId)) {
+            /* if we are still in game */
+
+            //Drawing available moves for player
+            Vector playerPosition = getPlayerPos();
+            for (Vector v : gameModel.getAvailableMoves()) {
+                Vector finalVel = playerPosition.add(v);
+                gc.setFill(Color.YELLOW);
+                gc.fillRect(finalVel.getX() * StartScreen.pointSize, finalVel.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
+            }
+        }
     }
 
     private void deleteCarFromMap(int carId) {
