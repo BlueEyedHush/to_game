@@ -3,11 +3,13 @@ package pl.edu.agh.to.game.remoteproxy.client;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 
 import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
@@ -40,6 +42,14 @@ public class RPClient {
 
 	public void makeMove(Integer move) {
 		client.setNextMove(move);
+	}
+	
+	public void terminate() {
+		try {
+			UnicastRemoteObject.unexportObject(client, true);
+		} catch (NoSuchObjectException e) {
+			// already unexported
+		}
 	}
 
 	private void setRmiHostname() {
