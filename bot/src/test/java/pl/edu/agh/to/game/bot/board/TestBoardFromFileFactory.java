@@ -21,12 +21,20 @@ public class TestBoardFromFileFactory {
 
     private Path path;
     private List<String> lines;
+    private int scale;
 
-    public TestBoardFromFileFactory(String filename) {
+    public TestBoardFromFileFactory(String filename, int scale) {
+        this.scale = scale;
         filename = filename.startsWith("/") ? filename : "/" + filename;
         String pathStr = TestBoard.class.getResource(filename).getPath();
         this.path = FileSystems.getDefault().getPath(new File(pathStr).getAbsolutePath());
     }
+
+    public TestBoardFromFileFactory(String filename) {
+        this(filename, 1);
+    }
+
+
 
     public TestBoard create() {
         try (Stream<String> stream = Files.lines(path)) {
@@ -37,16 +45,17 @@ public class TestBoardFromFileFactory {
 
         Vector finish = getPositionOfTag(FINISH_MARKER);
         Vector startingPosition = getPositionOfTag(START_MARKER);
-        int optimalMoves = getOptimal();
+        int optimalMoves = getOptimal()*1000;
         boolean[][] map = getBoardArray();
-        return new TestBoard(finish, map, startingPosition, optimalMoves);
+        boolean[][] scaledMap = getScaledBoard(map);
+        return new TestBoard(finish, scaledMap, startingPosition, optimalMoves);
     }
 
     private Vector getPositionOfTag(String tag) {
         return IntStream.range(0, lines.size())
                 .filter((lineNo) -> ! lines.get(lineNo).contains(COMMENT_LINE_MARKER))
                 .filter((lineNo) -> lines.get(lineNo).contains(tag))
-                .mapToObj((lineNo) -> new Vector(lineNo, lines.get(lineNo).indexOf(tag)))
+                .mapToObj((lineNo) -> new Vector(lineNo*scale, lines.get(lineNo).indexOf(tag)*scale))
                 .findFirst().get();
     }
 
@@ -64,6 +73,21 @@ public class TestBoardFromFileFactory {
                 .filter((l) -> !l.contains(COMMENT_LINE_MARKER))
                 .map(this::parseLine)
                 .toArray(boolean[][]::new);
+    }
+
+    private boolean[][] getScaledBoard(boolean[][]board) {
+        boolean[][] scaledBoard = new boolean[board.length*scale][board[0].length*scale];
+        for (int origY = 0; origY < board.length; origY++) {
+            for (int origX = 0; origX < board[0].length; origX++) {
+                for (int i = 0; i < scale; i++) {
+                    for (int j = 0; j < scale; j++) {
+                        scaledBoard[origY*scale + i][origX*scale + j] = board[origY][origX];
+                    }
+                }
+            }
+        }
+
+        return scaledBoard;
     }
 
     private boolean[] parseLine(String line) {

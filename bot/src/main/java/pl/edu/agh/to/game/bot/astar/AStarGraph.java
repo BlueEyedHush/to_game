@@ -7,11 +7,6 @@ import pl.edu.agh.to.game.common.state.Vector;
 import java.util.*;
 
 public class AStarGraph {
-    private static final Vector[] deltaVs = {
-            new Vector(-1, 1), new Vector(0, 1), new Vector(1, 1),
-            new Vector(-1, 0), new Vector(0, 0), new Vector(1, 0),
-            new Vector(-1, -1), new Vector(0, -1), new Vector(1, -1),
-    };
     public static final int MAX_NEIGHBOURS = 9;
 
     private AStarNode root;
@@ -59,6 +54,6 @@ public class AStarGraph {
         while (!node.getCameFrom().equals(root)) {
             node = node.getCameFrom();
         }
-        return root.getPosition().add(node.getVelocity());
+        return node.getVelocity();
     }
 }

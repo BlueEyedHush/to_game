@@ -1,9 +1,11 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.TimeoutException;
 
 import pl.edu.agh.to.game.common.GameBuilder;
@@ -42,5 +44,13 @@ public class RPServer {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void terminate() {
+		try {
+			UnicastRemoteObject.unexportObject(server, true);
+		} catch (NoSuchObjectException e) {
+			// already unexported
+		}
 	}
 }

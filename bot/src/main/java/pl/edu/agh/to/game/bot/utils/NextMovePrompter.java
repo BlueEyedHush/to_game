@@ -47,6 +47,12 @@ public class NextMovePrompter {
                 .collect(Collectors.toList());
     }
 
+    public List<Vector> getAvailableVectors(Vector position, Vector velocity) {
+        return getNextMovesData(position, velocity).stream()
+                .map((data) -> data.velocity)
+                .collect(Collectors.toList());
+    }
+
     private boolean isFieldAvailable(Vector position) {
         return board.get(position.getX(), position.getY()) || startingPosition.equals(position);
     }

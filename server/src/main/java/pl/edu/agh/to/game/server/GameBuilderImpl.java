@@ -61,7 +61,7 @@ public class GameBuilderImpl implements GameBuilder {
             throw new RuntimeException("At least 1 observer must be registered");
         }
 
-        Game game = new Game(gameState, controllers, mapCarIdAndGroupId, observers.iterator().next());
+        Game game = new Game(gameState, controllers, mapCarIdAndGroupId, observers);
 
         return game;
     }
