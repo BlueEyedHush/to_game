@@ -62,10 +62,7 @@ public class StartScreen extends Application {
         Button startGameButton = new Button("Start game!");
 
         startGameButton.setOnMouseClicked(event -> {
-            Board temporaryBoard = Mockito.mock(Board.class);
-            Mockito.when(temporaryBoard.get(Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
-            Mockito.when(temporaryBoard.getMaxX()).thenReturn(10);
-            Mockito.when(temporaryBoard.getMaxY()).thenReturn(10);
+            startGameButton.setDisable(true);
             //mocking gamestate
             GameState gameState;
             boolean[][] boardArr = {
