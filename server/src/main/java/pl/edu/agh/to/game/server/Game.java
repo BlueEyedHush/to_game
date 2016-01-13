@@ -53,15 +53,16 @@ public class Game {
     public void startGame() {
         LOGGER.info("Game Started");
         observers.forEach(o -> o.gameStarted(gameState));
+        gameLoop();
+    }
+
+    private void gameLoop() {
         while (!isFinished) {
             for(Iterator<Integer> it = controllers.keySet().iterator(); it.hasNext() && !isFinished;) {
                 final Integer carId = it.next();
                 switch(makeTurn(carId)) {
                     case WON:
-                        //Integer finalId = mapCarIdAndGroupId.get(carId);
-                        LOGGER.info("Game over, won {}",carId);
-                        observers.forEach(o -> o.gameOver(carId));
-                        isFinished = true;
+                        gameOver(carId);
                         break;
                     case KICKED_OUT:
                         LOGGER.info("Car {} lost", carId);
@@ -70,8 +71,22 @@ public class Game {
                     case SIMPLY_CONTINUE:
                         break;
                 }
+
+                 /* is anybody left to play? */
+                if (controllers.size() == 1) {
+                    gameOver(controllers.keySet().iterator().next());
+                    break;
+                } else if(controllers.size() < 1){
+                    throw new RuntimeException("Everybody lost? Should not be possible!");
+                }
             }
         }
+    }
+
+    private void gameOver(int carId) {
+        LOGGER.info("Game over, won {}",carId);
+        observers.forEach(o -> o.gameOver(carId));
+        isFinished = true;
     }
 
     private TURN_OUTCOME makeTurn(int carId) {

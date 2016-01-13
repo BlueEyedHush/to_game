@@ -13,7 +13,6 @@ import java.nio.file.Paths;
  * Created by blueeyedhush on 11/26/15.
  */
 public class MapCreator {
-    private static final String OUTTPUT_EXT = ".map";
     private char[][] array2D = null;
 
     public static void main(String[] args) throws IOException {
@@ -48,7 +47,7 @@ public class MapCreator {
     }
 
     public void printMapToFile(String filename) throws IOException {
-        BufferedWriter out = new BufferedWriter(new FileWriter(filename + OUTTPUT_EXT));
+        BufferedWriter out = new BufferedWriter(new FileWriter(filename));
         for(int x = 0; x < array2D.length; x++)
         {
             for (int y = 0; y < array2D[x].length; y++)
