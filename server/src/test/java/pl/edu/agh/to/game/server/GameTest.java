@@ -9,9 +9,7 @@ import pl.edu.agh.to.game.common.Observer;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -36,7 +34,7 @@ public class GameTest {
         Map<Integer, Controller> controllers = new Hashtable<>();
         controllers.put(1, controller);
         controllers.put(0, controller);
-        game = new Game(gameState, controllers, observer);
+        game = new Game(gameState, controllers, Collections.singletonList(observer));
     }
 
     @Test

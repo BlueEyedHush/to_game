@@ -22,30 +22,30 @@ public class Game {
 
     private final Map<Integer, Controller> controllers;
     private final Map<Integer, Integer> mapCarIdAndGroupId; //map cars and their groups
-    private final Observer observer;
+    private final List<Observer> observers;
     private final GameState gameState;
     private boolean isFinished;
 
-    public Game(GameState gameState, Map<Integer, Controller> controllers, Observer observer) {
+    public Game(GameState gameState, Map<Integer, Controller> controllers, List<Observer> observers) {
         this.gameState = gameState;
         this.controllers = controllers;
-        this.observer = observer;
+        this.observers = observers;
         this.mapCarIdAndGroupId = new Hashtable<>();
         for(Integer id : controllers.keySet()) {
             mapCarIdAndGroupId.put(id, id); //if there is no groups, during game over return car's id
         }
     }
 
-    public Game(GameState gameState, Map<Integer, Controller> controllers, Map<Integer, Integer> mapCarIdAndGroupId, Observer observer) {
+    public Game(GameState gameState, Map<Integer, Controller> controllers, Map<Integer, Integer> mapCarIdAndGroupId, List<Observer> observers) {
         this.gameState = gameState;
         this.controllers = controllers;
-        this.observer = observer;
+        this.observers = observers;
         this.mapCarIdAndGroupId = mapCarIdAndGroupId;
     }
 
     public void startGame() {
         LOGGER.info("Game Started");
-        observer.gameStarted(gameState);
+        observers.forEach(o -> o.gameStarted(gameState));
         while (!isFinished) {
             makeTurn();
         }
@@ -75,7 +75,8 @@ public class Game {
                     }
                     LOGGER.info("Chosen move: {}", allowedVectors.get(chosenIndex));
                     currentCarState = currentCarState.moveCar(allowedVectors.get(chosenIndex));
-                    observer.move(carId, currentCarState);
+                    final CarState ccs = currentCarState;
+                    observers.forEach(o -> o.move(carId, ccs));
                     gameState.changeCarState(carId, currentCarState);
 
                     if (currentCarState.getPosition().equals(gameState.getBoard().getFinish())) {
@@ -84,7 +85,7 @@ public class Game {
                     }
                 } catch(ControllerException e) {
                     controllers.remove(carId);
-                    observer.carLost(carId);
+                    observers.forEach(o -> o.carLost(carId));
                     LOGGER.warn("Error in car's controller (id: {}), kicking out from the game", carId, e);
                 }
             } else {
@@ -92,7 +93,7 @@ public class Game {
                 LOGGER.info("Cars in game: {}", ids.size());
                 controllers.remove(carId);
                 LOGGER.info("Cars in game: {}", ids.size());
-                observer.carLost(carId);
+                observers.forEach(o -> o.carLost(carId));
             }
 
         }
@@ -135,7 +136,7 @@ public class Game {
     private void gameOver(int carId) {
         Integer finalId = mapCarIdAndGroupId.get(carId);
         LOGGER.info("Game over, won {}",finalId);
-        observer.gameOver(finalId);
+        observers.forEach(o -> o.gameOver(finalId));
         isFinished = true;
     }
 }
