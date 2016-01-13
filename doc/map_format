@@ -1,0 +1,11 @@
+Map consists of two files: *.map (which fields are active and which are not) and *.meta
+
+-- *.meta structure --
+first line - coordinates of finish
+each next line = one car
+<x>, <y> for player-controller
+<x>, <y>, <botAlgoName> for bots
+
+-- MapCreator --
+You can generate *.map file from BMP using out/mapCreator:
+java -jar mapCrator-<bullshit>.jar <bmpFile>
