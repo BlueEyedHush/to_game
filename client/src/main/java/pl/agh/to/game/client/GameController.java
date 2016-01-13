@@ -254,6 +254,9 @@ public class GameController implements ClientActionHandler {
                 gc.setFill(Color.YELLOW);
                 gc.fillRect(finalVel.getX() * StartScreen.pointSize, finalVel.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
             }
+        } else {
+            gc.setFill(new Color(0.8, 0.8, 0.8, 0.4));
+            gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         }
     }
 
