@@ -45,6 +45,7 @@ public class GameServer {
         remoteProxy.initialize(gameBuilder);
         Game game = gameBuilder.build();
         game.startGame();
+        remoteProxy.terminate();
     }
 
     private Board buildAndVerifiyBoard(boolean[][] rawBoard, Vector finish, List<Metadata> carInfo) {
