@@ -1,5 +1,9 @@
 package pl.edu.agh.to.game.remoteproxy.server;
 
+import pl.edu.agh.to.game.common.GameBuilder;
+import pl.edu.agh.to.game.remoteproxy.client.ClientType;
+import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
+
 import java.rmi.AlreadyBoundException;
 import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
@@ -8,17 +12,17 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.TimeoutException;
 
-import pl.edu.agh.to.game.common.GameBuilder;
-import pl.edu.agh.to.game.remoteproxy.client.ClientType;
-import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
-
 public class RPServer {
 
 	private ServerRemoteObject server;
 
 	public RPServer() throws RemoteException, AlreadyBoundException {
+		this(RemoteConfig.guessIp());
+	}
 
-		System.setProperty("java.rmi.server.hostname", RemoteConfig.getIPAddress());
+	public RPServer(String serverIp) throws RemoteException, AlreadyBoundException {
+
+		System.setProperty("java.rmi.server.hostname", serverIp);
 		server = new ServerRemoteObject();
 		Registry registry = LocateRegistry.createRegistry(RemoteConfig.PORT);
 

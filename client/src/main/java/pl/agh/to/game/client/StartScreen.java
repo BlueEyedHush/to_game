@@ -50,6 +50,10 @@ public class StartScreen extends Application {
 
         startGameButton.setOnMouseClicked(event -> {
             startGameButton.setDisable(true);
+            String ip = ipTextFiled.getText().trim();
+            if(ip.isEmpty()) {
+                ip = "localhost";
+            }
             gameController = new GameController(gameCanvas, lineLayer, ipTextFiled.getText());
             gameController.init();
         });

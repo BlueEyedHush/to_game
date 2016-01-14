@@ -3,7 +3,10 @@ package pl.edu.agh.to.game.remoteproxy.config;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Enumeration;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class RemoteConfig {
 
@@ -14,7 +17,32 @@ public class RemoteConfig {
 	public static final long TIME_STEP = 1 * 1000;
 	public static final long TIMEOUT = 120 * 1000;
 	
-	public static String getIPAddress() {
+	public static List<String> getIPAddresses() {
+		try {
+			return enumerationAsStream(NetworkInterface.getNetworkInterfaces())
+					.flatMap(i -> i.getInterfaceAddresses().stream())
+					.map(a -> a.getAddress().getHostName())
+					.collect(Collectors.toList());
+		} catch (SocketException e) {
+			throw new RuntimeException("Cannot access avaliable interfaces");
+		}
+	}
+
+	private static <T> Stream<T> enumerationAsStream(Enumeration<T> e) {
+		return StreamSupport.stream(
+				Spliterators.spliteratorUnknownSize(
+						new Iterator<T>() {
+							public T next() {
+								return e.nextElement();
+							}
+							public boolean hasNext() {
+								return e.hasMoreElements();
+							}
+						},
+						Spliterator.ORDERED), false);
+	}
+
+	public static String guessIp() {
 		String ip = null;
 		try {
 			Enumeration<NetworkInterface> interfaces = NetworkInterface
@@ -29,7 +57,7 @@ public class RemoteConfig {
 				InetAddress addr = addresses.nextElement();
 
 				ip = addr.getHostAddress();
-				
+
 				System.out.println("Using IP " + addr.getHostAddress());
 //				System.setProperty("java.rmi.server.hostname",
 //						addr.getHostAddress());
@@ -38,6 +66,7 @@ public class RemoteConfig {
 		} catch (SocketException e) {
 			throw new RuntimeException(e);
 		}
+
 		return ip;
 	}
 }

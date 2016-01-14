@@ -10,9 +10,13 @@ import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
+import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
 import pl.edu.agh.to.game.remoteproxy.server.RPServer;
 import pl.edu.agh.to.game.server.helpers.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -41,7 +45,8 @@ public class GameServer {
 
         buildInitialGamestate(board, metadatas.second());
         GameBuilderImpl gameBuilder = new GameBuilderImpl(state, controllers, observers);
-        RPServer remoteProxy = new RPServer();
+
+        RPServer remoteProxy = new RPServer(askForIp());
         remoteProxy.initialize(gameBuilder);
         Game game = gameBuilder.build();
         game.startGame();
@@ -90,5 +95,23 @@ public class GameServer {
         }
 
         state = new GameState(carStates, board);
+    }
+
+    private String askForIp() throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Avaliable interfaces:");
+        List<String> ips = RemoteConfig.getIPAddresses();
+        for(ListIterator<String> it = ips.listIterator(); it.hasNext();) {
+            String ip = it.next();
+            int index = it.previousIndex();
+            System.out.printf("%d: %s\n", index, ip);
+        }
+        System.out.print("Which one you want to use?: ");
+        int chosen = Integer.valueOf(in.readLine());
+        if(chosen < 0 || chosen >= ips.size()) {
+            throw new RuntimeException("No such index listed!");
+        }
+
+        return ips.get(chosen);
     }
 }
