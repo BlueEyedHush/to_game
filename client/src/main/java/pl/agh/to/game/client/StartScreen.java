@@ -92,6 +92,7 @@ public class StartScreen extends Application {
 
         StackPane contents = new StackPane(gameCanvas, lineLayer);
         ScrollPane scrollingWrapper = new ScrollPane(contents);
+        scrollingWrapper.setStyle("-fx-background-color:transparent;");
         root.getChildren().addAll(hButtons, scrollingWrapper);
 
         primaryStage.show();
