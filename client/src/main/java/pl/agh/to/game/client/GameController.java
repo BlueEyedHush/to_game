@@ -54,6 +54,10 @@ public class GameController implements ClientActionHandler {
         this(gameCanvas, lineLayer,"localhost", ip);
     }
 
+    public void terminateRmi(){
+        rpClient.terminate();
+    }
+
     private boolean ifWithinField(int xGame, int yGame, double xCanvas, double yCanvas) {
         boolean xOk = false;
         boolean yOk = false;

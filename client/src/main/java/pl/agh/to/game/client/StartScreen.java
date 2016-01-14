@@ -64,7 +64,12 @@ public class StartScreen extends Application {
 
 
         Button buttonExit = new Button("Exit");
-        buttonExit.setOnMouseClicked(event -> Platform.exit());
+        buttonExit.setOnMouseClicked(event -> {
+            System.out.println("terminating");
+            gameController.terminateRmi();
+            Platform.exit();
+            System.exit(0);
+        });
 
         ipTextFiled = new TextField();
         ipTextFiled.setPromptText("Enter ip address... ");
