@@ -2,22 +2,26 @@ package pl.agh.to.game.client;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
 
 public class StartScreen extends Application {
     static int pointSize = 30;
 
     private Canvas gameCanvas;
     private Canvas lineLayer;
+    private ChoiceBox<String> hostIpSelector;
     private TextField ipTextFiled;
 
     private GameController gameController;
@@ -54,7 +58,7 @@ public class StartScreen extends Application {
             if(ip.isEmpty()) {
                 ip = "localhost";
             }
-            gameController = new GameController(gameCanvas, lineLayer, ipTextFiled.getText());
+            gameController = new GameController(gameCanvas, lineLayer, hostIpSelector.getValue(), ipTextFiled.getText());
             gameController.init();
         });
 
@@ -64,7 +68,11 @@ public class StartScreen extends Application {
 
         ipTextFiled = new TextField();
         ipTextFiled.setPromptText("Enter ip address... ");
-        hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled);
+
+        hostIpSelector = new ChoiceBox<>(FXCollections.observableArrayList(RemoteConfig.getIPAddresses()));
+        hostIpSelector.setMaxWidth(130.0);
+
+        hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled, hostIpSelector);
 
         StackPane contents = new StackPane(gameCanvas, lineLayer);
         ScrollPane scrollingWrapper = new ScrollPane(contents);

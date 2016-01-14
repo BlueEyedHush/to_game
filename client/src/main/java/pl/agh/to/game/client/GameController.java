@@ -26,6 +26,7 @@ public class GameController implements ClientActionHandler {
     private Canvas gameCanvas;
     private Canvas lineLayer;
     private String serverIp;
+    private String hostIp;
     private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
     private int ourCarId;
@@ -40,16 +41,17 @@ public class GameController implements ClientActionHandler {
     private static volatile int movePerfInd;
     private final Object lock = new Object();
 
-    public GameController(Canvas gameCanvas, Canvas lineLayer, String ip) {
+    public GameController(Canvas gameCanvas, Canvas lineLayer, String hostIp, String serverIp) {
         this.gameCanvas = gameCanvas;
         this.lineLayer = lineLayer;
-        this.serverIp = ip;
+        this.serverIp = serverIp;
+        this.hostIp = hostIp;
     }
 
     /* removed redundant parameter from constructor (gameState), this is retained for compatilibity with tests only
      * (but I did not check whether it is actually used */
     public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
-        this(gameCanvas, lineLayer, ip);
+        this(gameCanvas, lineLayer,"localhost", ip);
     }
 
     private boolean ifWithinField(int xGame, int yGame, double xCanvas, double yCanvas) {
@@ -151,7 +153,7 @@ public class GameController implements ClientActionHandler {
 
         // creating remote proxy
         try {
-            rpClient = new RPClient(this, ClientType.CONTROLLER, serverIp);
+            rpClient = new RPClient(this, ClientType.CONTROLLER, hostIp, serverIp);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {

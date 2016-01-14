@@ -20,12 +20,12 @@ public class RPClient {
 
 	public RPClient(ClientActionHandler handler, ClientType type)
 			throws RemoteException, NotBoundException {
-		this(handler, type, RemoteConfig.guessIp());
+		this(handler, type, RemoteConfig.guessIp(), "localhost");
 	}
 
-	public RPClient(ClientActionHandler handler, ClientType type, String serverIP)
+	public RPClient(ClientActionHandler handler, ClientType type, String hostIp, String serverIP)
 			throws RemoteException, NotBoundException {
-		//setRmiHostname(hostname);
+		setRmiHostname(hostIp);
 		Registry registry = LocateRegistry.getRegistry(
 				serverIP, RemoteConfig.PORT);
 		Remote lookup = registry.lookup(RemoteConfig.RMI_ID);
