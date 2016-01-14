@@ -238,7 +238,11 @@ public class GameController implements ClientActionHandler {
         //Drawing positions of cars
         System.out.println(gameModel.getMapOfCars().size());
         for (Map.Entry<Integer, CarState> carPositionEntry : gameModel.getMapOfCars().entrySet()) {
-            gc.setFill(Color.BLUE);
+            if(carPositionEntry.getKey() == ourCarId) {
+               gc.setFill(Color.AQUAMARINE);
+            } else {
+                gc.setFill(Color.BLUE);
+            }
             Vector positionOfCar = carPositionEntry.getValue().getPosition();
             gc.fillRect(positionOfCar.getX() * StartScreen.pointSize, positionOfCar.getY() * StartScreen.pointSize, StartScreen.pointSize / 2, StartScreen.pointSize / 2);
             gc.setFill(Color.BLACK);
