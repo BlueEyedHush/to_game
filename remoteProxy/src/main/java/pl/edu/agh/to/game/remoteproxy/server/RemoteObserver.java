@@ -22,7 +22,7 @@ public class RemoteObserver implements Observer {
 			service.handleGameStarted(initial);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
@@ -32,7 +32,7 @@ public class RemoteObserver implements Observer {
 			service.handleMovePerformed(carId, newState);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
@@ -42,7 +42,7 @@ public class RemoteObserver implements Observer {
 			service.handleCarLost(carId);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 	}
@@ -53,7 +53,7 @@ public class RemoteObserver implements Observer {
 			service.handleGameOver(winner);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
