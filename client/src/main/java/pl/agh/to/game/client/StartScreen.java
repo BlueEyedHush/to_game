@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pl.edu.agh.to.game.remoteproxy.config.RemoteConfig;
 
+import java.util.List;
+
 public class StartScreen extends Application {
     static int pointSize = 30;
 
@@ -74,8 +76,14 @@ public class StartScreen extends Application {
         ipTextFiled = new TextField();
         ipTextFiled.setPromptText("Enter ip address... ");
 
-        hostIpSelector = new ChoiceBox<>(FXCollections.observableArrayList(RemoteConfig.getIPAddresses()));
+        List<String> ips = RemoteConfig.getIPAddresses();
+        hostIpSelector = new ChoiceBox<>(FXCollections.observableArrayList(ips));
         hostIpSelector.setMaxWidth(130.0);
+
+        String lh = "127.0.0.1";
+        if(ips.contains(lh)) {
+            hostIpSelector.getSelectionModel().select(lh);
+        }
 
         hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled, hostIpSelector);
 
