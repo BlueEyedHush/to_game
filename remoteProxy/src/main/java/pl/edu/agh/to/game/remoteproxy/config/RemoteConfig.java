@@ -21,7 +21,7 @@ public class RemoteConfig {
 		try {
 			return enumerationAsStream(NetworkInterface.getNetworkInterfaces())
 					.flatMap(i -> i.getInterfaceAddresses().stream())
-					.map(a -> a.getAddress().getHostName())
+					.map(a -> a.getAddress().getHostAddress())
 					.collect(Collectors.toList());
 		} catch (SocketException e) {
 			throw new RuntimeException("Cannot access avaliable interfaces");
