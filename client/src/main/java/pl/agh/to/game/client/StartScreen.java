@@ -68,7 +68,7 @@ public class StartScreen extends Application {
             System.out.println("terminating");
             gameController.terminateRmi();
             Platform.exit();
-            System.exit(0);
+            return;
         });
 
         ipTextFiled = new TextField();

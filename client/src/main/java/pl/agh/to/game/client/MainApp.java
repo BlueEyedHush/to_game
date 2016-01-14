@@ -4,5 +4,6 @@ public class MainApp {
     public static void main(String[] args) throws InterruptedException {
         StartScreen startScreen = new StartScreen();
         startScreen.run();
+        System.exit(0);
     }
 }
