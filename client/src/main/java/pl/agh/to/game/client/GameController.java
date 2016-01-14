@@ -252,7 +252,7 @@ public class GameController implements ClientActionHandler {
         // gameState does not seem to be updated on game start, dummy always used
         // Vector finishVector = gameState.getBoard().getFinish();
         Vector finishVector = gameModel.getFinish();
-        gc.setFill(Color.ALICEBLUE);
+        gc.setFill(Color.DARKVIOLET);
         gc.fillRect(finishVector.getX() * StartScreen.pointSize, finishVector.getY() * StartScreen.pointSize,
                 StartScreen.pointSize / 2, StartScreen.pointSize / 2);
 
@@ -330,7 +330,15 @@ public class GameController implements ClientActionHandler {
         gc.setFont(new Font("Arial", gameCanvas.getWidth() / 25));
         gc.setFill(Color.BLACK);
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("GAME OVER! WINNER : " + winnerId, gameCanvas.getWidth() / 2, gameCanvas.getHeight() / 2);
+
+        String personalSufix;
+        if(winnerId == ourCarId) {
+            personalSufix = "YOU WON!";
+        } else {
+            personalSufix = "WINNER: " + winnerId;
+        }
+
+        gc.fillText("GAME OVER! " + personalSufix, gameCanvas.getWidth() / 2, gameCanvas.getHeight() / 2);
 
         gc.setTextAlign(previousAlignment);
         gc.setFont(previousFont);
