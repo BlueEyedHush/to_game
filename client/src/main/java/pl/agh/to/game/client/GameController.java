@@ -1,6 +1,5 @@
 package pl.agh.to.game.client;
 
-import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -11,7 +10,6 @@ import javafx.scene.text.TextAlignment;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
 import pl.edu.agh.to.game.common.state.Vector;
-import pl.edu.agh.to.game.common.state.VectorFuture;
 import pl.edu.agh.to.game.remoteproxy.client.ClientActionHandler;
 import pl.edu.agh.to.game.remoteproxy.client.ClientType;
 import pl.edu.agh.to.game.remoteproxy.client.RPClient;
@@ -28,7 +26,6 @@ public class GameController implements ClientActionHandler {
     private Canvas gameCanvas;
     private Canvas lineLayer;
     private String serverIp;
-    private GameState gameState;
     private GameModel gameModel;
     private ClientRemoteProxy clientProxy;
     private int ourCarId;
@@ -43,11 +40,16 @@ public class GameController implements ClientActionHandler {
     private static volatile int movePerfInd;
     private final Object lock = new Object();
 
-    public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
+    public GameController(Canvas gameCanvas, Canvas lineLayer, String ip) {
         this.gameCanvas = gameCanvas;
-        this.gameState = gameState;
         this.lineLayer = lineLayer;
         this.serverIp = ip;
+    }
+
+    /* removed redundant parameter from constructor (gameState), this is retained for compatilibity with tests only
+     * (but I did not check whether it is actually used */
+    public GameController(Canvas gameCanvas, Canvas lineLayer, GameState gameState, String ip) {
+        this(gameCanvas, lineLayer, ip);
     }
 
     private boolean ifWithinField(int xGame, int yGame, double xCanvas, double yCanvas) {

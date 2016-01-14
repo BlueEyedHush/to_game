@@ -12,12 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import pl.edu.agh.to.game.common.state.Board;
-import pl.edu.agh.to.game.common.state.CarState;
-import pl.edu.agh.to.game.common.state.GameState;
-import pl.edu.agh.to.game.common.state.Vector;
-
-import java.util.Hashtable;
 
 public class StartScreen extends Application {
     static int pointSize = 30;
@@ -56,31 +50,9 @@ public class StartScreen extends Application {
 
         startGameButton.setOnMouseClicked(event -> {
             startGameButton.setDisable(true);
-            //mocking gamestate
-            GameState gameState;
-            boolean[][] boardArr = {
-                    {true, true, true, true, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true},
-                    {true, true, true, false, true, true, true, true, true, true}
-            };
-
-            Board board = new Board(new Vector(3, 3), boardArr);
-            gameState = new GameState(new Hashtable<>(), board);
-            gameState.putCarState(0, new CarState(new Vector(3, 0)));
-            gameState.putCarState(1, new CarState(new Vector(1, 0)));
-            gameController = new GameController(gameCanvas, lineLayer, gameState, ipTextFiled.getText());
+            gameController = new GameController(gameCanvas, lineLayer, ipTextFiled.getText());
             gameController.init();
-            //drawMap(gameCanvas, gameState);
         });
-
-
 
 
         Button buttonExit = new Button("Exit");
@@ -97,9 +69,6 @@ public class StartScreen extends Application {
 
         primaryStage.show();
     }
-
-
-
 
     public void run() {
         launch();
