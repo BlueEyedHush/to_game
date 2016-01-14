@@ -3,17 +3,15 @@ package pl.agh.to.game.client;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.mockito.Mockito;
 import pl.edu.agh.to.game.common.state.Board;
 import pl.edu.agh.to.game.common.state.CarState;
 import pl.edu.agh.to.game.common.state.GameState;
@@ -40,24 +38,19 @@ public class StartScreen extends Application {
         primaryStage.setWidth(535);
         primaryStage.setResizable(true);
 
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-
-        Group root = new Group();
+        VBox root = new VBox();
         Scene theScene = new Scene(root);
         primaryStage.setScene(theScene);
 
         //Creating game canvas
-        gameCanvas = new Canvas(1000, 1000);
-        lineLayer = new Canvas(1000, 1000);
-
-        BorderPane border = new BorderPane();
-        border.setPadding(new Insets(20, 0, 20, 20));
+        double canvasInitialWidth = 1;
+        double canvasInitialHeight = 1;
+        gameCanvas = new Canvas(canvasInitialWidth, canvasInitialHeight);
+        lineLayer = new Canvas(canvasInitialWidth, canvasInitialHeight);
 
         HBox hButtons = new HBox();
         hButtons.setSpacing(10);
-        hButtons.setPadding(new Insets(20, 20, 10, 20));
+        hButtons.setPadding(new Insets(20, 20, 20, 20));
 
         Button startGameButton = new Button("Start game!");
 
@@ -96,21 +89,10 @@ public class StartScreen extends Application {
         ipTextFiled = new TextField();
         ipTextFiled.setPromptText("Enter ip address... ");
         hButtons.getChildren().addAll(startGameButton, buttonExit, ipTextFiled);
-//        ScrollPane scrollPane = new ScrollPane(gameCanvas);
-//        scrollPane.setFitToWidth(true);
-//        scrollPane.setFitToHeight(true);
-//        scrollPane.setPrefSize(500, 400);
-        gridPane.addRow(0, hButtons);
 
-        Pane pane = new Pane(gameCanvas, lineLayer);
-        gridPane.addRow(1, pane);
-
-
-        root.getChildren().add(gridPane);
-
-
-        // GameState gameState = new GameState();
-
+        StackPane contents = new StackPane(gameCanvas, lineLayer);
+        ScrollPane scrollingWrapper = new ScrollPane(contents);
+        root.getChildren().addAll(hButtons, scrollingWrapper);
 
         primaryStage.show();
     }
